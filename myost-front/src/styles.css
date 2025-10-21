@@ -83,3 +83,44 @@ body.dark-theme .status-bar p {
   background-color: rgba(33, 150, 243, 0.15);
   border-left-color: #2196f3;
 }
+
+/* Snackbar styles */
+.snackbar-info {
+  background-color: #2196f3 !important;
+  color: white !important;
+}
+
+.snackbar-info .mat-simple-snackbar-action {
+  color: white !important;
+}
+
+.snackbar-warning {
+  background-color: #ff9800 !important;
+  color: white !important;
+}
+
+.snackbar-warning .mat-simple-snackbar-action {
+  color: white !important;
+}
+
+.snackbar-error {
+  background-color: #f44336 !important;
+  color: white !important;
+}
+
+.snackbar-error .mat-simple-snackbar-action {
+  color: white !important;
+}
+
+/* Dark theme snackbar adjustments */
+body.dark-theme .snackbar-info {
+  background-color: #1976d2 !important;
+}
+
+body.dark-theme .snackbar-warning {
+  background-color: #f57c00 !important;
+}
+
+body.dark-theme .snackbar-error {
+  background-color: #d32f2f !important;
+}

@@ -177,6 +177,45 @@ export interface StateEventMessage {
   modules: { [moduleName: string]: any };
 }
 
+// Module message (info)
+export interface ModuleMessageEvent {
+  evt: 'mm';
+  modules: {
+    [moduleName: string]: {
+      message: {
+        datetime: string;
+        message: string;
+      }
+    }
+  };
+}
+
+// Module error
+export interface ModuleErrorEvent {
+  evt: 'me';
+  modules: {
+    [moduleName: string]: {
+      error: {
+        datetime: string;
+        error: string;
+      }
+    }
+  };
+}
+
+// Module warning
+export interface ModuleWarningEvent {
+  evt: 'mw';
+  modules: {
+    [moduleName: string]: {
+      warning: {
+        datetime: string;
+        warning: string;
+      }
+    }
+  };
+}
+
 // WebSocket messages to server
 export interface ReadAllMessage {
   evt: 'Freadall';
@@ -211,7 +250,7 @@ export interface PreIconMessage {
 }
 
 // Union type for server messages
-export type ServerMessage = FoldersDumpMessage | FilesDumpMessage | ModuleDumpMessage | StateEventMessage;
+export type ServerMessage = FoldersDumpMessage | FilesDumpMessage | ModuleDumpMessage | StateEventMessage | ModuleMessageEvent | ModuleErrorEvent | ModuleWarningEvent;
 
 // Union type for client messages
 export type ClientMessage = ReadAllMessage | UpdateMessage | GridNewLineMessage | PostIconMessage | PreIconMessage;

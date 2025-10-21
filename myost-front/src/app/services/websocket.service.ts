@@ -8,8 +8,12 @@ import {
   FoldersDumpMessage,
   FilesDumpMessage,
   ModuleDumpMessage,
-  StateEventMessage
+  StateEventMessage,
+  ModuleMessageEvent,
+  ModuleErrorEvent,
+  ModuleWarningEvent
 } from '../models/ost.models';
+import { NotificationService } from './notification.service';
 
 @Injectable({
   providedIn: 'root'
@@ -38,7 +42,7 @@ export class WebsocketService {
   private connectedSubject = new BehaviorSubject<boolean>(false);
   public connected$: Observable<boolean> = this.connectedSubject.asObservable();
 
-  constructor() {
+  constructor(private notificationService: NotificationService) {
     console.log('WebsocketService initialized');
   }
 
@@ -285,6 +289,18 @@ export class WebsocketService {
         // State event - partial module update
         this.handleStateEvent(message as StateEventMessage);
         break;
+      case 'mm':
+        // Module message (info)
+        this.handleModuleMessage(message as ModuleMessageEvent);
+        break;
+      case 'me':
+        // Module error
+        this.handleModuleError(message as ModuleErrorEvent);
+        break;
+      case 'mw':
+        // Module warning
+        this.handleModuleWarning(message as ModuleWarningEvent);
+        break;
       default:
         console.log('Unknown message type:', (message as any).evt);
     }
@@ -375,6 +391,45 @@ export class WebsocketService {
 
     console.log('📝 State event processed');
     this.updateState({ modules: updatedModules });
+  }
+
+  /**
+   * Handle module message (info)
+   */
+  private handleModuleMessage(message: ModuleMessageEvent): void {
+    Object.keys(message.modules).forEach(moduleName => {
+      const moduleData = message.modules[moduleName];
+      if (moduleData.message) {
+        console.log(`[${moduleName}] INFO:`, moduleData.message.message);
+        this.notificationService.info(moduleData.message.message, moduleName);
+      }
+    });
+  }
+
+  /**
+   * Handle module error
+   */
+  private handleModuleError(message: ModuleErrorEvent): void {
+    Object.keys(message.modules).forEach(moduleName => {
+      const moduleData = message.modules[moduleName];
+      if (moduleData.error) {
+        console.error(`[${moduleName}] ERROR:`, moduleData.error.error);
+        this.notificationService.error(moduleData.error.error, moduleName);
+      }
+    });
+  }
+
+  /**
+   * Handle module warning
+   */
+  private handleModuleWarning(message: ModuleWarningEvent): void {
+    Object.keys(message.modules).forEach(moduleName => {
+      const moduleData = message.modules[moduleName];
+      if (moduleData.warning) {
+        console.warn(`[${moduleName}] WARNING:`, moduleData.warning.warning);
+        this.notificationService.warning(moduleData.warning.warning, moduleName);
+      }
+    });
   }
 
   /**
