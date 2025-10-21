@@ -1,0 +1,93 @@
+<div class="home-container">
+  <h1>Bienvenue sur MyOST</h1>
+
+  <p>Observatoire Sans Tête - Interface de contrôle simplifiée</p>
+
+  <mat-grid-list cols="3" rowHeight="200px" gutterSize="20px">
+    <mat-grid-tile>
+      <mat-card class="module-card">
+        <mat-card-header>
+          <mat-icon color="primary">filter_center_focus</mat-icon>
+          <mat-card-title>Focus</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          Autofocus automatique avec analyse de courbe V
+        </mat-card-content>
+        <mat-card-actions>
+          <button mat-button routerLink="/focus">ACCÉDER</button>
+        </mat-card-actions>
+      </mat-card>
+    </mat-grid-tile>
+
+    <mat-grid-tile>
+      <mat-card class="module-card">
+        <mat-card-header>
+          <mat-icon color="primary">view_list</mat-icon>
+          <mat-card-title>Séquence</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          Séquenceur d'imagerie avec gestion des filtres
+        </mat-card-content>
+        <mat-card-actions>
+          <button mat-button routerLink="/sequence">ACCÉDER</button>
+        </mat-card-actions>
+      </mat-card>
+    </mat-grid-tile>
+
+    <mat-grid-tile>
+      <mat-card class="module-card">
+        <mat-card-header>
+          <mat-icon color="primary">explore</mat-icon>
+          <mat-card-title>Navigateur</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          Navigation télescope avec carte du ciel
+        </mat-card-content>
+        <mat-card-actions>
+          <button mat-button routerLink="/navigator">ACCÉDER</button>
+        </mat-card-actions>
+      </mat-card>
+    </mat-grid-tile>
+
+    <mat-grid-tile>
+      <mat-card class="module-card">
+        <mat-card-header>
+          <mat-icon color="primary">gps_fixed</mat-icon>
+          <mat-card-title>Guidage</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          Autoguidage avec graphiques de dérive
+        </mat-card-content>
+        <mat-card-actions>
+          <button mat-button routerLink="/guider">ACCÉDER</button>
+        </mat-card-actions>
+      </mat-card>
+    </mat-grid-tile>
+
+    <mat-grid-tile>
+      <mat-card class="module-card">
+        <mat-card-header>
+          <mat-icon color="primary">panorama</mat-icon>
+          <mat-card-title>Allsky</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          Caméra allsky avec keogram et météo
+        </mat-card-content>
+        <mat-card-actions>
+          <button mat-button routerLink="/allsky">ACCÉDER</button>
+        </mat-card-actions>
+      </mat-card>
+    </mat-grid-tile>
+  </mat-grid-list>
+
+  <div class="status-section">
+    <h2>État du système</h2>
+    <mat-card>
+      <mat-card-content>
+        <p><strong>Serveur:</strong> <span class="status-ok">● Connecté</span></p>
+        <p><strong>INDI:</strong> <span class="status-ok">● Actif</span></p>
+        <p><strong>Modules chargés:</strong> 5/5</p>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

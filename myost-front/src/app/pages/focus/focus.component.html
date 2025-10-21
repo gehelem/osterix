@@ -1,0 +1,128 @@
+<div class="focus-container">
+  <h1>Module Focus</h1>
+
+  <div *ngIf="!isModuleLoaded" class="loading-message">
+    <p>Chargement du module Focus...</p>
+  </div>
+
+  <div *ngIf="isModuleLoaded" class="status-bar">
+    <p><strong>Statut:</strong> {{ currentStatus }}</p>
+  </div>
+
+  <mat-tab-group>
+    <mat-tab label="Paramètres">
+      <div class="tab-content">
+        <mat-card>
+          <mat-card-header>
+            <mat-card-title>Configuration de l'autofocus</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <form class="focus-form">
+              <mat-form-field appearance="fill">
+                <mat-label>Itérations</mat-label>
+                <input matInput type="number" [(ngModel)]="iterations" name="iterations"
+                       (ngModelChange)="onParameterChange('iterations', $event)">
+              </mat-form-field>
+
+              <mat-form-field appearance="fill">
+                <mat-label>Position de démarrage</mat-label>
+                <input matInput type="number" [(ngModel)]="startpos" name="startpos"
+                       (ngModelChange)="onParameterChange('startpos', $event)">
+              </mat-form-field>
+
+              <mat-form-field appearance="fill">
+                <mat-label>Intervalle de pas</mat-label>
+                <input matInput type="number" [(ngModel)]="steps" name="steps"
+                       (ngModelChange)="onParameterChange('steps', $event)">
+              </mat-form-field>
+
+              <mat-form-field appearance="fill">
+                <mat-label>Backlash</mat-label>
+                <input matInput type="number" [(ngModel)]="backlash" name="backlash"
+                       (ngModelChange)="onParameterChange('backlash', $event)">
+              </mat-form-field>
+
+              <mat-form-field appearance="fill">
+                <mat-label>Exposition (s)</mat-label>
+                <input matInput type="number" [(ngModel)]="exposure" name="exposure" step="0.1"
+                       (ngModelChange)="onParmsChange('exposure', $event)">
+              </mat-form-field>
+
+              <mat-form-field appearance="fill">
+                <mat-label>Gain</mat-label>
+                <input matInput type="number" [(ngModel)]="gain" name="gain"
+                       (ngModelChange)="onParmsChange('gain', $event)">
+              </mat-form-field>
+
+              <mat-form-field appearance="fill">
+                <mat-label>Offset</mat-label>
+                <input matInput type="number" [(ngModel)]="offset" name="offset"
+                       (ngModelChange)="onParmsChange('offset', $event)">
+              </mat-form-field>
+            </form>
+          </mat-card-content>
+          <mat-card-actions>
+            <button mat-raised-button color="primary" (click)="startFocus()" [disabled]="!isModuleLoaded || isRunning">
+              Démarrer Focus
+            </button>
+            <button mat-raised-button color="warn" (click)="stopFocus()" [disabled]="!isModuleLoaded || !isRunning">
+              Arrêter
+            </button>
+          </mat-card-actions>
+        </mat-card>
+      </div>
+    </mat-tab>
+
+    <mat-tab label="Courbe V">
+      <div class="tab-content">
+        <mat-card>
+          <mat-card-header>
+            <mat-card-title>Courbe de focus</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <div class="chart-placeholder">
+              <p>Graphique de la courbe en V (HFR vs Position)</p>
+              <p class="hint">Intégration Chart.js à venir...</p>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </mat-tab>
+
+    <mat-tab label="Historique">
+      <div class="tab-content">
+        <mat-card>
+          <mat-card-header>
+            <mat-card-title>Dernières sessions de focus</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <table mat-table [dataSource]="focusHistory" class="mat-elevation-z0">
+              <ng-container matColumnDef="date">
+                <th mat-header-cell *matHeaderCellDef>Date</th>
+                <td mat-cell *matCellDef="let row">{{row.date}}</td>
+              </ng-container>
+
+              <ng-container matColumnDef="filter">
+                <th mat-header-cell *matHeaderCellDef>Filtre</th>
+                <td mat-cell *matCellDef="let row">{{row.filter}}</td>
+              </ng-container>
+
+              <ng-container matColumnDef="hfr">
+                <th mat-header-cell *matHeaderCellDef>HFR Final</th>
+                <td mat-cell *matCellDef="let row">{{row.hfr}}</td>
+              </ng-container>
+
+              <ng-container matColumnDef="position">
+                <th mat-header-cell *matHeaderCellDef>Position</th>
+                <td mat-cell *matCellDef="let row">{{row.position}}</td>
+              </ng-container>
+
+              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </mat-tab>
+  </mat-tab-group>
+</div>

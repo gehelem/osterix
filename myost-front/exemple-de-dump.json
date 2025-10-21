@@ -1,0 +1,1710 @@
+{
+    "evt": "moduledump",
+    "modules": {
+        "Focus": {
+            "errors": {},
+            "globallovs": {
+                "DRIVER_INTERFACE-AUX_INTERFACE": {
+                    "label": "DRIVER_INTERFACE-AUX_INTERFACE",
+                    "type": "string",
+                    "values": {
+                        "Light Panel Simulator": "Light Panel Simulator"
+                    }
+                },
+                "DRIVER_INTERFACE-CCD_INTERFACE": {
+                    "label": "DRIVER_INTERFACE-CCD_INTERFACE",
+                    "type": "string",
+                    "values": {
+                        "CCD Simulator": "CCD Simulator",
+                        "Guide Simulator": "Guide Simulator"
+                    }
+                },
+                "DRIVER_INTERFACE-FILTER_INTERFACE": {
+                    "label": "DRIVER_INTERFACE-FILTER_INTERFACE",
+                    "type": "string",
+                    "values": {
+                        "CCD Simulator": "CCD Simulator",
+                        "Filter Simulator": "Filter Simulator"
+                    }
+                },
+                "DRIVER_INTERFACE-FOCUSER_INTERFACE": {
+                    "label": "DRIVER_INTERFACE-FOCUSER_INTERFACE",
+                    "type": "string",
+                    "values": {
+                        "Focuser Simulator": "Focuser Simulator"
+                    }
+                },
+                "DRIVER_INTERFACE-GENERAL_INTERFACE": {
+                    "label": "DRIVER_INTERFACE-GENERAL_INTERFACE",
+                    "type": "string",
+                    "values": {
+                        "Arduino": "Arduino",
+                        "CCD Simulator": "CCD Simulator",
+                        "Dome Simulator": "Dome Simulator",
+                        "Filter Simulator": "Filter Simulator",
+                        "Focuser Simulator": "Focuser Simulator",
+                        "GPS Simulator": "GPS Simulator",
+                        "Guide Simulator": "Guide Simulator",
+                        "Light Panel Simulator": "Light Panel Simulator",
+                        "Receiver Simulator": "Receiver Simulator",
+                        "Rotator Simulator": "Rotator Simulator",
+                        "SQM Simulator": "SQM Simulator",
+                        "Telescope Simulator": "Telescope Simulator",
+                        "Weather Simulator": "Weather Simulator"
+                    }
+                },
+                "DRIVER_INTERFACE-GPS_INTERFACE": {
+                    "label": "DRIVER_INTERFACE-GPS_INTERFACE",
+                    "type": "string",
+                    "values": {
+                        "GPS Simulator": "GPS Simulator"
+                    }
+                },
+                "DRIVER_INTERFACE-GUIDER_INTERFACE": {
+                    "label": "DRIVER_INTERFACE-GUIDER_INTERFACE",
+                    "type": "string",
+                    "values": {
+                        "CCD Simulator": "CCD Simulator",
+                        "Guide Simulator": "Guide Simulator",
+                        "Telescope Simulator": "Telescope Simulator"
+                    }
+                },
+                "DRIVER_INTERFACE-TELESCOPE_INTERFACE": {
+                    "label": "DRIVER_INTERFACE-TELESCOPE_INTERFACE",
+                    "type": "string",
+                    "values": {
+                        "Telescope Simulator": "Telescope Simulator"
+                    }
+                },
+                "DRIVER_INTERFACE-WEATHER_INTERFACE": {
+                    "label": "DRIVER_INTERFACE-WEATHER_INTERFACE",
+                    "type": "string",
+                    "values": {
+                        "Weather Simulator": "Weather Simulator"
+                    }
+                },
+                "loadedModules": {
+                    "label": "Loaded modules",
+                    "type": "string",
+                    "values": {
+                        "Allsky": "Allsky",
+                        "Focus": "Focus",
+                        "Guider": "Guider",
+                        "Sequencer": "Sequencer"
+                    }
+                }
+            },
+            "help": "---\ntitle: Module - Focus\nweight : 20\n--- \n\nDocumentation du module Focus\n\n{{% notice style=\"note\" title=\"Attention\" icon=\"exclamation-triangle\" %}}\nTest 3\n{{% /notice %}}\n",
+            "infos": {
+                "description": "Focus (scxml)",
+                "label": "Focus",
+                "name": "Focus"
+            },
+            "messages": {
+                "0": {
+                    "datetime": "2025-10-21T08:49:00.561",
+                    "message": "default profile sucessfully loaded"
+                },
+                "1": {
+                    "datetime": "2025-10-21T08:49:00.562",
+                    "message": "Available profiles refreshed"
+                },
+                "2": {
+                    "datetime": "2025-10-21T08:49:02.459",
+                    "message": "Indi server connected"
+                },
+                "3": {
+                    "datetime": "2025-10-21T09:02:17.138",
+                    "message": "Focus done"
+                },
+                "4": {
+                    "datetime": "2025-10-21T09:03:16.107",
+                    "message": "Focus done"
+                }
+            },
+            "properties": {
+                "actions": {
+                    "badge": false,
+                    "elements": {
+                        "abortfocus": {
+                            "autoupdate": false,
+                            "badge": false,
+                            "directedit": false,
+                            "hint": "",
+                            "label": "Annuler (focus)",
+                            "order": "foc99",
+                            "type": "bool",
+                            "value": false
+                        },
+                        "autofocus": {
+                            "autoupdate": false,
+                            "badge": false,
+                            "directedit": false,
+                            "hint": "",
+                            "label": "Autofocus",
+                            "order": "foc50",
+                            "type": "bool",
+                            "value": false
+                        },
+                        "loop": {
+                            "autoupdate": false,
+                            "badge": false,
+                            "directedit": false,
+                            "hint": "",
+                            "label": "Boucle",
+                            "order": "foc70",
+                            "type": "bool",
+                            "value": false
+                        }
+                    },
+                    "enabled": true,
+                    "freevalue": "",
+                    "gridheaders": [
+                        "abortfocus",
+                        "autofocus",
+                        "loop"
+                    ],
+                    "hasGraph": false,
+                    "hasGrid": false,
+                    "hasprofile": false,
+                    "label": "Actions",
+                    "level1": "Contrôle",
+                    "level2": "",
+                    "order": "000Control111",
+                    "permission": 2,
+                    "posticon1": "",
+                    "posticon2": "",
+                    "preicon1": "",
+                    "preicon2": "",
+                    "rule": 1,
+                    "showElts": true,
+                    "status": 1
+                },
+                "baseGit": {
+                    "badge": false,
+                    "elements": {
+                        "date": {
+                            "autoupdate": false,
+                            "badge": false,
+                            "directedit": false,
+                            "hint": "",
+                            "label": "Date",
+                            "order": "01",
+                            "type": "string",
+                            "value": "Sun Oct 19 14:04:48 2025"
+                        },
+                        "hash": {
+                            "autoupdate": false,
+                            "badge": false,
+                            "directedit": false,
+                            "hint": "",
+                            "label": "Hash",
+                            "order": "00",
+                            "type": "string",
+                            "value": "8159fcabaaf3f1dffa80788bceb6e6322b59c118-dirty"
+                        },
+                        "message": {
+                            "autoupdate": false,
+                            "badge": false,
+                            "directedit": false,
+                            "hint": "",
+                            "label": "Message de commit",
+                            "order": "02",
+                            "type": "string",
+                            "value": "Merge branch 'main' into translations"
+                        }
+                    },
+                    "enabled": true,
+                    "freevalue": "",
+                    "gridheaders": [
+                        "date",
+                        "hash",
+                        "message"
+                    ],
+                    "hasGraph": false,
+                    "hasGrid": false,
+                    "hasprofile": false,
+                    "label": "Git module de base",
+                    "level1": "Module",
+                    "level2": "Info",
+                    "order": "00",
+                    "permission": 0,
+                    "posticon1": "",
+                    "posticon2": "",
+                    "preicon1": "",
+                    "preicon2": "",
+                    "rule": 2,
+                    "showElts": true,
+                    "status": 0
+                },
+                "devices": {
+                    "badge": false,
+                    "elements": {
+                        "camera": {
+                            "autoupdate": true,
+                            "badge": false,
+                            "directedit": true,
+                            "globallov": "DRIVER_INTERFACE-CCD_INTERFACE",
+                            "hint": "",
+                            "label": "Caméra",
+                            "order": "Camera",
+                            "type": "string",
+                            "value": "CCD Simulator"
+                        },
+                        "filter": {
+                            "autoupdate": true,
+                            "badge": false,
+                            "directedit": true,
+                            "globallov": "DRIVER_INTERFACE-FILTER_INTERFACE",
+                            "hint": "",
+                            "label": "Roue à filtre",
+                            "order": "Filter wheel",
+                            "type": "string",
+                            "value": "Filter Simulator"
+                        },
+                        "focuser": {
+                            "autoupdate": true,
+                            "badge": false,
+                            "directedit": true,
+                            "globallov": "DRIVER_INTERFACE-FOCUSER_INTERFACE",
+                            "hint": "",
+                            "label": "Focuser",
+                            "order": "Focuser",
+                            "type": "string",
+                            "value": "Focuser Simulator"
+                        }
+                    },
+                    "enabled": true,
+                    "freevalue": "",
+                    "gridheaders": [
+                        "camera",
+                        "filter",
+                        "focuser"
+                    ],
+                    "hasGraph": false,
+                    "hasGrid": false,
+                    "hasprofile": true,
+                    "label": "Appareils",
+                    "level1": "Paramètres",
+                    "level2": "",
+                    "order": "222Parms222",
+                    "permission": 2,
+                    "posticon1": "",
+                    "posticon2": "",
+                    "preicon1": "",
+                    "preicon2": "",
+                    "rule": 2,
+                    "showElts": true,
+                    "status": 0
+                },
+                "devicesactions": {
+                    "badge": false,
+                    "elements": {
+                        "condevs": {
+                            "autoupdate": false,
+                            "badge": false,
+                            "directedit": false,
+                            "hint": "",
+                            "label": "Connecter",
+                            "order": "01",
+                            "type": "bool",
+                            "value": false
+                        },
+                        "discondevs": {
+                            "autoupdate": false,
+                            "badge": false,
+                            "directedit": false,
+                            "hint": "",
+                            "label": "Déconnecter",
+                            "order": "02",
+                            "type": "bool",
+                            "value": false
+                        },
+                        "loadconfs": {
+                            "autoupdate": false,
+                            "badge": false,
+                            "directedit": false,
+                            "hint": "",
+                            "label": "Charger la configuration des appareils",
+                            "order": "03",
+                            "type": "bool",
+                            "value": false
+                        }
+                    },
+                    "enabled": true,
+                    "freevalue": "",
+                    "gridheaders": [
+                        "condevs",
+                        "discondevs",
+                        "loadconfs"
+                    ],
+                    "hasGraph": false,
+                    "hasGrid": false,
+                    "hasprofile": false,
+                    "label": "Actions sur les appareils",
+                    "level1": "Module",
+                    "level2": "Indi",
+                    "order": "04",
+                    "permission": 2,
+                    "posticon1": "",
+                    "posticon2": "",
+                    "preicon1": "",
+                    "preicon2": "",
+                    "rule": 2,
+                    "showElts": true,
+                    "status": 0
+                },
+                "image": {
+                    "badge": false,
+                    "elements": {
+                        "image": {
+                            "autoupdate": false,
+                            "badge": false,
+                            "channels": 1,
+                            "height": 1024,
+                            "hfravg": 1.6395282955562756,
+                            "hint": "",
+                            "histogram": [
+                                [
+                                    [
+                                        785378
+                                    ],
+                                    [
+                                        525010
+                                    ],
+                                    [
+                                        130
+                                    ],
+                                    [
+                                        62
+                                    ],
+                                    [
+                                        32
+                                    ],
+                                    [
+                                        12
+                                    ],
+                                    [
+                                        18
+                                    ],
+                                    [
+                                        2
+                                    ],
+                                    [
+                                        16
+                                    ],
+                                    [
+                                        16
+                                    ],
+                                    [
+                                        0
+                                    ],
+                                    [
+                                        4
+                                    ],
+                                    [
+                                        0
+                                    ],
+                                    [
+                                        0
+                                    ],
+                                    [
+                                        0
+                                    ],
+                                    [
+                                        0
+                                    ],
+                                    [
+                                        0
+                                    ],
+                                    [
+                                        12
+                                    ],
+                                    [
+                                        0
+                                    ],
+                                    [
+                                        6
+                                    ],
+                                    [
+                                        2
+                                    ],
+                                    [
+                                        0
+                                    ],
+                                    [
+                                        10
+                                    ],
+                                    [
+                                        0
+                                    ],
+                                    [
+                                        0
+                                    ],
+                                    [
+                                        4
+                                    ],
+                                    [
+                                        0
+                                    ],
+                                    [
+                                        0
+                                    ],
+                                    [
+                                        0
+                                    ],
+                                    [
+                                        0
+                                    ],
+                                    [
+                                        0
+                                    ],
+                                    [
+                                        0
+                                    ],
+                                    [
+                                        0
+                                    ],
+                                    [
+                                        0
+                                    ],
+                                    [
+                                        0
+                                    ],
+                                    [
+                                        0
+                                    ],
+                                    [
+                                        0
+                                    ],
+                                    [
+                                        0
+                                    ],
+                                    [
+                                        0
+                                    ],
+                                    [
+                                        0
+                                    ],
+                                    [
+                                        0
+                                    ],
+                                    [
+                                        0
+                                    ],
+                                    [
+                                        0
+                                    ],
+                                    [
+                                        0
+                                    ],
+                                    [
+                                        0
+                                    ],
+                                    [
+                                        0
+                                    ],
+                                    [
+                                        0
+                                    ],
+                                    [
+                                        2
+                                    ],
+                                    [
+                                        2
+                                    ],
+                                    [
+                                        0
+                                    ],
+                                    [
+                                        0
+                                    ],
+                                    [
+                                        0
+                                    ],
+                                    [
+                                        0
+                                    ],
+                                    [
+                                        0
+                                    ],
+                                    [
+                                        0
+                                    ],
+                                    [
+                                        0
+                                    ],
+                                    [
+                                        0
+                                    ],
+                                    [
+                                        0
+                                    ],
+                                    [
+                                        0
+                                    ],
+                                    [
+                                        0
+                                    ],
+                                    [
+                                        0
+                                    ],
+                                    [
+                                        0
+                                    ],
+                                    [
+                                        2
+                                    ],
+                                    [
+                                        0
+                                    ]
+                                ]
+                            ],
+                            "issolved": false,
+                            "label": "",
+                            "max": [
+                                688
+                            ],
+                            "mean": [
+                                4.517999047863175
+                            ],
+                            "median": [
+                                4
+                            ],
+                            "min": [
+                                0
+                            ],
+                            "order": "00",
+                            "showstats": true,
+                            "snr": 1.334447982602995,
+                            "solverde": 0,
+                            "solverra": 0,
+                            "stars": 16,
+                            "stddev": [
+                                3.385668910863274
+                            ],
+                            "type": "img",
+                            "urlfits": "FocusCCD Simulator.FITS",
+                            "urljpeg": "FocusCCD Simulator.jpeg",
+                            "urloverlay": "",
+                            "urlthumbnail": "",
+                            "width": 1280
+                        }
+                    },
+                    "enabled": true,
+                    "freevalue": "",
+                    "gridheaders": [
+                        "image"
+                    ],
+                    "hasGraph": false,
+                    "hasGrid": false,
+                    "hasprofile": false,
+                    "label": "Image",
+                    "level1": "Contrôle",
+                    "level2": "",
+                    "order": "000Control222",
+                    "permission": 1,
+                    "posticon1": "",
+                    "posticon2": "",
+                    "preicon1": "",
+                    "preicon2": "",
+                    "rule": 2,
+                    "showElts": true,
+                    "status": 1
+                },
+                "indiGit": {
+                    "badge": false,
+                    "elements": {
+                        "date": {
+                            "autoupdate": false,
+                            "badge": false,
+                            "directedit": false,
+                            "hint": "",
+                            "label": "Date",
+                            "order": "01",
+                            "type": "string",
+                            "value": "Sun Oct 19 14:04:48 2025"
+                        },
+                        "hash": {
+                            "autoupdate": false,
+                            "badge": false,
+                            "directedit": false,
+                            "hint": "",
+                            "label": "Hash",
+                            "order": "00",
+                            "type": "string",
+                            "value": "8159fcabaaf3f1dffa80788bceb6e6322b59c118-dirty"
+                        },
+                        "message": {
+                            "autoupdate": false,
+                            "badge": false,
+                            "directedit": false,
+                            "hint": "",
+                            "label": "Message de commit",
+                            "order": "02",
+                            "type": "string",
+                            "value": "Merge branch 'main' into translations"
+                        }
+                    },
+                    "enabled": true,
+                    "freevalue": "",
+                    "gridheaders": [
+                        "date",
+                        "hash",
+                        "message"
+                    ],
+                    "hasGraph": false,
+                    "hasGrid": false,
+                    "hasprofile": false,
+                    "label": "Git module Indi",
+                    "level1": "Module",
+                    "level2": "Info",
+                    "order": "00",
+                    "permission": 0,
+                    "posticon1": "",
+                    "posticon2": "",
+                    "preicon1": "",
+                    "preicon2": "",
+                    "rule": 2,
+                    "showElts": true,
+                    "status": 0
+                },
+                "loadprofile": {
+                    "badge": false,
+                    "elements": {
+                        "name": {
+                            "autoupdate": true,
+                            "badge": false,
+                            "directedit": true,
+                            "hint": "",
+                            "label": "",
+                            "listOfValues": {
+                                "default": "default"
+                            },
+                            "order": "00",
+                            "posticon": "redo",
+                            "preicon": "autorenew",
+                            "type": "string",
+                            "value": "default"
+                        }
+                    },
+                    "enabled": true,
+                    "freevalue": "",
+                    "gridheaders": [
+                        "name"
+                    ],
+                    "hasGraph": false,
+                    "hasGrid": false,
+                    "hasprofile": false,
+                    "label": "Charger un profil",
+                    "level1": "Module",
+                    "level2": "Profils",
+                    "order": "00",
+                    "permission": 2,
+                    "posticon1": "",
+                    "posticon2": "",
+                    "preicon1": "",
+                    "preicon2": "",
+                    "rule": 1,
+                    "showElts": true,
+                    "status": 0
+                },
+                "moduleInfo": {
+                    "badge": false,
+                    "elements": {
+                        "baseVersion": {
+                            "autoupdate": false,
+                            "badge": false,
+                            "directedit": false,
+                            "format": "",
+                            "hint": "",
+                            "label": "baseVersion",
+                            "max": 0,
+                            "min": 0,
+                            "order": "03",
+                            "slider": 0,
+                            "step": 0,
+                            "type": "int",
+                            "value": 1
+                        },
+                        "moduleDescription": {
+                            "autoupdate": false,
+                            "badge": false,
+                            "directedit": false,
+                            "hint": "",
+                            "label": "Description du module",
+                            "order": "00",
+                            "type": "string",
+                            "value": "Focus (scxml)"
+                        },
+                        "moduleLabel": {
+                            "autoupdate": false,
+                            "badge": false,
+                            "directedit": false,
+                            "hint": "",
+                            "label": "Libellé du module",
+                            "order": "01",
+                            "type": "string",
+                            "value": "Focus"
+                        },
+                        "moduleName": {
+                            "autoupdate": false,
+                            "badge": false,
+                            "directedit": false,
+                            "hint": "",
+                            "label": "Nom du module",
+                            "order": "02",
+                            "type": "string",
+                            "value": "Focus"
+                        },
+                        "moduleVersion": {
+                            "autoupdate": false,
+                            "badge": false,
+                            "directedit": false,
+                            "hint": "",
+                            "label": "Version",
+                            "order": "02",
+                            "type": "string",
+                            "value": "0.1"
+                        }
+                    },
+                    "enabled": true,
+                    "freevalue": "",
+                    "gridheaders": [
+                        "baseVersion",
+                        "moduleDescription",
+                        "moduleLabel",
+                        "moduleName",
+                        "moduleVersion"
+                    ],
+                    "hasGraph": false,
+                    "hasGrid": false,
+                    "hasprofile": false,
+                    "label": "Informations du module",
+                    "level1": "Module",
+                    "level2": "Info",
+                    "order": "01",
+                    "permission": 0,
+                    "posticon1": "",
+                    "posticon2": "",
+                    "preicon1": "",
+                    "preicon2": "",
+                    "rule": 2,
+                    "showElts": true,
+                    "status": 0
+                },
+                "moduleactions": {
+                    "badge": false,
+                    "elements": {
+                        "kill": {
+                            "autoupdate": false,
+                            "badge": false,
+                            "directedit": false,
+                            "hint": "",
+                            "label": "Fermer le module",
+                            "order": "00",
+                            "type": "bool",
+                            "value": false
+                        }
+                    },
+                    "enabled": true,
+                    "freevalue": "",
+                    "gridheaders": [
+                        "kill"
+                    ],
+                    "hasGraph": false,
+                    "hasGrid": false,
+                    "hasprofile": false,
+                    "label": "Contrôles",
+                    "level1": "Module",
+                    "level2": "Actions",
+                    "order": "00",
+                    "permission": 1,
+                    "posticon1": "",
+                    "posticon2": "",
+                    "preicon1": "",
+                    "preicon2": "",
+                    "rule": 2,
+                    "showElts": true,
+                    "status": 0
+                },
+                "optic": {
+                    "badge": false,
+                    "elements": {
+                        "diam": {
+                            "autoupdate": true,
+                            "badge": false,
+                            "directedit": true,
+                            "format": "",
+                            "hint": "",
+                            "label": "Diamètre",
+                            "max": 4000,
+                            "min": 1,
+                            "order": "2",
+                            "slider": 0,
+                            "step": 0,
+                            "type": "float",
+                            "value": 250
+                        },
+                        "fl": {
+                            "autoupdate": true,
+                            "badge": false,
+                            "directedit": true,
+                            "format": "",
+                            "hint": "",
+                            "label": "Focale",
+                            "max": 4000,
+                            "min": 1,
+                            "order": "1",
+                            "slider": 0,
+                            "step": 0,
+                            "type": "float",
+                            "value": 1000
+                        },
+                        "red": {
+                            "autoupdate": true,
+                            "badge": false,
+                            "directedit": true,
+                            "format": "",
+                            "hint": "",
+                            "label": "Réducteur",
+                            "max": 10,
+                            "min": 0.1,
+                            "order": "3",
+                            "slider": 0,
+                            "step": 0,
+                            "type": "float",
+                            "value": 1
+                        }
+                    },
+                    "enabled": true,
+                    "freevalue": "",
+                    "gridheaders": [
+                        "diam",
+                        "fl",
+                        "red"
+                    ],
+                    "hasGraph": false,
+                    "hasGrid": false,
+                    "hasprofile": true,
+                    "label": "Optique",
+                    "level1": "Paramètres",
+                    "level2": "",
+                    "order": "222Parms333",
+                    "permission": 2,
+                    "posticon1": "",
+                    "posticon2": "",
+                    "preicon1": "",
+                    "preicon2": "",
+                    "rule": 2,
+                    "showElts": true,
+                    "status": 0
+                },
+                "parameters": {
+                    "badge": false,
+                    "elements": {
+                        "aroundinitial": {
+                            "autoupdate": true,
+                            "badge": false,
+                            "directedit": true,
+                            "hint": "",
+                            "label": "Démarrer autour de la position actuelle",
+                            "order": "15",
+                            "type": "bool",
+                            "value": false
+                        },
+                        "backlash": {
+                            "autoupdate": true,
+                            "badge": false,
+                            "directedit": true,
+                            "format": "99999",
+                            "hint": "",
+                            "label": "Dépassement backlash",
+                            "max": 0,
+                            "min": 0,
+                            "order": "60",
+                            "slider": 0,
+                            "step": 0,
+                            "type": "int",
+                            "value": 100
+                        },
+                        "iterations": {
+                            "autoupdate": true,
+                            "badge": false,
+                            "directedit": true,
+                            "format": "99",
+                            "hint": "",
+                            "label": "Itérations",
+                            "max": 0,
+                            "min": 0,
+                            "order": "30",
+                            "slider": 0,
+                            "step": 0,
+                            "type": "int",
+                            "value": 5
+                        },
+                        "loopIterations": {
+                            "autoupdate": true,
+                            "badge": false,
+                            "directedit": true,
+                            "format": "99",
+                            "hint": "",
+                            "label": "Moyenne sur",
+                            "max": 0,
+                            "min": 0,
+                            "order": "00",
+                            "slider": 0,
+                            "step": 0,
+                            "type": "int",
+                            "value": 3
+                        },
+                        "startpos": {
+                            "autoupdate": true,
+                            "badge": false,
+                            "directedit": true,
+                            "format": "999999",
+                            "hint": "",
+                            "label": "Position de démarrage",
+                            "max": 0,
+                            "min": 0,
+                            "order": "00",
+                            "slider": 0,
+                            "step": 0,
+                            "type": "int",
+                            "value": 32000
+                        },
+                        "steps": {
+                            "autoupdate": true,
+                            "badge": false,
+                            "directedit": true,
+                            "format": "999999",
+                            "hint": "",
+                            "label": "Intervalle de pas",
+                            "max": 0,
+                            "min": 0,
+                            "order": "20",
+                            "slider": 0,
+                            "step": 0,
+                            "type": "int",
+                            "value": 2000
+                        },
+                        "zoning": {
+                            "autoupdate": true,
+                            "badge": false,
+                            "directedit": true,
+                            "format": "99999",
+                            "hint": "",
+                            "label": "Zonage",
+                            "listOfValues": {
+                                "1": "1x1",
+                                "2": "2x2",
+                                "3": "3x3",
+                                "4": "4x4",
+                                "5": "5x5",
+                                "6": "6x6",
+                                "7": "7x7",
+                                "8": "8x8",
+                                "9": "9x9"
+                            },
+                            "max": 64,
+                            "min": 1,
+                            "order": "70",
+                            "slider": 0,
+                            "step": 0,
+                            "type": "int",
+                            "value": 2
+                        }
+                    },
+                    "enabled": true,
+                    "freevalue": "",
+                    "gridheaders": [
+                        "aroundinitial",
+                        "backlash",
+                        "iterations",
+                        "loopIterations",
+                        "startpos",
+                        "steps",
+                        "zoning"
+                    ],
+                    "hasGraph": false,
+                    "hasGrid": false,
+                    "hasprofile": true,
+                    "label": "Paramètres de focus",
+                    "level1": "Paramètres",
+                    "level2": "",
+                    "order": "222Parms000",
+                    "permission": 2,
+                    "posticon1": "",
+                    "posticon2": "",
+                    "preicon1": "",
+                    "preicon2": "",
+                    "rule": 2,
+                    "showElts": true,
+                    "status": 0
+                },
+                "parms": {
+                    "badge": false,
+                    "elements": {
+                        "exposure": {
+                            "autoupdate": true,
+                            "badge": false,
+                            "directedit": true,
+                            "format": "",
+                            "hint": "",
+                            "label": "Exposition",
+                            "max": 300,
+                            "min": 0.00001,
+                            "order": "exp000",
+                            "slider": 2,
+                            "step": 0.001,
+                            "type": "float",
+                            "value": 10
+                        },
+                        "gain": {
+                            "autoupdate": true,
+                            "badge": false,
+                            "directedit": true,
+                            "format": "",
+                            "hint": "",
+                            "label": "Gain",
+                            "max": 500,
+                            "min": 0,
+                            "order": "exp020",
+                            "slider": 2,
+                            "step": 1,
+                            "type": "int",
+                            "value": 0
+                        },
+                        "offset": {
+                            "autoupdate": true,
+                            "badge": false,
+                            "directedit": true,
+                            "format": "",
+                            "hint": "",
+                            "label": "Offset",
+                            "max": 500,
+                            "min": 0,
+                            "order": "exp030",
+                            "slider": 2,
+                            "step": 1,
+                            "type": "int",
+                            "value": 0
+                        }
+                    },
+                    "enabled": true,
+                    "freevalue": "",
+                    "gridheaders": [
+                        "exposure",
+                        "gain",
+                        "offset"
+                    ],
+                    "hasGraph": false,
+                    "hasGrid": false,
+                    "hasprofile": true,
+                    "label": "Paramètres",
+                    "level1": "Paramètres",
+                    "level2": "",
+                    "order": "222Parms111",
+                    "permission": 2,
+                    "posticon1": "",
+                    "posticon2": "",
+                    "preicon1": "",
+                    "preicon2": "",
+                    "rule": 2,
+                    "showElts": true,
+                    "status": 0
+                },
+                "progress": {
+                    "badge": false,
+                    "elements": {
+                        "global": {
+                            "autoupdate": false,
+                            "badge": false,
+                            "dynlabel": "Finished",
+                            "hint": "",
+                            "label": "",
+                            "order": "0",
+                            "prgtype": "spinner",
+                            "type": "prg",
+                            "value": 100
+                        }
+                    },
+                    "enabled": true,
+                    "freevalue": "",
+                    "gridheaders": [
+                        "global"
+                    ],
+                    "hasGraph": false,
+                    "hasGrid": false,
+                    "hasprofile": false,
+                    "label": "Progression",
+                    "level1": "Contrôle",
+                    "level2": "",
+                    "order": "Control010",
+                    "permission": 0,
+                    "posticon1": "",
+                    "posticon2": "",
+                    "preicon1": "",
+                    "preicon2": "",
+                    "rule": 2,
+                    "showElts": true,
+                    "status": 0
+                },
+                "results": {
+                    "badge": false,
+                    "elements": {
+                        "hfr": {
+                            "autoupdate": false,
+                            "badge": false,
+                            "directedit": false,
+                            "format": "99.99",
+                            "hint": "",
+                            "label": "HFR moyen final ('')",
+                            "max": 0,
+                            "min": 0,
+                            "order": "10",
+                            "slider": 0,
+                            "step": 0,
+                            "type": "float",
+                            "value": 1.6395282955562756
+                        },
+                        "pos": {
+                            "autoupdate": false,
+                            "badge": false,
+                            "directedit": false,
+                            "format": "9999999",
+                            "hint": "",
+                            "label": "Position finale du focuser",
+                            "max": 0,
+                            "min": 0,
+                            "order": "00",
+                            "slider": 0,
+                            "step": 1,
+                            "type": "float",
+                            "value": 37246.54526135588
+                        }
+                    },
+                    "enabled": true,
+                    "freevalue": "",
+                    "gridheaders": [
+                        "hfr",
+                        "pos"
+                    ],
+                    "hasGraph": false,
+                    "hasGrid": false,
+                    "hasprofile": false,
+                    "label": "Résultat final",
+                    "level1": "Contrôle",
+                    "level2": "",
+                    "order": "Control050",
+                    "permission": 0,
+                    "posticon1": "",
+                    "posticon2": "",
+                    "preicon1": "",
+                    "preicon2": "",
+                    "rule": 2,
+                    "showElts": true,
+                    "status": 0
+                },
+                "saveprofile": {
+                    "badge": false,
+                    "elements": {
+                        "name": {
+                            "autoupdate": true,
+                            "badge": false,
+                            "directedit": true,
+                            "hint": "",
+                            "label": "",
+                            "order": "00",
+                            "posticon": "save",
+                            "type": "string",
+                            "value": "default"
+                        }
+                    },
+                    "enabled": true,
+                    "freevalue": "",
+                    "gridheaders": [
+                        "name"
+                    ],
+                    "hasGraph": false,
+                    "hasGrid": false,
+                    "hasprofile": false,
+                    "label": "Sauvegarder le profil",
+                    "level1": "Module",
+                    "level2": "Profils",
+                    "order": "01",
+                    "permission": 2,
+                    "posticon1": "",
+                    "posticon2": "",
+                    "preicon1": "",
+                    "preicon2": "",
+                    "rule": 0,
+                    "showElts": true,
+                    "status": 0
+                },
+                "server": {
+                    "badge": false,
+                    "elements": {
+                        "host": {
+                            "autoupdate": true,
+                            "badge": false,
+                            "directedit": false,
+                            "hint": "",
+                            "label": "Hôte",
+                            "order": "00",
+                            "type": "string",
+                            "value": "localhost"
+                        },
+                        "port": {
+                            "autoupdate": true,
+                            "badge": false,
+                            "directedit": false,
+                            "format": "",
+                            "hint": "",
+                            "label": "Port",
+                            "max": 0,
+                            "min": 0,
+                            "order": "01",
+                            "slider": 0,
+                            "step": 0,
+                            "type": "int",
+                            "value": 7624
+                        }
+                    },
+                    "enabled": true,
+                    "freevalue": "",
+                    "gridheaders": [
+                        "host",
+                        "port"
+                    ],
+                    "hasGraph": false,
+                    "hasGrid": false,
+                    "hasprofile": true,
+                    "label": "Serveur",
+                    "level1": "Module",
+                    "level2": "Indi",
+                    "order": "99",
+                    "permission": 2,
+                    "posticon1": "",
+                    "posticon2": "",
+                    "preicon1": "",
+                    "preicon2": "",
+                    "rule": 2,
+                    "showElts": true,
+                    "status": 0
+                },
+                "serveractions": {
+                    "badge": false,
+                    "elements": {
+                        "conserv": {
+                            "autoupdate": false,
+                            "badge": false,
+                            "directedit": false,
+                            "hint": "",
+                            "label": "Connecter",
+                            "order": "00",
+                            "type": "bool",
+                            "value": false
+                        },
+                        "disconserv": {
+                            "autoupdate": false,
+                            "badge": false,
+                            "directedit": false,
+                            "hint": "",
+                            "label": "Déconnecter",
+                            "order": "01",
+                            "type": "bool",
+                            "value": false
+                        }
+                    },
+                    "enabled": true,
+                    "freevalue": "",
+                    "gridheaders": [
+                        "conserv",
+                        "disconserv"
+                    ],
+                    "hasGraph": false,
+                    "hasGrid": false,
+                    "hasprofile": false,
+                    "label": "Serveur",
+                    "level1": "Module",
+                    "level2": "Indi",
+                    "order": "01",
+                    "permission": 2,
+                    "posticon1": "",
+                    "posticon2": "",
+                    "preicon1": "",
+                    "preicon2": "",
+                    "rule": 2,
+                    "showElts": true,
+                    "status": 0
+                },
+                "startup": {
+                    "badge": false,
+                    "elements": {
+                        "confsatstart": {
+                            "autoupdate": true,
+                            "badge": false,
+                            "directedit": false,
+                            "hint": "",
+                            "label": "Charger la configuration des appareils",
+                            "order": "02",
+                            "type": "bool",
+                            "value": true
+                        },
+                        "devatstart": {
+                            "autoupdate": true,
+                            "badge": false,
+                            "directedit": false,
+                            "hint": "",
+                            "label": "Connecter les appareils",
+                            "order": "01",
+                            "type": "bool",
+                            "value": true
+                        },
+                        "indiatstart": {
+                            "autoupdate": true,
+                            "badge": false,
+                            "directedit": false,
+                            "hint": "",
+                            "label": "Connecter indi",
+                            "order": "00",
+                            "type": "bool",
+                            "value": true
+                        }
+                    },
+                    "enabled": true,
+                    "freevalue": "",
+                    "gridheaders": [
+                        "confsatstart",
+                        "devatstart",
+                        "indiatstart"
+                    ],
+                    "hasGraph": false,
+                    "hasGrid": false,
+                    "hasprofile": true,
+                    "label": "Actions au démarrage du module",
+                    "level1": "Module",
+                    "level2": "Indi",
+                    "order": "08",
+                    "permission": 2,
+                    "posticon1": "",
+                    "posticon2": "",
+                    "preicon1": "",
+                    "preicon2": "",
+                    "rule": 2,
+                    "showElts": true,
+                    "status": 0
+                },
+                "thisGit": {
+                    "badge": false,
+                    "elements": {
+                        "date": {
+                            "autoupdate": false,
+                            "badge": false,
+                            "directedit": false,
+                            "hint": "",
+                            "label": "Date",
+                            "order": "01",
+                            "type": "string",
+                            "value": "Sun Oct 19 21:21:50 2025"
+                        },
+                        "hash": {
+                            "autoupdate": false,
+                            "badge": false,
+                            "directedit": false,
+                            "hint": "",
+                            "label": "Hash",
+                            "order": "00",
+                            "type": "string",
+                            "value": "5d443e1deddb535f81239210c0ccfae35296dd5d"
+                        },
+                        "message": {
+                            "autoupdate": false,
+                            "badge": false,
+                            "directedit": false,
+                            "hint": "",
+                            "label": "Message de commit",
+                            "order": "02",
+                            "type": "string",
+                            "value": "Merge pull request #102 from gehelem/85-allsky-add-meteo-data"
+                        }
+                    },
+                    "enabled": true,
+                    "freevalue": "",
+                    "gridheaders": [
+                        "date",
+                        "hash",
+                        "message"
+                    ],
+                    "hasGraph": false,
+                    "hasGrid": false,
+                    "hasprofile": false,
+                    "label": "Git de ce module",
+                    "level1": "Module",
+                    "level2": "Info",
+                    "order": "00",
+                    "permission": 0,
+                    "posticon1": "",
+                    "posticon2": "",
+                    "preicon1": "",
+                    "preicon2": "",
+                    "rule": 2,
+                    "showElts": true,
+                    "status": 0
+                },
+                "values": {
+                    "badge": false,
+                    "elements": {
+                        "bestpos": {
+                            "autoupdate": false,
+                            "badge": false,
+                            "directedit": false,
+                            "format": "9999999",
+                            "hint": "",
+                            "label": "Meilleure position",
+                            "max": 0,
+                            "min": 0,
+                            "order": "20",
+                            "slider": 0,
+                            "step": 1,
+                            "type": "int",
+                            "value": 38000
+                        },
+                        "bestposfit": {
+                            "autoupdate": false,
+                            "badge": false,
+                            "directedit": false,
+                            "format": "9999999.99",
+                            "hint": "",
+                            "label": "Position polynôme",
+                            "max": 0,
+                            "min": 0,
+                            "order": "30",
+                            "slider": 0,
+                            "step": 0,
+                            "type": "float",
+                            "value": 37246.54526135588
+                        },
+                        "focpos": {
+                            "autoupdate": false,
+                            "badge": false,
+                            "directedit": false,
+                            "format": "9999999",
+                            "hint": "",
+                            "label": "Position du focuser",
+                            "max": 0,
+                            "min": 0,
+                            "order": "00",
+                            "slider": 0,
+                            "step": 1,
+                            "type": "int",
+                            "value": 37246
+                        },
+                        "imgHFR": {
+                            "autoupdate": false,
+                            "badge": false,
+                            "directedit": false,
+                            "format": "99.99",
+                            "hint": "",
+                            "label": "HFR dernière image ('')",
+                            "max": 0,
+                            "min": 0,
+                            "order": "40",
+                            "slider": 0,
+                            "step": 0,
+                            "type": "float",
+                            "value": 1.6395282955562756
+                        },
+                        "iteration": {
+                            "autoupdate": false,
+                            "badge": false,
+                            "directedit": false,
+                            "format": "9999",
+                            "hint": "",
+                            "label": "Itération",
+                            "max": 0,
+                            "min": 0,
+                            "order": "50",
+                            "slider": 0,
+                            "step": 1,
+                            "type": "int",
+                            "value": 4
+                        },
+                        "loopHFRavg": {
+                            "autoupdate": false,
+                            "badge": false,
+                            "directedit": false,
+                            "format": "99.99",
+                            "hint": "",
+                            "label": "HFR moyen ('')",
+                            "max": 0,
+                            "min": 0,
+                            "order": "10",
+                            "slider": 0,
+                            "step": 0,
+                            "type": "float",
+                            "value": 1.6124132026202889
+                        }
+                    },
+                    "enabled": true,
+                    "freevalue": "",
+                    "graphParams": {
+                        "X": "focpos",
+                        "Y": "loopHFRavg"
+                    },
+                    "graphType": "XY",
+                    "grid": [
+                        [
+                            32000,
+                            0,
+                            32000,
+                            1.4582099914550781,
+                            0,
+                            1.594121716042478
+                        ],
+                        [
+                            32000,
+                            0,
+                            34000,
+                            1.5091065168380737,
+                            1,
+                            1.6120915764775043
+                        ],
+                        [
+                            32000,
+                            35215.75604891618,
+                            36000,
+                            1.506704330444336,
+                            2,
+                            1.613841365714877
+                        ],
+                        [
+                            38000,
+                            34998.35358769948,
+                            38000,
+                            1.4978294372558594,
+                            3,
+                            1.5934858701821135
+                        ],
+                        [
+                            38000,
+                            37246.54526135588,
+                            40000,
+                            1.513821005821228,
+                            4,
+                            1.6124132026202889
+                        ]
+                    ],
+                    "gridLimit": 5000,
+                    "gridheaders": [
+                        "bestpos",
+                        "bestposfit",
+                        "focpos",
+                        "imgHFR",
+                        "iteration",
+                        "loopHFRavg"
+                    ],
+                    "hasGraph": true,
+                    "hasGrid": true,
+                    "hasprofile": false,
+                    "label": "Valeurs",
+                    "level1": "Contrôle",
+                    "level2": "",
+                    "order": "Control100",
+                    "permission": 0,
+                    "posticon1": "",
+                    "posticon2": "",
+                    "preicon1": "",
+                    "preicon2": "",
+                    "rule": 2,
+                    "showElts": false,
+                    "showGrid": false,
+                    "status": 0
+                },
+                "zones": {
+                    "badge": false,
+                    "elements": {
+                        "bestpos": {
+                            "autoupdate": false,
+                            "badge": false,
+                            "directedit": false,
+                            "format": "9999999",
+                            "hint": "",
+                            "label": "Meilleure position",
+                            "max": 0,
+                            "min": 0,
+                            "order": "2",
+                            "slider": 0,
+                            "step": 0,
+                            "type": "float",
+                            "value": 34958.39244489876
+                        },
+                        "zone": {
+                            "autoupdate": false,
+                            "badge": false,
+                            "directedit": false,
+                            "hint": "",
+                            "label": "Id. zone",
+                            "order": "1",
+                            "type": "string",
+                            "value": "Lower right"
+                        }
+                    },
+                    "enabled": true,
+                    "freevalue": "",
+                    "grid": [
+                        [
+                            37507.097227573766,
+                            "Upper left"
+                        ],
+                        [
+                            38331.43749573116,
+                            "Upper right"
+                        ],
+                        [
+                            36258.68455592828,
+                            "Lower left"
+                        ],
+                        [
+                            34958.39244489876,
+                            "Lower right"
+                        ]
+                    ],
+                    "gridLimit": 5000,
+                    "gridheaders": [
+                        "bestpos",
+                        "zone"
+                    ],
+                    "hasGraph": false,
+                    "hasGrid": true,
+                    "hasprofile": false,
+                    "label": "Résultat du zonage",
+                    "level1": "Contrôle",
+                    "level2": "",
+                    "order": "Control090",
+                    "permission": 0,
+                    "posticon1": "",
+                    "posticon2": "",
+                    "preicon1": "",
+                    "preicon2": "",
+                    "rule": 2,
+                    "showElts": false,
+                    "showGrid": true,
+                    "status": 0
+                }
+            },
+            "state": {},
+            "warnings": {
+                "0": {
+                    "datetime": "2025-10-21T09:01:59.455",
+                    "warning": " Fsetproperty - property parameters - element exposure not found"
+                },
+                "1": {
+                    "datetime": "2025-10-21T09:02:59.272",
+                    "warning": " Fsetproperty - property parameters - element exposure not found"
+                }
+            }
+        }
+    }
+}

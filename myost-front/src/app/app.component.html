@@ -1,0 +1,54 @@
+<mat-toolbar color="primary">
+  <mat-toolbar-row>
+    <button mat-icon-button (click)="sidenav.toggle()">
+      <mat-icon>menu</mat-icon>
+    </button>
+    <span>MyOST - Observatoire Sans Tête</span>
+    <span class="spacer"></span>
+    <span class="connection-status" [class.connected]="connected" [class.disconnected]="!connected">
+      <mat-icon [inline]="true">{{ connected ? 'cloud_done' : 'cloud_off' }}</mat-icon>
+      {{ connected ? 'Connecté' : 'Déconnecté' }}
+      <span *ngIf="moduleCount > 0">({{ moduleCount }} modules)</span>
+    </span>
+    <button mat-icon-button>
+      <mat-icon>settings</mat-icon>
+    </button>
+  </mat-toolbar-row>
+</mat-toolbar>
+
+<mat-sidenav-container class="sidenav-container">
+  <mat-sidenav #sidenav mode="side" opened class="sidenav">
+    <mat-nav-list>
+      <a mat-list-item routerLink="/home" routerLinkActive="active">
+        <mat-icon>home</mat-icon>
+        <span>Accueil</span>
+      </a>
+      <a mat-list-item routerLink="/focus" routerLinkActive="active">
+        <mat-icon>filter_center_focus</mat-icon>
+        <span>Focus</span>
+      </a>
+      <a mat-list-item routerLink="/sequence" routerLinkActive="active">
+        <mat-icon>view_list</mat-icon>
+        <span>Séquence</span>
+      </a>
+      <a mat-list-item routerLink="/navigator" routerLinkActive="active">
+        <mat-icon>explore</mat-icon>
+        <span>Navigateur</span>
+      </a>
+      <a mat-list-item routerLink="/guider" routerLinkActive="active">
+        <mat-icon>gps_fixed</mat-icon>
+        <span>Guidage</span>
+      </a>
+      <a mat-list-item routerLink="/allsky" routerLinkActive="active">
+        <mat-icon>panorama</mat-icon>
+        <span>Allsky</span>
+      </a>
+    </mat-nav-list>
+  </mat-sidenav>
+
+  <mat-sidenav-content>
+    <div class="content">
+      <router-outlet></router-outlet>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>
