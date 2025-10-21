@@ -9,6 +9,7 @@ import {
   FilesDumpMessage,
   ModuleDumpMessage,
   StateEventMessage,
+  AllPropertiesMessage,
   ModuleMessageEvent,
   ModuleErrorEvent,
   ModuleWarningEvent,
@@ -304,6 +305,10 @@ export class WebsocketService {
         // State event - partial module update
         this.handleStateEvent(message as StateEventMessage);
         break;
+      case 'ap':
+        // All properties - complete property update
+        this.handleAllProperties(message as AllPropertiesMessage);
+        break;
       case 'mm':
         // Module message (info)
         this.handleModuleMessage(message as ModuleMessageEvent);
@@ -446,6 +451,46 @@ export class WebsocketService {
     });
 
     console.log('📝 State event processed');
+    this.updateState({ modules: updatedModules });
+  }
+
+  /**
+   * Handle all properties (ap) - complete property replacement
+   */
+  private handleAllProperties(message: AllPropertiesMessage): void {
+    if (!message.modules) return;
+
+    const currentState = this.stateSubject.value;
+    const updatedModules = { ...currentState.modules };
+
+    // For each module in the message
+    Object.keys(message.modules).forEach(moduleName => {
+      const moduleUpdate = message.modules[moduleName];
+
+      if (!updatedModules[moduleName]) {
+        // Module doesn't exist yet, just add it
+        updatedModules[moduleName] = moduleUpdate;
+      } else {
+        // Module exists, replace complete properties (not merge)
+        const existingModule = updatedModules[moduleName];
+        const updatedProperties = { ...existingModule.properties };
+
+        // Replace complete properties
+        if (moduleUpdate.properties) {
+          Object.keys(moduleUpdate.properties).forEach(propName => {
+            // Complete replacement of the property
+            updatedProperties[propName] = moduleUpdate.properties[propName];
+          });
+        }
+
+        updatedModules[moduleName] = {
+          ...existingModule,
+          properties: updatedProperties
+        };
+      }
+    });
+
+    console.log('📝 All properties event processed');
     this.updateState({ modules: updatedModules });
   }
 

@@ -76,6 +76,25 @@ mat-tab-group {
   padding: 20px;
 }
 
+/* Focus image container */
+.focus-image-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 400px;
+  background-color: #000;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.focus-image {
+  max-width: 100%;
+  max-height: 600px;
+  height: auto;
+  object-fit: contain;
+}
+
 /* Chart placeholder */
 .chart-placeholder {
   min-height: 400px;
@@ -87,6 +106,7 @@ mat-tab-group {
   border: 2px dashed #ccc;
   border-radius: 4px;
   color: #666;
+  width: 100%;
 }
 
 .chart-placeholder p {

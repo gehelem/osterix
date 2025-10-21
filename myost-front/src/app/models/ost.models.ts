@@ -177,6 +177,11 @@ export interface StateEventMessage {
   modules: { [moduleName: string]: any };
 }
 
+export interface AllPropertiesMessage {
+  evt: 'ap';
+  modules: { [moduleName: string]: any };
+}
+
 // Module message (info)
 export interface ModuleMessageEvent {
   evt: 'mm';
@@ -250,7 +255,7 @@ export interface PreIconMessage {
 }
 
 // Union type for server messages
-export type ServerMessage = FoldersDumpMessage | FilesDumpMessage | ModuleDumpMessage | StateEventMessage | ModuleMessageEvent | ModuleErrorEvent | ModuleWarningEvent;
+export type ServerMessage = FoldersDumpMessage | FilesDumpMessage | ModuleDumpMessage | StateEventMessage | AllPropertiesMessage | ModuleMessageEvent | ModuleErrorEvent | ModuleWarningEvent;
 
 // Union type for client messages
 export type ClientMessage = ReadAllMessage | UpdateMessage | GridNewLineMessage | PostIconMessage | PreIconMessage;

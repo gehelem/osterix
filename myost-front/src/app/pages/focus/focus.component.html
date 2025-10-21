@@ -39,9 +39,12 @@
                   <mat-card-title>Courbe de focus</mat-card-title>
                 </mat-card-header>
                 <mat-card-content>
-                  <div class="chart-placeholder">
-                    <p>Graphique de la courbe en V (HFR vs Position)</p>
-                    <p class="hint">Intégration Chart.js à venir...</p>
+                  <div class="focus-image-container">
+                    <img *ngIf="imageUrl" [src]="imageUrl" alt="Image de focus" class="focus-image">
+                    <div *ngIf="!imageUrl" class="chart-placeholder">
+                      <p>Aucune image disponible</p>
+                      <p class="hint">L'image apparaîtra ici après une session de focus</p>
+                    </div>
                   </div>
                 </mat-card-content>
               </mat-card>
