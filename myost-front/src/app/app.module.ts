@@ -6,6 +6,8 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FocusComponent } from './pages/focus/focus.component';
+import { HistogramDialogComponent } from './pages/focus/histogram-dialog.component';
+import { StatisticsDialogComponent } from './pages/focus/statistics-dialog.component';
 import { SequenceComponent } from './pages/sequence/sequence.component';
 import { NavigatorComponent } from './pages/navigator/navigator.component';
 import { GuiderComponent } from './pages/guider/guider.component';
@@ -26,12 +28,16 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatTableModule } from '@angular/material/table';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { MessagesComponent } from './pages/messages/messages.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     FocusComponent,
+    HistogramDialogComponent,
+    StatisticsDialogComponent,
     SequenceComponent,
     NavigatorComponent,
     GuiderComponent,
@@ -56,7 +62,9 @@ import { MessagesComponent } from './pages/messages/messages.component';
     MatSelectModule,
     MatTableModule,
     MatTabsModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatDialogModule,
+    MatTooltipModule
   ],
   providers: [],
   bootstrap: [AppComponent]

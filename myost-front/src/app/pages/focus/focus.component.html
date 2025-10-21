@@ -7,86 +7,74 @@
     <!-- Main content -->
     <mat-sidenav-content>
       <div class="main-content">
-        <!-- Header with title and buttons -->
-        <div class="focus-header">
-          <h1>Module Focus</h1>
-          <div class="header-actions">
-            <button mat-raised-button color="primary" (click)="startFocus()" [disabled]="!isModuleLoaded || isRunning">
-              <mat-icon>play_arrow</mat-icon>
-              Démarrer Focus
-            </button>
-            <button mat-raised-button color="warn" (click)="stopFocus()" [disabled]="!isModuleLoaded || !isRunning">
-              <mat-icon>stop</mat-icon>
-              Arrêter
-            </button>
-            <button mat-icon-button (click)="toggleParameters()" [color]="parametersOpened ? 'accent' : ''">
-              <mat-icon>settings</mat-icon>
-            </button>
-          </div>
+        <div class="cards-grid">
+          <!-- Card 1: Image de focus -->
+          <mat-card>
+            <mat-card-content>
+              <div class="focus-image-container">
+                <img *ngIf="imageUrl" [src]="imageUrl" alt="Image de focus" class="focus-image" (click)="openImageFullscreen()">
+
+                <!-- Buttons overlay on image -->
+                <div *ngIf="imageUrl" class="image-overlay-buttons">
+                  <button mat-mini-fab color="primary" (click)="showHistogram($event)" matTooltip="Histogramme">
+                    <mat-icon>bar_chart</mat-icon>
+                  </button>
+                  <button mat-mini-fab color="accent" (click)="showStatistics($event)" matTooltip="Statistiques">
+                    <mat-icon>analytics</mat-icon>
+                  </button>
+                </div>
+
+                <div *ngIf="!imageUrl" class="chart-placeholder">
+                  <p>Aucune image disponible</p>
+                  <p class="hint">L'image apparaîtra ici après une session de focus</p>
+                </div>
+              </div>
+            </mat-card-content>
+          </mat-card>
+
+          <!-- Card 2: Boutons d'action -->
+          <mat-card>
+            <mat-card-content>
+              <div class="actions-container">
+                <div class="status-info">
+                  <p><strong>Statut:</strong> {{ currentStatus }}</p>
+                </div>
+                <div class="action-buttons">
+                  <button mat-raised-button color="primary" (click)="startFocus()" [disabled]="!isModuleLoaded || isRunning">
+                    <mat-icon>play_arrow</mat-icon>
+                    Démarrer Focus
+                  </button>
+                  <button mat-raised-button color="warn" (click)="stopFocus()" [disabled]="!isModuleLoaded || !isRunning">
+                    <mat-icon>stop</mat-icon>
+                    Arrêter
+                  </button>
+                  <button mat-raised-button (click)="toggleParameters()" [color]="parametersOpened ? 'accent' : ''">
+                    <mat-icon>settings</mat-icon>
+                    Paramètres
+                  </button>
+                </div>
+              </div>
+            </mat-card-content>
+          </mat-card>
+
+          <!-- Card 3: Vide pour l'instant -->
+          <mat-card>
+            <mat-card-content>
+              <div class="empty-card">
+                <!-- Contenu à venir -->
+              </div>
+            </mat-card-content>
+          </mat-card>
+
+          <!-- Card 4: Vide pour l'instant -->
+          <mat-card>
+            <mat-card-content>
+              <div class="empty-card">
+                <!-- Contenu à venir -->
+              </div>
+            </mat-card-content>
+          </mat-card>
         </div>
-
-        <!-- Status bar -->
-        <div class="status-bar">
-          <p><strong>Statut:</strong> {{ currentStatus }}</p>
-        </div>
-
-        <!-- Tabs for V-curve and history -->
-        <mat-tab-group>
-          <mat-tab label="Courbe V">
-            <div class="tab-content">
-              <mat-card>
-                <mat-card-header>
-                  <mat-card-title>Courbe de focus</mat-card-title>
-                </mat-card-header>
-                <mat-card-content>
-                  <div class="focus-image-container">
-                    <img *ngIf="imageUrl" [src]="imageUrl" alt="Image de focus" class="focus-image">
-                    <div *ngIf="!imageUrl" class="chart-placeholder">
-                      <p>Aucune image disponible</p>
-                      <p class="hint">L'image apparaîtra ici après une session de focus</p>
-                    </div>
-                  </div>
-                </mat-card-content>
-              </mat-card>
-            </div>
-          </mat-tab>
-
-          <mat-tab label="Historique">
-            <div class="tab-content">
-              <mat-card>
-                <mat-card-header>
-                  <mat-card-title>Dernières sessions de focus</mat-card-title>
-                </mat-card-header>
-                <mat-card-content>
-                  <table mat-table [dataSource]="focusHistory" class="mat-elevation-z0">
-                    <ng-container matColumnDef="date">
-                      <th mat-header-cell *matHeaderCellDef>Date</th>
-                      <td mat-cell *matCellDef="let row">{{row.date}}</td>
-                    </ng-container>
-
-                    <ng-container matColumnDef="filter">
-                      <th mat-header-cell *matHeaderCellDef>Filtre</th>
-                      <td mat-cell *matCellDef="let row">{{row.filter}}</td>
-                    </ng-container>
-
-                    <ng-container matColumnDef="hfr">
-                      <th mat-header-cell *matHeaderCellDef>HFR Final</th>
-                      <td mat-cell *matCellDef="let row">{{row.hfr}}</td>
-                    </ng-container>
-
-                    <ng-container matColumnDef="position">
-                      <th mat-header-cell *matHeaderCellDef>Position</th>
-                      <td mat-cell *matCellDef="let row">{{row.position}}</td>
-                    </ng-container>
-
-                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-                  </table>
-                </mat-card-content>
-              </mat-card>
-            </div>
-          </mat-tab>
-        </mat-tab-group>
       </div>
     </mat-sidenav-content>
 
@@ -162,4 +150,9 @@
       </div>
     </mat-sidenav>
   </mat-sidenav-container>
+
+  <!-- Fullscreen image overlay -->
+  <div *ngIf="fullscreenImageUrl" class="fullscreen-overlay" (click)="closeFullscreen()">
+    <img [src]="fullscreenImageUrl" alt="Image de focus en plein écran" class="fullscreen-image">
+  </div>
 </div>

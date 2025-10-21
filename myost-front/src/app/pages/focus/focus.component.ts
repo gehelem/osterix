@@ -1,7 +1,10 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { WebsocketService } from '../../services/websocket.service';
 import { Module, Property, Element, ImageElement } from '../../models/ost.models';
 import { Subscription } from 'rxjs';
+import { HistogramDialogComponent } from './histogram-dialog.component';
+import { StatisticsDialogComponent } from './statistics-dialog.component';
 
 interface FocusHistoryItem {
   date: string;
@@ -35,6 +38,9 @@ export class FocusComponent implements OnInit, OnDestroy {
   // Image URL from backend
   imageUrl: string | null = null;
 
+  // Fullscreen image
+  fullscreenImageUrl: string | null = null;
+
   // Status
   isRunning: boolean = false;
   currentStatus: string = 'Idle';
@@ -44,7 +50,10 @@ export class FocusComponent implements OnInit, OnDestroy {
 
   private subscription = new Subscription();
 
-  constructor(public wsService: WebsocketService) { }
+  constructor(
+    public wsService: WebsocketService,
+    private dialog: MatDialog
+  ) { }
 
   ngOnInit(): void {
     // Subscribe to state changes to get Focus module data
@@ -225,5 +234,61 @@ export class FocusComponent implements OnInit, OnDestroy {
    */
   toggleParameters(): void {
     this.parametersOpened = !this.parametersOpened;
+  }
+
+  /**
+   * Open image in fullscreen
+   */
+  openImageFullscreen(): void {
+    if (this.imageUrl) {
+      this.fullscreenImageUrl = this.imageUrl;
+    }
+  }
+
+  /**
+   * Close fullscreen image
+   */
+  closeFullscreen(): void {
+    this.fullscreenImageUrl = null;
+  }
+
+  /**
+   * Get current image element
+   */
+  private getCurrentImageElement(): ImageElement | null {
+    if (!this.focusModule || !this.focusModule.properties['image']) {
+      return null;
+    }
+    const imageElement = this.focusModule.properties['image'].elements['image'];
+    if (imageElement && imageElement.type === 'img') {
+      return imageElement as ImageElement;
+    }
+    return null;
+  }
+
+  /**
+   * Show histogram dialog
+   */
+  showHistogram(event: Event): void {
+    event.stopPropagation(); // Prevent triggering fullscreen
+    const imageData = this.getCurrentImageElement();
+    this.dialog.open(HistogramDialogComponent, {
+      width: '800px',
+      height: '600px',
+      data: imageData
+    });
+  }
+
+  /**
+   * Show statistics dialog
+   */
+  showStatistics(event: Event): void {
+    event.stopPropagation(); // Prevent triggering fullscreen
+    const imageData = this.getCurrentImageElement();
+    this.dialog.open(StatisticsDialogComponent, {
+      width: '600px',
+      height: '600px',
+      data: imageData
+    });
   }
 }
