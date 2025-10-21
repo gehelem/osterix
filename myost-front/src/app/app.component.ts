@@ -1,5 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { WebsocketService } from './services/websocket.service';
+import { ThemeService } from './services/theme.service';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -11,10 +12,14 @@ export class AppComponent implements OnInit, OnDestroy {
   title = 'myost-front';
   connected = false;
   moduleCount = 0;
+  isDarkMode = false;
 
   private subscription = new Subscription();
 
-  constructor(public wsService: WebsocketService) {}
+  constructor(
+    public wsService: WebsocketService,
+    public themeService: ThemeService
+  ) {}
 
   ngOnInit(): void {
     // Connect to WebSocket on app startup
@@ -37,6 +42,20 @@ export class AppComponent implements OnInit, OnDestroy {
         }
       })
     );
+
+    // Subscribe to theme changes
+    this.subscription.add(
+      this.themeService.darkMode$.subscribe(isDark => {
+        this.isDarkMode = isDark;
+      })
+    );
+  }
+
+  /**
+   * Toggle dark mode
+   */
+  toggleTheme(): void {
+    this.themeService.toggleDarkMode();
   }
 
   ngOnDestroy(): void {

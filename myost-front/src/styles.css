@@ -1,4 +1,85 @@
 /* You can add global styles to this file, and also import other style files */
 
 html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Dark theme styles */
+body.dark-theme {
+  background-color: #303030;
+  color: rgba(255, 255, 255, 0.87);
+}
+
+/* Dark theme for Material components */
+body.dark-theme .mat-toolbar {
+  background-color: #424242 !important;
+  color: rgba(255, 255, 255, 0.87) !important;
+}
+
+body.dark-theme .mat-drawer-container {
+  background-color: #303030;
+  color: rgba(255, 255, 255, 0.87);
+}
+
+body.dark-theme .mat-drawer {
+  background-color: #424242;
+  color: rgba(255, 255, 255, 0.87);
+}
+
+body.dark-theme .mat-card {
+  background-color: #424242;
+  color: rgba(255, 255, 255, 0.87);
+}
+
+body.dark-theme .mat-form-field-label {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+body.dark-theme .mat-input-element {
+  color: rgba(255, 255, 255, 0.87);
+}
+
+body.dark-theme .mat-form-field-appearance-fill .mat-form-field-flex {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+body.dark-theme .mat-table {
+  background-color: #424242;
+}
+
+body.dark-theme .mat-header-cell {
+  color: rgba(255, 255, 255, 0.87);
+}
+
+body.dark-theme .mat-cell {
+  color: rgba(255, 255, 255, 0.87);
+}
+
+body.dark-theme .mat-tab-label {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+body.dark-theme .mat-tab-label-active {
+  color: rgba(255, 255, 255, 0.87);
+}
+
+body.dark-theme .mat-list-item {
+  color: rgba(255, 255, 255, 0.87);
+}
+
+body.dark-theme a.mat-list-item:hover,
+body.dark-theme a.mat-list-item.active {
+  background-color: rgba(255, 255, 255, 0.08);
+}
+
+body.dark-theme .connection-status {
+  background-color: rgba(0, 0, 0, 0.3) !important;
+}
+
+body.dark-theme .status-bar p {
+  background-color: rgba(33, 150, 243, 0.15);
+  border-left-color: #2196f3;
+}

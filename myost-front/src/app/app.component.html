@@ -10,6 +10,9 @@
       {{ connected ? 'Connecté' : 'Déconnecté' }}
       <span *ngIf="moduleCount > 0">({{ moduleCount }} modules)</span>
     </span>
+    <button mat-icon-button (click)="toggleTheme()" [title]="isDarkMode ? 'Mode clair' : 'Mode sombre'">
+      <mat-icon>{{ isDarkMode ? 'light_mode' : 'dark_mode' }}</mat-icon>
+    </button>
     <button mat-icon-button>
       <mat-icon>settings</mat-icon>
     </button>
