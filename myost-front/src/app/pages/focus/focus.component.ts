@@ -36,6 +36,9 @@ export class FocusComponent implements OnInit, OnDestroy {
   isRunning: boolean = false;
   currentStatus: string = 'Idle';
 
+  // Sidenav state
+  parametersOpened: boolean = false;
+
   private subscription = new Subscription();
 
   constructor(public wsService: WebsocketService) { }
@@ -197,5 +200,12 @@ export class FocusComponent implements OnInit, OnDestroy {
    */
   get isModuleLoaded(): boolean {
     return this.focusModule !== null;
+  }
+
+  /**
+   * Toggle parameters sidenav
+   */
+  toggleParameters(): void {
+    this.parametersOpened = !this.parametersOpened;
   }
 }
