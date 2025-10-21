@@ -49,6 +49,10 @@
       <a mat-list-item routerLink="/messages" routerLinkActive="active">
         <mat-icon>message</mat-icon>
         <span>Messages</span>
+        <span class="message-badges">
+          <span *ngIf="warningCount > 0" class="message-badge warning-badge">{{ warningCount }}</span>
+          <span *ngIf="errorCount > 0" class="message-badge error-badge">{{ errorCount }}</span>
+        </span>
       </a>
     </mat-nav-list>
   </mat-sidenav>

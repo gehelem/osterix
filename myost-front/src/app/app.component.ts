@@ -13,6 +13,8 @@ export class AppComponent implements OnInit, OnDestroy {
   connected = false;
   moduleCount = 0;
   isDarkMode = false;
+  warningCount = 0;
+  errorCount = 0;
 
   private subscription = new Subscription();
 
@@ -47,6 +49,14 @@ export class AppComponent implements OnInit, OnDestroy {
     this.subscription.add(
       this.themeService.darkMode$.subscribe(isDark => {
         this.isDarkMode = isDark;
+      })
+    );
+
+    // Subscribe to message history to count warnings and errors
+    this.subscription.add(
+      this.wsService.messageHistory$.subscribe(messages => {
+        this.warningCount = messages.filter(msg => msg.type === 'warning').length;
+        this.errorCount = messages.filter(msg => msg.type === 'error').length;
       })
     );
   }

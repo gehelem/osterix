@@ -574,4 +574,18 @@ export class WebsocketService {
   clearMessageHistory(): void {
     this.messageHistorySubject.next([]);
   }
+
+  /**
+   * Get count of warnings
+   */
+  getWarningCount(): number {
+    return this.messageHistorySubject.value.filter(msg => msg.type === 'warning').length;
+  }
+
+  /**
+   * Get count of errors
+   */
+  getErrorCount(): number {
+    return this.messageHistorySubject.value.filter(msg => msg.type === 'error').length;
+  }
 }
