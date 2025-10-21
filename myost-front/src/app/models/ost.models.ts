@@ -255,6 +255,14 @@ export type ServerMessage = FoldersDumpMessage | FilesDumpMessage | ModuleDumpMe
 // Union type for client messages
 export type ClientMessage = ReadAllMessage | UpdateMessage | GridNewLineMessage | PostIconMessage | PreIconMessage;
 
+// History message for display
+export interface HistoryMessage {
+  datetime: string;
+  moduleName: string;
+  type: 'info' | 'warning' | 'error';
+  message: string;
+}
+
 // Application state
 export interface OSTState {
   connected: boolean;

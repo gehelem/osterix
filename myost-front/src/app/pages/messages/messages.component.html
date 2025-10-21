@@ -1,0 +1,87 @@
+<div class="messages-container">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>Historique des messages</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+
+      <!-- Filters -->
+      <div class="filters">
+        <mat-form-field appearance="fill">
+          <mat-label>Type de message</mat-label>
+          <mat-select [(ngModel)]="filterType" name="filterType" (selectionChange)="applyFilters()">
+            <mat-option value="all">Tous</mat-option>
+            <mat-option value="info">Info</mat-option>
+            <mat-option value="warning">Warning</mat-option>
+            <mat-option value="error">Erreur</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+          <mat-label>Module</mat-label>
+          <mat-select [(ngModel)]="filterModule" name="filterModule" (selectionChange)="applyFilters()">
+            <mat-option value="all">Tous les modules</mat-option>
+            <mat-option *ngFor="let module of availableModules" [value]="module">
+              {{ module }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <button mat-raised-button color="warn" (click)="clearHistory()" class="clear-button">
+          <mat-icon>delete</mat-icon>
+          Effacer l'historique
+        </button>
+      </div>
+
+      <!-- Messages count -->
+      <div class="message-count">
+        {{ filteredMessages.length }} message(s)
+      </div>
+
+      <!-- Messages table -->
+      <div class="messages-table-container">
+        <table mat-table [dataSource]="filteredMessages" class="messages-table">
+
+          <!-- Datetime Column -->
+          <ng-container matColumnDef="datetime">
+            <th mat-header-cell *matHeaderCellDef>Date/Heure</th>
+            <td mat-cell *matCellDef="let message">{{ formatDatetime(message.datetime) }}</td>
+          </ng-container>
+
+          <!-- Type Column -->
+          <ng-container matColumnDef="type">
+            <th mat-header-cell *matHeaderCellDef>Type</th>
+            <td mat-cell *matCellDef="let message">
+              <span class="type-badge" [ngClass]="getTypeClass(message.type)">
+                {{ message.type }}
+              </span>
+            </td>
+          </ng-container>
+
+          <!-- Module Column -->
+          <ng-container matColumnDef="module">
+            <th mat-header-cell *matHeaderCellDef>Module</th>
+            <td mat-cell *matCellDef="let message">{{ message.moduleName }}</td>
+          </ng-container>
+
+          <!-- Message Column -->
+          <ng-container matColumnDef="message">
+            <th mat-header-cell *matHeaderCellDef>Message</th>
+            <td mat-cell *matCellDef="let message" class="message-cell">{{ message.message }}</td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+        </table>
+
+        <!-- Empty state -->
+        <div *ngIf="filteredMessages.length === 0" class="empty-state">
+          <mat-icon>info</mat-icon>
+          <p>Aucun message à afficher</p>
+        </div>
+      </div>
+
+    </mat-card-content>
+  </mat-card>
+</div>

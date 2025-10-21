@@ -11,7 +11,8 @@ import {
   StateEventMessage,
   ModuleMessageEvent,
   ModuleErrorEvent,
-  ModuleWarningEvent
+  ModuleWarningEvent,
+  HistoryMessage
 } from '../models/ost.models';
 import { NotificationService } from './notification.service';
 
@@ -41,6 +42,10 @@ export class WebsocketService {
   // Connection status
   private connectedSubject = new BehaviorSubject<boolean>(false);
   public connected$: Observable<boolean> = this.connectedSubject.asObservable();
+
+  // Message history
+  private messageHistorySubject = new BehaviorSubject<HistoryMessage[]>([]);
+  public messageHistory$: Observable<HistoryMessage[]> = this.messageHistorySubject.asObservable();
 
   constructor(private notificationService: NotificationService) {
     console.log('WebsocketService initialized');
@@ -329,6 +334,47 @@ export class WebsocketService {
     const moduleNames = Object.keys(message.modules);
     console.log(`📦 Received ${moduleNames.length} modules:`, moduleNames.join(', '));
 
+    // Initialize message history from module dumps
+    Object.keys(message.modules).forEach(moduleName => {
+      const module = message.modules[moduleName];
+
+      // Add errors to history
+      if (module.errors) {
+        Object.values(module.errors).forEach(error => {
+          this.addToHistory({
+            datetime: error.datetime,
+            moduleName: moduleName,
+            type: 'error',
+            message: error.error
+          });
+        });
+      }
+
+      // Add messages to history
+      if (module.messages) {
+        Object.values(module.messages).forEach(msg => {
+          this.addToHistory({
+            datetime: msg.datetime,
+            moduleName: moduleName,
+            type: 'info',
+            message: msg.message
+          });
+        });
+      }
+
+      // Add warnings to history (if they exist in the module)
+      if (module.warnings) {
+        Object.values(module.warnings).forEach((warning: any) => {
+          this.addToHistory({
+            datetime: warning.datetime,
+            moduleName: moduleName,
+            type: 'warning',
+            message: warning.warning
+          });
+        });
+      }
+    });
+
     // Merge modules into current state
     const currentState = this.stateSubject.value;
     const updatedModules = {
@@ -402,6 +448,12 @@ export class WebsocketService {
       if (moduleData.message) {
         console.log(`[${moduleName}] INFO:`, moduleData.message.message);
         this.notificationService.info(moduleData.message.message, moduleName);
+        this.addToHistory({
+          datetime: moduleData.message.datetime,
+          moduleName: moduleName,
+          type: 'info',
+          message: moduleData.message.message
+        });
       }
     });
   }
@@ -415,6 +467,12 @@ export class WebsocketService {
       if (moduleData.error) {
         console.error(`[${moduleName}] ERROR:`, moduleData.error.error);
         this.notificationService.error(moduleData.error.error, moduleName);
+        this.addToHistory({
+          datetime: moduleData.error.datetime,
+          moduleName: moduleName,
+          type: 'error',
+          message: moduleData.error.error
+        });
       }
     });
   }
@@ -428,6 +486,12 @@ export class WebsocketService {
       if (moduleData.warning) {
         console.warn(`[${moduleName}] WARNING:`, moduleData.warning.warning);
         this.notificationService.warning(moduleData.warning.warning, moduleName);
+        this.addToHistory({
+          datetime: moduleData.warning.datetime,
+          moduleName: moduleName,
+          type: 'warning',
+          message: moduleData.warning.warning
+        });
       }
     });
   }
@@ -474,5 +538,30 @@ export class WebsocketService {
    */
   isConnected(): boolean {
     return this.connectedSubject.value;
+  }
+
+  /**
+   * Add a message to history
+   */
+  private addToHistory(message: HistoryMessage): void {
+    const currentHistory = this.messageHistorySubject.value;
+    const updatedHistory = [...currentHistory, message];
+    // Sort by datetime (most recent first)
+    updatedHistory.sort((a, b) => new Date(b.datetime).getTime() - new Date(a.datetime).getTime());
+    this.messageHistorySubject.next(updatedHistory);
+  }
+
+  /**
+   * Get message history
+   */
+  getMessageHistory(): HistoryMessage[] {
+    return this.messageHistorySubject.value;
+  }
+
+  /**
+   * Clear message history
+   */
+  clearMessageHistory(): void {
+    this.messageHistorySubject.next([]);
   }
 }
