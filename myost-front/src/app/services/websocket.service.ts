@@ -277,6 +277,16 @@ export class WebsocketService {
   }
 
   /**
+   * Clear messages for a specific module (Fclearmessages)
+   */
+  clearMessages(module: string): void {
+    this.send({
+      evt: 'Fclearmessages',
+      mod: module
+    } as any);
+  }
+
+  /**
    * Handle incoming messages from server
    */
   private handleMessage(message: ServerMessage): void {

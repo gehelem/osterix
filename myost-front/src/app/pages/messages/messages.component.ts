@@ -83,10 +83,25 @@ export class MessagesComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Clear all messages
+   * Clear messages (send to backend)
    */
   clearHistory(): void {
-    if (confirm('Êtes-vous sûr de vouloir effacer tout l\'historique des messages ?')) {
+    const confirmMessage = this.filterModule === 'all'
+      ? 'Êtes-vous sûr de vouloir effacer l\'historique de tous les modules ?'
+      : `Êtes-vous sûr de vouloir effacer l'historique du module ${this.filterModule} ?`;
+
+    if (confirm(confirmMessage)) {
+      if (this.filterModule === 'all') {
+        // Clear messages for all loaded modules
+        this.availableModules.forEach(moduleName => {
+          this.wsService.clearMessages(moduleName);
+        });
+      } else {
+        // Clear messages for the selected module only
+        this.wsService.clearMessages(this.filterModule);
+      }
+
+      // Also clear local history (will be repopulated by backend response if needed)
       this.wsService.clearMessageHistory();
     }
   }
