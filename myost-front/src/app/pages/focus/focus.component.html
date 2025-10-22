@@ -36,6 +36,7 @@
               <div class="actions-container">
                 <div class="status-info">
                   <p><strong>Statut:</strong> {{ currentStatus }}</p>
+                  <mat-progress-bar mode="determinate" [value]="progressValue"></mat-progress-bar>
                 </div>
                 <div class="action-buttons">
                   <button mat-raised-button color="primary" (click)="startFocus()" [disabled]="!isModuleLoaded || isRunning">

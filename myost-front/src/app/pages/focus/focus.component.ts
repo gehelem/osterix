@@ -51,6 +51,7 @@ export class FocusComponent implements OnInit, OnDestroy, AfterViewInit {
   // Status
   isRunning: boolean = false;
   currentStatus: string = 'Idle';
+  progressValue: number = 0;
 
   // Enabled states for properties
   parametersEnabled: boolean = true;
@@ -167,6 +168,11 @@ export class FocusComponent implements OnInit, OnDestroy, AfterViewInit {
       const actions = properties['actions'];
       this.currentStatus = this.getStatusText(actions.status);
       this.isRunning = actions.status === 2; // 2 = Running
+    }
+
+    // Extract progress from 'progress' property
+    if (properties['progress'] && properties['progress'].elements['global']) {
+      this.progressValue = properties['progress'].elements['global'].value || 0;
     }
 
     // Extract image URL from 'image' property

@@ -105,7 +105,12 @@
 }
 
 .status-info p {
-  margin: 0;
+  margin: 0 0 12px 0;
+}
+
+.status-info mat-progress-bar {
+  height: 8px;
+  border-radius: 4px;
 }
 
 .action-buttons {
