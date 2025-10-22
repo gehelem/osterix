@@ -5,77 +5,76 @@
 
   <mat-grid-list cols="3" rowHeight="200px" gutterSize="20px">
     <mat-grid-tile>
-      <mat-card class="module-card">
-        <mat-card-header>
+      <mat-card class="module-card focus-card">
+        <div class="card-header-custom clickable-header" routerLink="/focus">
           <mat-icon color="primary">filter_center_focus</mat-icon>
-          <mat-card-title>Focus</mat-card-title>
-        </mat-card-header>
+          <span class="card-title">Focus</span>
+        </div>
         <mat-card-content>
-          Autofocus automatique avec analyse de courbe V
+          <div class="focus-content">
+            <div class="focus-chart-mini">
+              <canvas #focusChart></canvas>
+            </div>
+            <div class="focus-results-mini">
+              <div class="result-mini">
+                <span class="label">HFR:</span>
+                <span class="value">{{ resultHFR !== null ? (resultHFR | number:'1.2-2':'fr') : '-' }}</span>
+              </div>
+              <div class="result-mini">
+                <span class="label">Pos:</span>
+                <span class="value">{{ resultPos !== null ? (resultPos | number:'1.0-0':'fr') : '-' }}</span>
+              </div>
+            </div>
+          </div>
         </mat-card-content>
-        <mat-card-actions>
-          <button mat-button routerLink="/focus">ACCÉDER</button>
-        </mat-card-actions>
       </mat-card>
     </mat-grid-tile>
 
     <mat-grid-tile>
       <mat-card class="module-card">
-        <mat-card-header>
+        <div class="card-header-custom clickable-header" routerLink="/sequence">
           <mat-icon color="primary">view_list</mat-icon>
-          <mat-card-title>Séquence</mat-card-title>
-        </mat-card-header>
+          <span class="card-title">Séquence</span>
+        </div>
         <mat-card-content>
           Séquenceur d'imagerie avec gestion des filtres
         </mat-card-content>
-        <mat-card-actions>
-          <button mat-button routerLink="/sequence">ACCÉDER</button>
-        </mat-card-actions>
       </mat-card>
     </mat-grid-tile>
 
     <mat-grid-tile>
       <mat-card class="module-card">
-        <mat-card-header>
+        <div class="card-header-custom clickable-header" routerLink="/navigator">
           <mat-icon color="primary">explore</mat-icon>
-          <mat-card-title>Navigateur</mat-card-title>
-        </mat-card-header>
+          <span class="card-title">Navigateur</span>
+        </div>
         <mat-card-content>
           Navigation télescope avec carte du ciel
         </mat-card-content>
-        <mat-card-actions>
-          <button mat-button routerLink="/navigator">ACCÉDER</button>
-        </mat-card-actions>
       </mat-card>
     </mat-grid-tile>
 
     <mat-grid-tile>
       <mat-card class="module-card">
-        <mat-card-header>
+        <div class="card-header-custom clickable-header" routerLink="/guider">
           <mat-icon color="primary">gps_fixed</mat-icon>
-          <mat-card-title>Guidage</mat-card-title>
-        </mat-card-header>
+          <span class="card-title">Guidage</span>
+        </div>
         <mat-card-content>
           Autoguidage avec graphiques de dérive
         </mat-card-content>
-        <mat-card-actions>
-          <button mat-button routerLink="/guider">ACCÉDER</button>
-        </mat-card-actions>
       </mat-card>
     </mat-grid-tile>
 
     <mat-grid-tile>
       <mat-card class="module-card">
-        <mat-card-header>
+        <div class="card-header-custom clickable-header" routerLink="/allsky">
           <mat-icon color="primary">panorama</mat-icon>
-          <mat-card-title>Allsky</mat-card-title>
-        </mat-card-header>
+          <span class="card-title">Allsky</span>
+        </div>
         <mat-card-content>
           Caméra allsky avec keogram et météo
         </mat-card-content>
-        <mat-card-actions>
-          <button mat-button routerLink="/allsky">ACCÉDER</button>
-        </mat-card-actions>
       </mat-card>
     </mat-grid-tile>
   </mat-grid-list>
