@@ -5,13 +5,27 @@
 
   <mat-grid-list cols="3" rowHeight="200px" gutterSize="20px">
     <mat-grid-tile>
-      <mat-card class="module-card">
+      <mat-card class="module-card focus-card">
         <mat-card-header>
           <mat-icon color="primary">filter_center_focus</mat-icon>
           <mat-card-title>Focus</mat-card-title>
         </mat-card-header>
         <mat-card-content>
-          Autofocus automatique avec analyse de courbe V
+          <div class="focus-content">
+            <div class="focus-chart-mini">
+              <canvas #focusChart></canvas>
+            </div>
+            <div class="focus-results-mini">
+              <div class="result-mini">
+                <span class="label">HFR:</span>
+                <span class="value">{{ resultHFR !== null ? (resultHFR | number:'1.2-2':'fr') : '-' }}</span>
+              </div>
+              <div class="result-mini">
+                <span class="label">Pos:</span>
+                <span class="value">{{ resultPos !== null ? (resultPos | number:'1.0-0':'fr') : '-' }}</span>
+              </div>
+            </div>
+          </div>
         </mat-card-content>
         <mat-card-actions>
           <button mat-button routerLink="/focus">ACCÉDER</button>

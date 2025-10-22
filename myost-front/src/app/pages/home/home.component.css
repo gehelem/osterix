@@ -60,3 +60,57 @@ mat-grid-list {
 .status-warning {
   color: #ff9800;
 }
+
+/* Focus card specific styles */
+.focus-card mat-card-content {
+  padding: 0 !important;
+}
+
+.focus-content {
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+  height: 100%;
+}
+
+.focus-chart-mini {
+  flex: 1;
+  min-height: 80px;
+  max-height: 100px;
+  position: relative;
+}
+
+.focus-chart-mini canvas {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.focus-results-mini {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  justify-content: center;
+  min-width: 80px;
+}
+
+.result-mini {
+  display: flex;
+  flex-direction: column;
+  font-size: 11px;
+  padding: 4px 8px;
+  background-color: rgba(76, 175, 80, 0.1);
+  border-radius: 3px;
+  border-left: 3px solid #4caf50;
+}
+
+.result-mini .label {
+  font-size: 9px;
+  color: #666;
+  margin-bottom: 2px;
+}
+
+.result-mini .value {
+  font-size: 13px;
+  font-weight: 500;
+  color: #333;
+}
