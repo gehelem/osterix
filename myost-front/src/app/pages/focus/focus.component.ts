@@ -5,6 +5,7 @@ import { Module, Property, Element, ImageElement } from '../../models/ost.models
 import { Subscription } from 'rxjs';
 import { HistogramDialogComponent } from './histogram-dialog.component';
 import { StatisticsDialogComponent } from './statistics-dialog.component';
+import { ParametersDialogComponent, ParametersDialogData } from './parameters-dialog.component';
 import { Chart, ChartConfiguration } from 'chart.js';
 
 interface FocusHistoryItem {
@@ -50,9 +51,15 @@ export class FocusComponent implements OnInit, OnDestroy, AfterViewInit {
   // Status
   isRunning: boolean = false;
   currentStatus: string = 'Idle';
+  progressValue: number = 0;
 
-  // Sidenav state
-  parametersOpened: boolean = false;
+  // Results
+  resultHFR: number | null = null;
+  resultPos: number | null = null;
+
+  // Zones grid
+  zonesGrid: string[][] = [];
+  zonesHeaders: string[] = [];
 
   // Enabled states for properties
   parametersEnabled: boolean = true;
@@ -79,7 +86,13 @@ export class FocusComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    // Chart will be created when data arrives via updateFromModule
+    // If module data is already loaded (e.g., when navigating back), create the chart now
+    if (this.focusModule) {
+      // Use setTimeout to ensure the view is fully initialized
+      setTimeout(() => {
+        this.updateFocusChart();
+      }, 0);
+    }
   }
 
   ngOnDestroy(): void {
@@ -163,6 +176,41 @@ export class FocusComponent implements OnInit, OnDestroy, AfterViewInit {
       const actions = properties['actions'];
       this.currentStatus = this.getStatusText(actions.status);
       this.isRunning = actions.status === 2; // 2 = Running
+    }
+
+    // Extract progress from 'progress' property
+    if (properties['progress'] && properties['progress'].elements['global']) {
+      this.progressValue = properties['progress'].elements['global'].value || 0;
+    }
+
+    // Extract results from 'results' property
+    if (properties['results']) {
+      const results = properties['results'];
+      console.log('Results property:', results);
+      console.log('Results elements:', results.elements);
+
+      // Try both uppercase and lowercase HFR
+      if (results.elements['HFR']) {
+        this.resultHFR = parseFloat(results.elements['HFR'].value);
+        console.log('HFR found (uppercase):', this.resultHFR);
+      } else if (results.elements['hfr']) {
+        this.resultHFR = parseFloat(results.elements['hfr'].value);
+        console.log('HFR found (lowercase):', this.resultHFR);
+      }
+
+      if (results.elements['pos']) {
+        this.resultPos = parseFloat(results.elements['pos'].value);
+        console.log('Position found:', this.resultPos);
+      }
+    }
+
+    // Extract zones grid from 'zones' property
+    if (properties['zones']) {
+      const zones = properties['zones'];
+      if (zones.grid && zones.gridheaders) {
+        this.zonesGrid = zones.grid;
+        this.zonesHeaders = zones.gridheaders;
+      }
     }
 
     // Extract image URL from 'image' property
@@ -281,10 +329,31 @@ export class FocusComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   /**
-   * Toggle parameters sidenav
+   * Open parameters dialog
    */
-  toggleParameters(): void {
-    this.parametersOpened = !this.parametersOpened;
+  openParametersDialog(): void {
+    const dialogData: ParametersDialogData = {
+      iterations: this.iterations,
+      startpos: this.startpos,
+      steps: this.steps,
+      backlash: this.backlash,
+      aroundinitial: this.aroundinitial,
+      zoning: this.zoning,
+      zoningOptions: this.zoningOptions,
+      parametersEnabled: this.parametersEnabled,
+      exposure: this.exposure,
+      gain: this.gain,
+      offset: this.offset,
+      parmsEnabled: this.parmsEnabled,
+      onParameterChange: (name: string, value: any) => this.onParameterChange(name, value),
+      onParmsChange: (name: string, value: any) => this.onParmsChange(name, value)
+    };
+
+    this.dialog.open(ParametersDialogComponent, {
+      width: '900px',
+      maxWidth: '90vw',
+      data: dialogData
+    });
   }
 
   /**
@@ -315,6 +384,31 @@ export class FocusComponent implements OnInit, OnDestroy, AfterViewInit {
       return imageElement as ImageElement;
     }
     return null;
+  }
+
+  /**
+   * Get zone header label (rename "bestpos" to "position")
+   */
+  getZoneHeaderLabel(header: string): string {
+    if (header === 'bestpos') {
+      return 'position';
+    }
+    return header;
+  }
+
+  /**
+   * Format zone value (truncate numeric values)
+   */
+  formatZoneValue(value: string, columnIndex: number): string {
+    const numValue = parseFloat(value);
+    if (!isNaN(numValue)) {
+      // Format numeric values with French locale (0 decimals, thousands separator)
+      return numValue.toLocaleString('fr-FR', {
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 0
+      });
+    }
+    return value;
   }
 
   /**

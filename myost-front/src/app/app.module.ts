@@ -8,6 +8,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FocusComponent } from './pages/focus/focus.component';
 import { HistogramDialogComponent } from './pages/focus/histogram-dialog.component';
 import { StatisticsDialogComponent } from './pages/focus/statistics-dialog.component';
+import { ParametersDialogComponent } from './pages/focus/parameters-dialog.component';
 import { SequenceComponent } from './pages/sequence/sequence.component';
 import { NavigatorComponent } from './pages/navigator/navigator.component';
 import { GuiderComponent } from './pages/guider/guider.component';
@@ -31,6 +32,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MessagesComponent } from './pages/messages/messages.component';
 
 @NgModule({
@@ -39,6 +41,7 @@ import { MessagesComponent } from './pages/messages/messages.component';
     FocusComponent,
     HistogramDialogComponent,
     StatisticsDialogComponent,
+    ParametersDialogComponent,
     SequenceComponent,
     NavigatorComponent,
     GuiderComponent,
@@ -66,7 +69,8 @@ import { MessagesComponent } from './pages/messages/messages.component';
     MatSnackBarModule,
     MatDialogModule,
     MatTooltipModule,
-    MatSlideToggleModule
+    MatSlideToggleModule,
+    MatProgressBarModule
   ],
   providers: [],
   bootstrap: [AppComponent]
