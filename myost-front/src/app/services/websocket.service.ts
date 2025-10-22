@@ -1,4 +1,5 @@
-import { Injectable } from '@angular/core';
+import { Injectable,Inject } from '@angular/core';
+import { DOCUMENT } from '@angular/common';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import {
   OSTState,
@@ -48,7 +49,8 @@ export class WebsocketService {
   private messageHistorySubject = new BehaviorSubject<HistoryMessage[]>([]);
   public messageHistory$: Observable<HistoryMessage[]> = this.messageHistorySubject.asObservable();
 
-  constructor(private notificationService: NotificationService) {
+  constructor(@Inject(DOCUMENT) public mydocument: Document ,private notificationService: NotificationService) {
+    this.wsUrl='ws://'+this.mydocument.location.hostname+':9624';
     console.log('WebsocketService initialized');
   }
 
