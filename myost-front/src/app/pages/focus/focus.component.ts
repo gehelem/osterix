@@ -5,6 +5,7 @@ import { Module, Property, Element, ImageElement } from '../../models/ost.models
 import { Subscription } from 'rxjs';
 import { HistogramDialogComponent } from './histogram-dialog.component';
 import { StatisticsDialogComponent } from './statistics-dialog.component';
+import { ParametersDialogComponent, ParametersDialogData } from './parameters-dialog.component';
 import { Chart, ChartConfiguration } from 'chart.js';
 
 interface FocusHistoryItem {
@@ -51,9 +52,6 @@ export class FocusComponent implements OnInit, OnDestroy, AfterViewInit {
   isRunning: boolean = false;
   currentStatus: string = 'Idle';
 
-  // Sidenav state
-  parametersOpened: boolean = false;
-
   // Enabled states for properties
   parametersEnabled: boolean = true;
   parmsEnabled: boolean = true;
@@ -79,7 +77,13 @@ export class FocusComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    // Chart will be created when data arrives via updateFromModule
+    // If module data is already loaded (e.g., when navigating back), create the chart now
+    if (this.focusModule) {
+      // Use setTimeout to ensure the view is fully initialized
+      setTimeout(() => {
+        this.updateFocusChart();
+      }, 0);
+    }
   }
 
   ngOnDestroy(): void {
@@ -281,10 +285,31 @@ export class FocusComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   /**
-   * Toggle parameters sidenav
+   * Open parameters dialog
    */
-  toggleParameters(): void {
-    this.parametersOpened = !this.parametersOpened;
+  openParametersDialog(): void {
+    const dialogData: ParametersDialogData = {
+      iterations: this.iterations,
+      startpos: this.startpos,
+      steps: this.steps,
+      backlash: this.backlash,
+      aroundinitial: this.aroundinitial,
+      zoning: this.zoning,
+      zoningOptions: this.zoningOptions,
+      parametersEnabled: this.parametersEnabled,
+      exposure: this.exposure,
+      gain: this.gain,
+      offset: this.offset,
+      parmsEnabled: this.parmsEnabled,
+      onParameterChange: (name: string, value: any) => this.onParameterChange(name, value),
+      onParmsChange: (name: string, value: any) => this.onParmsChange(name, value)
+    };
+
+    this.dialog.open(ParametersDialogComponent, {
+      width: '900px',
+      maxWidth: '90vw',
+      data: dialogData
+    });
   }
 
   /**

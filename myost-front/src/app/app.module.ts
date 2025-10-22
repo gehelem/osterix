@@ -8,6 +8,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FocusComponent } from './pages/focus/focus.component';
 import { HistogramDialogComponent } from './pages/focus/histogram-dialog.component';
 import { StatisticsDialogComponent } from './pages/focus/statistics-dialog.component';
+import { ParametersDialogComponent } from './pages/focus/parameters-dialog.component';
 import { SequenceComponent } from './pages/sequence/sequence.component';
 import { NavigatorComponent } from './pages/navigator/navigator.component';
 import { GuiderComponent } from './pages/guider/guider.component';
@@ -39,6 +40,7 @@ import { MessagesComponent } from './pages/messages/messages.component';
     FocusComponent,
     HistogramDialogComponent,
     StatisticsDialogComponent,
+    ParametersDialogComponent,
     SequenceComponent,
     NavigatorComponent,
     GuiderComponent,
