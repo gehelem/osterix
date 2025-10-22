@@ -42,6 +42,12 @@ export class FocusComponent implements OnInit, OnDestroy, AfterViewInit {
   gain: number = 0;
   offset: number = 0;
 
+  // Devices and optic properties
+  devicesElements: { [key: string]: Element } = {};
+  opticElements: { [key: string]: Element } = {};
+  devicesEnabled: boolean = true;
+  opticEnabled: boolean = true;
+
   // Image URL from backend
   imageUrl: string | null = null;
 
@@ -169,6 +175,20 @@ export class FocusComponent implements OnInit, OnDestroy, AfterViewInit {
       if (parms.elements['offset']) {
         this.offset = parms.elements['offset'].value;
       }
+    }
+
+    // Extract devices property
+    if (properties['devices']) {
+      const devices = properties['devices'];
+      this.devicesEnabled = devices.enabled !== undefined ? devices.enabled : true;
+      this.devicesElements = devices.elements || {};
+    }
+
+    // Extract optic property
+    if (properties['optic']) {
+      const optic = properties['optic'];
+      this.opticEnabled = optic.enabled !== undefined ? optic.enabled : true;
+      this.opticElements = optic.elements || {};
     }
 
     // Extract status from 'actions' property
@@ -329,6 +349,26 @@ export class FocusComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   /**
+   * Update a devices value
+   */
+  onDevicesChange(elementName: string, value: any): void {
+    console.log(`Updating devices ${elementName} to ${value}`);
+    this.wsService.setProperty('Focus', 'devices', {
+      [elementName]: value
+    });
+  }
+
+  /**
+   * Update an optic value
+   */
+  onOpticChange(elementName: string, value: any): void {
+    console.log(`Updating optic ${elementName} to ${value}`);
+    this.wsService.setProperty('Focus', 'optic', {
+      [elementName]: value
+    });
+  }
+
+  /**
    * Open parameters dialog
    */
   openParametersDialog(): void {
@@ -345,13 +385,20 @@ export class FocusComponent implements OnInit, OnDestroy, AfterViewInit {
       gain: this.gain,
       offset: this.offset,
       parmsEnabled: this.parmsEnabled,
+      devicesElements: this.devicesElements,
+      devicesEnabled: this.devicesEnabled,
+      opticElements: this.opticElements,
+      opticEnabled: this.opticEnabled,
+      globallovs: this.focusModule?.globallovs || {},
       onParameterChange: (name: string, value: any) => this.onParameterChange(name, value),
-      onParmsChange: (name: string, value: any) => this.onParmsChange(name, value)
+      onParmsChange: (name: string, value: any) => this.onParmsChange(name, value),
+      onDevicesChange: (name: string, value: any) => this.onDevicesChange(name, value),
+      onOpticChange: (name: string, value: any) => this.onOpticChange(name, value)
     };
 
     this.dialog.open(ParametersDialogComponent, {
-      width: '900px',
-      maxWidth: '90vw',
+      width: '1200px',
+      maxWidth: '95vw',
       data: dialogData
     });
   }

@@ -56,6 +56,7 @@ export interface NumericElement extends Element {
 export interface StringElement extends Element {
   type: 'string';
   listOfValues?: { [key: string]: string };
+  globallov?: string; // Reference to a globallov key
 }
 
 // Image element
