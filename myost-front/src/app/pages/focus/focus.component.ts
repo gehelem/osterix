@@ -1,10 +1,11 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { WebsocketService } from '../../services/websocket.service';
 import { Module, Property, Element, ImageElement } from '../../models/ost.models';
 import { Subscription } from 'rxjs';
 import { HistogramDialogComponent } from './histogram-dialog.component';
 import { StatisticsDialogComponent } from './statistics-dialog.component';
+import { Chart, ChartConfiguration } from 'chart.js';
 
 interface FocusHistoryItem {
   date: string;
@@ -18,7 +19,9 @@ interface FocusHistoryItem {
   templateUrl: './focus.component.html',
   styleUrls: ['./focus.component.css']
 })
-export class FocusComponent implements OnInit, OnDestroy {
+export class FocusComponent implements OnInit, OnDestroy, AfterViewInit {
+  @ViewChild('focusChart') chartCanvasRef?: ElementRef<HTMLCanvasElement>;
+  private focusChart?: Chart;
 
   displayedColumns: string[] = ['date', 'filter', 'hfr', 'position'];
   focusModule: Module | null = null;
@@ -71,8 +74,15 @@ export class FocusComponent implements OnInit, OnDestroy {
     );
   }
 
+  ngAfterViewInit(): void {
+    // Chart will be created when data arrives via updateFromModule
+  }
+
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
+    if (this.focusChart) {
+      this.focusChart.destroy();
+    }
   }
 
   /**
@@ -163,6 +173,9 @@ export class FocusComponent implements OnInit, OnDestroy {
     if (properties['history'] && properties['history'].grid) {
       this.focusHistory = this.parseHistory(properties['history']);
     }
+
+    // Update focus chart
+    this.updateFocusChart();
   }
 
   /**
@@ -317,6 +330,94 @@ export class FocusComponent implements OnInit, OnDestroy {
       height: '600px',
       data: imageData
     });
+  }
+
+  /**
+   * Update focus chart with data from 'values' property grid
+   */
+  private updateFocusChart(): void {
+    if (!this.chartCanvasRef || !this.focusModule) {
+      return;
+    }
+
+    const properties = this.focusModule.properties;
+    if (!properties['values'] || !properties['values'].grid || !properties['values'].gridheaders) {
+      return;
+    }
+
+    const grid = properties['values'].grid;
+    const headers = properties['values'].gridheaders;
+
+    // Find column indices
+    const focposIndex = headers.indexOf('focpos');
+    const hfrIndex = headers.indexOf('loopHFRavg');
+
+    if (focposIndex === -1 || hfrIndex === -1) {
+      return;
+    }
+
+    // Extract data points
+    const dataPoints: Array<{x: number, y: number}> = [];
+    for (const row of grid) {
+      const focpos = parseFloat(row[focposIndex]);
+      const hfr = parseFloat(row[hfrIndex]);
+      if (!isNaN(focpos) && !isNaN(hfr)) {
+        dataPoints.push({ x: focpos, y: hfr });
+      }
+    }
+
+    // Sort by focpos for proper line connection
+    dataPoints.sort((a, b) => a.x - b.x);
+
+    // Destroy existing chart if any
+    if (this.focusChart) {
+      this.focusChart.destroy();
+    }
+
+    // Create new chart
+    const config: ChartConfiguration = {
+      type: 'line',
+      data: {
+        datasets: [{
+          label: 'HFR',
+          data: dataPoints,
+          borderColor: 'rgba(76, 175, 80, 1)',
+          backgroundColor: 'rgba(76, 175, 80, 0.1)',
+          borderWidth: 2,
+          pointRadius: 4,
+          pointHoverRadius: 6,
+          tension: 0.1
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        animation: false,
+        plugins: {
+          legend: {
+            display: false
+          }
+        },
+        scales: {
+          x: {
+            type: 'linear',
+            title: {
+              display: true,
+              text: 'Position Focuser'
+            }
+          },
+          y: {
+            title: {
+              display: true,
+              text: 'HFR'
+            },
+            beginAtZero: false
+          }
+        }
+      }
+    };
+
+    this.focusChart = new Chart(this.chartCanvasRef.nativeElement, config);
   }
 
 }
