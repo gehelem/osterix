@@ -54,6 +54,10 @@ export class FocusComponent implements OnInit, OnDestroy, AfterViewInit {
   // Sidenav state
   parametersOpened: boolean = false;
 
+  // Enabled states for properties
+  parametersEnabled: boolean = true;
+  parmsEnabled: boolean = true;
+
   private subscription = new Subscription();
 
   constructor(
@@ -96,6 +100,9 @@ export class FocusComponent implements OnInit, OnDestroy, AfterViewInit {
     // Extract parameters from 'parameters' property
     if (properties['parameters']) {
       const params = properties['parameters'];
+      // Extract enabled state
+      this.parametersEnabled = params.enabled !== undefined ? params.enabled : true;
+
       if (params.elements['iterations']) {
         this.iterations = params.elements['iterations'].value;
       }
@@ -137,6 +144,9 @@ export class FocusComponent implements OnInit, OnDestroy, AfterViewInit {
     // Extract exposure/gain/offset from 'parms' property
     if (properties['parms']) {
       const parms = properties['parms'];
+      // Extract enabled state
+      this.parmsEnabled = parms.enabled !== undefined ? parms.enabled : true;
+
       if (parms.elements['exposure']) {
         this.exposure = parms.elements['exposure'].value;
       }
@@ -152,6 +162,7 @@ export class FocusComponent implements OnInit, OnDestroy, AfterViewInit {
     if (properties['actions']) {
       const actions = properties['actions'];
       this.currentStatus = this.getStatusText(actions.status);
+      this.isRunning = actions.status === 2; // 2 = Running
     }
 
     // Extract image URL from 'image' property
@@ -248,7 +259,7 @@ export class FocusComponent implements OnInit, OnDestroy, AfterViewInit {
   stopFocus(): void {
     console.log('Stopping focus');
     this.wsService.setProperty('Focus', 'actions', {
-      abort: true
+      abortfocus: true
     });
   }
 

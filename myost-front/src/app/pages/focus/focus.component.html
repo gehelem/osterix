@@ -97,30 +97,35 @@
               <mat-form-field appearance="fill">
                 <mat-label>Itérations</mat-label>
                 <input matInput type="number" [(ngModel)]="iterations" name="iterations"
-                       (ngModelChange)="onParameterChange('iterations', $event)">
+                       (ngModelChange)="onParameterChange('iterations', $event)"
+                       [disabled]="!parametersEnabled">
               </mat-form-field>
 
               <mat-form-field appearance="fill">
                 <mat-label>Position de démarrage</mat-label>
                 <input matInput type="number" [(ngModel)]="startpos" name="startpos"
-                       (ngModelChange)="onParameterChange('startpos', $event)">
+                       (ngModelChange)="onParameterChange('startpos', $event)"
+                       [disabled]="!parametersEnabled">
               </mat-form-field>
 
               <mat-form-field appearance="fill">
                 <mat-label>Intervalle de pas</mat-label>
                 <input matInput type="number" [(ngModel)]="steps" name="steps"
-                       (ngModelChange)="onParameterChange('steps', $event)">
+                       (ngModelChange)="onParameterChange('steps', $event)"
+                       [disabled]="!parametersEnabled">
               </mat-form-field>
 
               <mat-form-field appearance="fill">
                 <mat-label>Backlash</mat-label>
                 <input matInput type="number" [(ngModel)]="backlash" name="backlash"
-                       (ngModelChange)="onParameterChange('backlash', $event)">
+                       (ngModelChange)="onParameterChange('backlash', $event)"
+                       [disabled]="!parametersEnabled">
               </mat-form-field>
 
               <div class="toggle-field">
                 <mat-slide-toggle [(ngModel)]="aroundinitial" name="aroundinitial"
-                                  (ngModelChange)="onParameterChange('aroundinitial', $event)">
+                                  (ngModelChange)="onParameterChange('aroundinitial', $event)"
+                                  [disabled]="!parametersEnabled">
                   Autour de la position initiale
                 </mat-slide-toggle>
               </div>
@@ -128,7 +133,8 @@
               <mat-form-field appearance="fill">
                 <mat-label>Zoning</mat-label>
                 <mat-select [(ngModel)]="zoning" name="zoning"
-                            (ngModelChange)="onParameterChange('zoning', $event)">
+                            (ngModelChange)="onParameterChange('zoning', $event)"
+                            [disabled]="!parametersEnabled">
                   <mat-option *ngFor="let option of zoningOptions" [value]="option.value">
                     {{ option.label }}
                   </mat-option>
@@ -147,19 +153,22 @@
               <mat-form-field appearance="fill">
                 <mat-label>Exposition (s)</mat-label>
                 <input matInput type="number" [(ngModel)]="exposure" name="exposure" step="0.1"
-                       (ngModelChange)="onParmsChange('exposure', $event)">
+                       (ngModelChange)="onParmsChange('exposure', $event)"
+                       [disabled]="!parmsEnabled">
               </mat-form-field>
 
               <mat-form-field appearance="fill">
                 <mat-label>Gain</mat-label>
                 <input matInput type="number" [(ngModel)]="gain" name="gain"
-                       (ngModelChange)="onParmsChange('gain', $event)">
+                       (ngModelChange)="onParmsChange('gain', $event)"
+                       [disabled]="!parmsEnabled">
               </mat-form-field>
 
               <mat-form-field appearance="fill">
                 <mat-label>Offset</mat-label>
                 <input matInput type="number" [(ngModel)]="offset" name="offset"
-                       (ngModelChange)="onParmsChange('offset', $event)">
+                       (ngModelChange)="onParmsChange('offset', $event)"
+                       [disabled]="!parmsEnabled">
               </mat-form-field>
             </form>
           </mat-card-content>
