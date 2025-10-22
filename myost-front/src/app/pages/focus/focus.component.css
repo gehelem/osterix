@@ -205,6 +205,11 @@
   width: 100%;
 }
 
+.toggle-field {
+  margin: 8px 0;
+  padding: 8px 0;
+}
+
 /* Table styles */
 table {
   width: 100%;

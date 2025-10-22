@@ -29,6 +29,9 @@ export class FocusComponent implements OnInit, OnDestroy {
   startpos: number = 32000;
   steps: number = 2000;
   backlash: number = 100;
+  aroundinitial: boolean = false;
+  zoning: number = 0;
+  zoningOptions: Array<{value: number, label: string}> = [];
 
   // Parameters from backend - 'parms' property
   exposure: number = 10;
@@ -94,6 +97,30 @@ export class FocusComponent implements OnInit, OnDestroy {
       }
       if (params.elements['backlash']) {
         this.backlash = params.elements['backlash'].value;
+      }
+      if (params.elements['aroundinitial']) {
+        this.aroundinitial = params.elements['aroundinitial'].value;
+      }
+      if (params.elements['zoning']) {
+        this.zoning = params.elements['zoning'].value;
+        // Extract zoning options from listOfValues
+        const zoningElement = params.elements['zoning'];
+        if (zoningElement && (zoningElement as any).listOfValues) {
+          const lovs = (zoningElement as any).listOfValues;
+          // listOfValues can be an object {key: label} or an array [{value, label}]
+          if (Array.isArray(lovs)) {
+            this.zoningOptions = lovs.map((item: any) => ({
+              value: item.value,
+              label: item.label
+            }));
+          } else {
+            // If it's an object, convert to array
+            this.zoningOptions = Object.keys(lovs).map((key: string) => ({
+              value: parseInt(key),
+              label: lovs[key]
+            }));
+          }
+        }
       }
     }
 
@@ -291,4 +318,5 @@ export class FocusComponent implements OnInit, OnDestroy {
       data: imageData
     });
   }
+
 }

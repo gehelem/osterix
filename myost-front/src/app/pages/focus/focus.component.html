@@ -117,6 +117,23 @@
                 <input matInput type="number" [(ngModel)]="backlash" name="backlash"
                        (ngModelChange)="onParameterChange('backlash', $event)">
               </mat-form-field>
+
+              <div class="toggle-field">
+                <mat-slide-toggle [(ngModel)]="aroundinitial" name="aroundinitial"
+                                  (ngModelChange)="onParameterChange('aroundinitial', $event)">
+                  Autour de la position initiale
+                </mat-slide-toggle>
+              </div>
+
+              <mat-form-field appearance="fill">
+                <mat-label>Zoning</mat-label>
+                <mat-select [(ngModel)]="zoning" name="zoning"
+                            (ngModelChange)="onParameterChange('zoning', $event)">
+                  <mat-option *ngFor="let option of zoningOptions" [value]="option.value">
+                    {{ option.label }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
             </form>
           </mat-card-content>
         </mat-card>
