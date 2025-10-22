@@ -65,11 +65,44 @@
             </mat-card-content>
           </mat-card>
 
-          <!-- Card 4: Vide pour l'instant -->
+          <!-- Card 4: Résultats et zonage -->
           <mat-card>
             <mat-card-content>
-              <div class="empty-card">
-                <!-- Contenu à venir -->
+              <div class="results-zones-container">
+                <!-- Résultats numériques -->
+                <div class="results-section">
+                  <div class="results-grid">
+                    <div class="result-item">
+                      <span class="result-label">HFR:</span>
+                      <span class="result-value">{{ resultHFR !== null ? (resultHFR | number:'1.2-2':'fr') : '-' }}</span>
+                    </div>
+                    <div class="result-item">
+                      <span class="result-label">Position:</span>
+                      <span class="result-value">{{ resultPos !== null ? (resultPos | number:'1.0-2':'fr') : '-' }}</span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Tableau du zonage -->
+                <div class="zones-section" *ngIf="zonesGrid.length > 0">
+                  <div class="zones-table-container">
+                    <table mat-table [dataSource]="zonesGrid" class="zones-table">
+                      <!-- Colonnes dynamiques basées sur zonesHeaders -->
+                      <ng-container *ngFor="let header of zonesHeaders; let i = index" [matColumnDef]="header">
+                        <th mat-header-cell *matHeaderCellDef>{{ getZoneHeaderLabel(header) }}</th>
+                        <td mat-cell *matCellDef="let row">{{ formatZoneValue(row[i], i) }}</td>
+                      </ng-container>
+
+                      <tr mat-header-row *matHeaderRowDef="zonesHeaders"></tr>
+                      <tr mat-row *matRowDef="let row; columns: zonesHeaders"></tr>
+                    </table>
+                  </div>
+                </div>
+
+                <!-- Message si pas de données -->
+                <div *ngIf="zonesGrid.length === 0" class="no-data-message">
+                  <p>Aucune donnée de zonage disponible</p>
+                </div>
               </div>
             </mat-card-content>
           </mat-card>

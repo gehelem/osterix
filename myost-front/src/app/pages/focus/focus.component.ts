@@ -53,6 +53,14 @@ export class FocusComponent implements OnInit, OnDestroy, AfterViewInit {
   currentStatus: string = 'Idle';
   progressValue: number = 0;
 
+  // Results
+  resultHFR: number | null = null;
+  resultPos: number | null = null;
+
+  // Zones grid
+  zonesGrid: string[][] = [];
+  zonesHeaders: string[] = [];
+
   // Enabled states for properties
   parametersEnabled: boolean = true;
   parmsEnabled: boolean = true;
@@ -173,6 +181,36 @@ export class FocusComponent implements OnInit, OnDestroy, AfterViewInit {
     // Extract progress from 'progress' property
     if (properties['progress'] && properties['progress'].elements['global']) {
       this.progressValue = properties['progress'].elements['global'].value || 0;
+    }
+
+    // Extract results from 'results' property
+    if (properties['results']) {
+      const results = properties['results'];
+      console.log('Results property:', results);
+      console.log('Results elements:', results.elements);
+
+      // Try both uppercase and lowercase HFR
+      if (results.elements['HFR']) {
+        this.resultHFR = parseFloat(results.elements['HFR'].value);
+        console.log('HFR found (uppercase):', this.resultHFR);
+      } else if (results.elements['hfr']) {
+        this.resultHFR = parseFloat(results.elements['hfr'].value);
+        console.log('HFR found (lowercase):', this.resultHFR);
+      }
+
+      if (results.elements['pos']) {
+        this.resultPos = parseFloat(results.elements['pos'].value);
+        console.log('Position found:', this.resultPos);
+      }
+    }
+
+    // Extract zones grid from 'zones' property
+    if (properties['zones']) {
+      const zones = properties['zones'];
+      if (zones.grid && zones.gridheaders) {
+        this.zonesGrid = zones.grid;
+        this.zonesHeaders = zones.gridheaders;
+      }
     }
 
     // Extract image URL from 'image' property
@@ -346,6 +384,31 @@ export class FocusComponent implements OnInit, OnDestroy, AfterViewInit {
       return imageElement as ImageElement;
     }
     return null;
+  }
+
+  /**
+   * Get zone header label (rename "bestpos" to "position")
+   */
+  getZoneHeaderLabel(header: string): string {
+    if (header === 'bestpos') {
+      return 'position';
+    }
+    return header;
+  }
+
+  /**
+   * Format zone value (truncate numeric values)
+   */
+  formatZoneValue(value: string, columnIndex: number): string {
+    const numValue = parseFloat(value);
+    if (!isNaN(numValue)) {
+      // Format numeric values with French locale (0 decimals, thousands separator)
+      return numValue.toLocaleString('fr-FR', {
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 0
+      });
+    }
+    return value;
   }
 
   /**
