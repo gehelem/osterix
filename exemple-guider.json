@@ -1,0 +1,2086 @@
+{
+    "evt": "moduledump",
+    "modules": {
+        "Guider": {
+            "errors": {},
+            "globallovs": {
+                "DRIVER_INTERFACE-AUX_INTERFACE": {
+                    "label": "DRIVER_INTERFACE-AUX_INTERFACE",
+                    "type": "string",
+                    "values": {
+                        "Light Panel Simulator": "Light Panel Simulator"
+                    }
+                },
+                "DRIVER_INTERFACE-CCD_INTERFACE": {
+                    "label": "DRIVER_INTERFACE-CCD_INTERFACE",
+                    "type": "string",
+                    "values": {
+                        "CCD Simulator": "CCD Simulator",
+                        "Guide Simulator": "Guide Simulator"
+                    }
+                },
+                "DRIVER_INTERFACE-FILTER_INTERFACE": {
+                    "label": "DRIVER_INTERFACE-FILTER_INTERFACE",
+                    "type": "string",
+                    "values": {
+                        "CCD Simulator": "CCD Simulator",
+                        "Filter Simulator": "Filter Simulator"
+                    }
+                },
+                "DRIVER_INTERFACE-FOCUSER_INTERFACE": {
+                    "label": "DRIVER_INTERFACE-FOCUSER_INTERFACE",
+                    "type": "string",
+                    "values": {
+                        "Focuser Simulator": "Focuser Simulator"
+                    }
+                },
+                "DRIVER_INTERFACE-GENERAL_INTERFACE": {
+                    "label": "DRIVER_INTERFACE-GENERAL_INTERFACE",
+                    "type": "string",
+                    "values": {
+                        "Arduino": "Arduino",
+                        "CCD Simulator": "CCD Simulator",
+                        "Dome Simulator": "Dome Simulator",
+                        "Filter Simulator": "Filter Simulator",
+                        "Focuser Simulator": "Focuser Simulator",
+                        "GPS Simulator": "GPS Simulator",
+                        "Guide Simulator": "Guide Simulator",
+                        "Light Panel Simulator": "Light Panel Simulator",
+                        "Receiver Simulator": "Receiver Simulator",
+                        "Rotator Simulator": "Rotator Simulator",
+                        "SQM Simulator": "SQM Simulator",
+                        "Telescope Simulator": "Telescope Simulator",
+                        "Weather Simulator": "Weather Simulator"
+                    }
+                },
+                "DRIVER_INTERFACE-GPS_INTERFACE": {
+                    "label": "DRIVER_INTERFACE-GPS_INTERFACE",
+                    "type": "string",
+                    "values": {
+                        "GPS Simulator": "GPS Simulator"
+                    }
+                },
+                "DRIVER_INTERFACE-GUIDER_INTERFACE": {
+                    "label": "DRIVER_INTERFACE-GUIDER_INTERFACE",
+                    "type": "string",
+                    "values": {
+                        "CCD Simulator": "CCD Simulator",
+                        "Guide Simulator": "Guide Simulator",
+                        "Telescope Simulator": "Telescope Simulator"
+                    }
+                },
+                "DRIVER_INTERFACE-TELESCOPE_INTERFACE": {
+                    "label": "DRIVER_INTERFACE-TELESCOPE_INTERFACE",
+                    "type": "string",
+                    "values": {
+                        "Telescope Simulator": "Telescope Simulator"
+                    }
+                },
+                "DRIVER_INTERFACE-WEATHER_INTERFACE": {
+                    "label": "DRIVER_INTERFACE-WEATHER_INTERFACE",
+                    "type": "string",
+                    "values": {
+                        "Weather Simulator": "Weather Simulator"
+                    }
+                },
+                "loadedModules": {
+                    "label": "Loaded modules",
+                    "type": "string",
+                    "values": {
+                        "Allsky": "Allsky",
+                        "Focus": "Focus",
+                        "Guider": "Guider",
+                        "Sequencer": "Sequencer"
+                    }
+                }
+            },
+            "help": "No help content available",
+            "infos": {
+                "description": "Guider module - work in progress",
+                "label": "Guider",
+                "name": "Guider"
+            },
+            "messages": {
+                "0": {
+                    "datetime": "2025-10-22T19:50:13.999",
+                    "message": "Starting guiding session..."
+                },
+                "1": {
+                    "datetime": "2025-10-22T19:50:13.999",
+                    "message": "Current DEC: 67.8°"
+                },
+                "2": {
+                    "datetime": "2025-10-22T19:50:13.999",
+                    "message": "RA compensation factor: 0.379"
+                },
+                "3": {
+                    "datetime": "2025-10-22T19:50:13.999",
+                    "message": "Adjusted calibration: W=57.91 E=57.53 N=147.00 S=144.00 ms/px"
+                },
+                "4": {
+                    "datetime": "2025-10-22T19:50:46.068",
+                    "message": "Guiding stopped"
+                }
+            },
+            "properties": {
+                "actions": {
+                    "badge": false,
+                    "elements": {
+                        "abortguider": {
+                            "autoupdate": false,
+                            "badge": false,
+                            "directedit": false,
+                            "hint": "",
+                            "label": "Annuler (guidage)",
+                            "order": "guid99",
+                            "type": "bool",
+                            "value": false
+                        },
+                        "calibrate": {
+                            "autoupdate": false,
+                            "badge": false,
+                            "directedit": false,
+                            "hint": "",
+                            "label": "Calibrer",
+                            "order": "guid00",
+                            "type": "bool",
+                            "value": false
+                        },
+                        "guide": {
+                            "autoupdate": false,
+                            "badge": false,
+                            "directedit": false,
+                            "hint": "",
+                            "label": "Guide",
+                            "order": "guid50",
+                            "type": "bool",
+                            "value": false
+                        },
+                        "resetcalibration": {
+                            "autoupdate": false,
+                            "badge": false,
+                            "directedit": false,
+                            "hint": "",
+                            "label": "[Reset calibration]",
+                            "order": "guid10",
+                            "type": "bool",
+                            "value": false
+                        }
+                    },
+                    "enabled": true,
+                    "freevalue": "",
+                    "gridheaders": [
+                        "abortguider",
+                        "calibrate",
+                        "guide",
+                        "resetcalibration"
+                    ],
+                    "hasGraph": false,
+                    "hasGrid": false,
+                    "hasprofile": false,
+                    "label": "Actions",
+                    "level1": "Contrôle",
+                    "level2": "",
+                    "order": "000Control111",
+                    "permission": 2,
+                    "posticon1": "",
+                    "posticon2": "",
+                    "preicon1": "",
+                    "preicon2": "",
+                    "rule": 1,
+                    "showElts": true,
+                    "status": 1
+                },
+                "baseGit": {
+                    "badge": false,
+                    "elements": {
+                        "date": {
+                            "autoupdate": false,
+                            "badge": false,
+                            "directedit": false,
+                            "hint": "",
+                            "label": "Date",
+                            "order": "01",
+                            "type": "string",
+                            "value": "Sun Oct 19 14:04:48 2025"
+                        },
+                        "hash": {
+                            "autoupdate": false,
+                            "badge": false,
+                            "directedit": false,
+                            "hint": "",
+                            "label": "Hash",
+                            "order": "00",
+                            "type": "string",
+                            "value": "8159fcabaaf3f1dffa80788bceb6e6322b59c118-dirty"
+                        },
+                        "message": {
+                            "autoupdate": false,
+                            "badge": false,
+                            "directedit": false,
+                            "hint": "",
+                            "label": "Message de commit",
+                            "order": "02",
+                            "type": "string",
+                            "value": "Merge branch 'main' into translations"
+                        }
+                    },
+                    "enabled": true,
+                    "freevalue": "",
+                    "gridheaders": [
+                        "date",
+                        "hash",
+                        "message"
+                    ],
+                    "hasGraph": false,
+                    "hasGrid": false,
+                    "hasprofile": false,
+                    "label": "Git module de base",
+                    "level1": "Module",
+                    "level2": "Info",
+                    "order": "00",
+                    "permission": 0,
+                    "posticon1": "",
+                    "posticon2": "",
+                    "preicon1": "",
+                    "preicon2": "",
+                    "rule": 2,
+                    "showElts": true,
+                    "status": 0
+                },
+                "calParams": {
+                    "badge": false,
+                    "elements": {
+                        "calsteps": {
+                            "autoupdate": true,
+                            "badge": false,
+                            "directedit": true,
+                            "format": "99",
+                            "hint": "",
+                            "label": "Itérations par axe",
+                            "max": 0,
+                            "min": 0,
+                            "order": "02",
+                            "slider": 0,
+                            "step": 0,
+                            "type": "int",
+                            "value": 4
+                        },
+                        "pulse": {
+                            "autoupdate": true,
+                            "badge": false,
+                            "directedit": true,
+                            "format": "99",
+                            "hint": "",
+                            "label": "Calibration pulse (ms)",
+                            "max": 0,
+                            "min": 0,
+                            "order": "01",
+                            "slider": 0,
+                            "step": 0,
+                            "type": "int",
+                            "value": 1000
+                        }
+                    },
+                    "enabled": true,
+                    "freevalue": "",
+                    "gridheaders": [
+                        "calsteps",
+                        "pulse"
+                    ],
+                    "hasGraph": false,
+                    "hasGrid": false,
+                    "hasprofile": true,
+                    "label": "Paramètres de calibration",
+                    "level1": "Paramètres",
+                    "level2": "",
+                    "order": "Parameters100",
+                    "permission": 2,
+                    "posticon1": "",
+                    "posticon2": "",
+                    "preicon1": "",
+                    "preicon2": "",
+                    "rule": 2,
+                    "showElts": true,
+                    "status": 0
+                },
+                "calibrationvalues": {
+                    "badge": false,
+                    "elements": {
+                        "calPulseE": {
+                            "autoupdate": false,
+                            "badge": false,
+                            "directedit": false,
+                            "format": "99.99",
+                            "hint": "",
+                            "label": "Calibration Pulse E",
+                            "max": 0,
+                            "min": 0,
+                            "order": "03",
+                            "slider": 0,
+                            "step": 0,
+                            "type": "int",
+                            "value": 152
+                        },
+                        "calPulseN": {
+                            "autoupdate": false,
+                            "badge": false,
+                            "directedit": false,
+                            "format": "99.99",
+                            "hint": "",
+                            "label": "Calibration Pulse N",
+                            "max": 0,
+                            "min": 0,
+                            "order": "01",
+                            "slider": 0,
+                            "step": 0,
+                            "type": "int",
+                            "value": 147
+                        },
+                        "calPulseS": {
+                            "autoupdate": false,
+                            "badge": false,
+                            "directedit": false,
+                            "format": "99.99",
+                            "hint": "",
+                            "label": "Calibration Pulse S",
+                            "max": 0,
+                            "min": 0,
+                            "order": "02",
+                            "slider": 0,
+                            "step": 0,
+                            "type": "int",
+                            "value": 144
+                        },
+                        "calPulseW": {
+                            "autoupdate": false,
+                            "badge": false,
+                            "directedit": false,
+                            "format": "99.99",
+                            "hint": "",
+                            "label": "Calibration Pulse W",
+                            "max": 0,
+                            "min": 0,
+                            "order": "04",
+                            "slider": 0,
+                            "step": 0,
+                            "type": "int",
+                            "value": 153
+                        }
+                    },
+                    "enabled": true,
+                    "freevalue": "",
+                    "gridheaders": [
+                        "calPulseE",
+                        "calPulseN",
+                        "calPulseS",
+                        "calPulseW"
+                    ],
+                    "hasGraph": false,
+                    "hasGrid": false,
+                    "hasprofile": true,
+                    "label": "Valeurs de calibration",
+                    "level1": "Contrôle",
+                    "level2": "",
+                    "order": "Control850",
+                    "permission": 0,
+                    "posticon1": "",
+                    "posticon2": "",
+                    "preicon1": "",
+                    "preicon2": "",
+                    "rule": 2,
+                    "showElts": true,
+                    "status": 0
+                },
+                "devices": {
+                    "badge": false,
+                    "elements": {
+                        "camera": {
+                            "autoupdate": true,
+                            "badge": false,
+                            "directedit": true,
+                            "globallov": "DRIVER_INTERFACE-CCD_INTERFACE",
+                            "hint": "",
+                            "label": "Caméra",
+                            "order": "Camera",
+                            "type": "string",
+                            "value": "Guide Simulator"
+                        },
+                        "guider": {
+                            "autoupdate": true,
+                            "badge": false,
+                            "directedit": true,
+                            "globallov": "DRIVER_INTERFACE-GUIDER_INTERFACE",
+                            "hint": "",
+                            "label": "Guider avec",
+                            "order": "Guide via",
+                            "type": "string",
+                            "value": "Telescope Simulator"
+                        }
+                    },
+                    "enabled": true,
+                    "freevalue": "",
+                    "gridheaders": [
+                        "camera",
+                        "guider"
+                    ],
+                    "hasGraph": false,
+                    "hasGrid": false,
+                    "hasprofile": true,
+                    "label": "Appareils",
+                    "level1": "Paramètres",
+                    "level2": "",
+                    "order": "222Parms222",
+                    "permission": 2,
+                    "posticon1": "",
+                    "posticon2": "",
+                    "preicon1": "",
+                    "preicon2": "",
+                    "rule": 2,
+                    "showElts": true,
+                    "status": 0
+                },
+                "devicesactions": {
+                    "badge": false,
+                    "elements": {
+                        "condevs": {
+                            "autoupdate": false,
+                            "badge": false,
+                            "directedit": false,
+                            "hint": "",
+                            "label": "Connecter",
+                            "order": "01",
+                            "type": "bool",
+                            "value": false
+                        },
+                        "discondevs": {
+                            "autoupdate": false,
+                            "badge": false,
+                            "directedit": false,
+                            "hint": "",
+                            "label": "Déconnecter",
+                            "order": "02",
+                            "type": "bool",
+                            "value": false
+                        },
+                        "loadconfs": {
+                            "autoupdate": false,
+                            "badge": false,
+                            "directedit": false,
+                            "hint": "",
+                            "label": "Charger la configuration des appareils",
+                            "order": "03",
+                            "type": "bool",
+                            "value": false
+                        }
+                    },
+                    "enabled": true,
+                    "freevalue": "",
+                    "gridheaders": [
+                        "condevs",
+                        "discondevs",
+                        "loadconfs"
+                    ],
+                    "hasGraph": false,
+                    "hasGrid": false,
+                    "hasprofile": false,
+                    "label": "Actions sur les appareils",
+                    "level1": "Module",
+                    "level2": "Indi",
+                    "order": "04",
+                    "permission": 2,
+                    "posticon1": "",
+                    "posticon2": "",
+                    "preicon1": "",
+                    "preicon2": "",
+                    "rule": 2,
+                    "showElts": true,
+                    "status": 0
+                },
+                "disCorrections": {
+                    "badge": false,
+                    "elements": {
+                        "disDE+": {
+                            "autoupdate": true,
+                            "badge": false,
+                            "directedit": false,
+                            "hint": "",
+                            "label": "DE+",
+                            "order": "03",
+                            "type": "bool",
+                            "value": false
+                        },
+                        "disDE-": {
+                            "autoupdate": true,
+                            "badge": false,
+                            "directedit": false,
+                            "hint": "",
+                            "label": "DE-",
+                            "order": "04",
+                            "type": "bool",
+                            "value": false
+                        },
+                        "disRA+": {
+                            "autoupdate": true,
+                            "badge": false,
+                            "directedit": false,
+                            "hint": "",
+                            "label": "AD+",
+                            "order": "01",
+                            "type": "bool",
+                            "value": false
+                        },
+                        "disRA-": {
+                            "autoupdate": true,
+                            "badge": false,
+                            "directedit": false,
+                            "hint": "",
+                            "label": "AD-",
+                            "order": "02",
+                            "type": "bool",
+                            "value": false
+                        }
+                    },
+                    "enabled": true,
+                    "freevalue": "",
+                    "gridheaders": [
+                        "disDE+",
+                        "disDE-",
+                        "disRA+",
+                        "disRA-"
+                    ],
+                    "hasGraph": false,
+                    "hasGrid": false,
+                    "hasprofile": true,
+                    "label": "Désactiver les corrections",
+                    "level1": "Paramètres",
+                    "level2": "",
+                    "order": "Parameters400",
+                    "permission": 2,
+                    "posticon1": "",
+                    "posticon2": "",
+                    "preicon1": "",
+                    "preicon2": "",
+                    "rule": 2,
+                    "showElts": true,
+                    "status": 0
+                },
+                "drift": {
+                    "badge": false,
+                    "elements": {
+                        "DEC": {
+                            "autoupdate": false,
+                            "badge": false,
+                            "directedit": false,
+                            "format": "99.99",
+                            "hint": "",
+                            "label": "DEC",
+                            "max": 0,
+                            "min": 0,
+                            "order": "02",
+                            "slider": 0,
+                            "step": 0,
+                            "type": "float",
+                            "value": 0.8445626730688326
+                        },
+                        "RA": {
+                            "autoupdate": false,
+                            "badge": false,
+                            "directedit": false,
+                            "format": "99.99",
+                            "hint": "",
+                            "label": "AD",
+                            "max": 0,
+                            "min": 0,
+                            "order": "01",
+                            "slider": 0,
+                            "step": 0,
+                            "type": "float",
+                            "value": 14.45649351180991
+                        }
+                    },
+                    "enabled": true,
+                    "freevalue": "",
+                    "graphParams": {
+                        "X": "RA",
+                        "Xmax": 5,
+                        "Xmin": -5,
+                        "Y": "DEC",
+                        "Ymax": 5,
+                        "Ymin": -5
+                    },
+                    "graphType": "XY",
+                    "grid": [
+                        [
+                            0.4707098750101328,
+                            1.049684350443966
+                        ],
+                        [
+                            0.8498793585479558,
+                            -0.5117848626914132
+                        ],
+                        [
+                            1.1022925940243848,
+                            -1.5641194730760704
+                        ],
+                        [
+                            1.0807169095732942,
+                            -2.953638815399981
+                        ],
+                        [
+                            0.5639314886474623,
+                            -4.892286449284802
+                        ],
+                        [
+                            -0.5825039642738592,
+                            -6.181471314965529
+                        ],
+                        [
+                            -1.842820664744968,
+                            -4.890174144513367
+                        ],
+                        [
+                            -3.0197516197151257,
+                            -1.883783391330828
+                        ],
+                        [
+                            -3.3163352554772345,
+                            3.9366655210123604
+                        ],
+                        [
+                            -2.2326630351466257,
+                            10.4669613970162
+                        ],
+                        [
+                            0.8445626730688326,
+                            14.45649351180991
+                        ]
+                    ],
+                    "gridLimit": 200,
+                    "gridheaders": [
+                        "DEC",
+                        "RA"
+                    ],
+                    "hasGraph": true,
+                    "hasGrid": true,
+                    "hasprofile": false,
+                    "label": "Dérive",
+                    "level1": "Contrôle",
+                    "level2": "",
+                    "order": "Control350",
+                    "permission": 0,
+                    "posticon1": "",
+                    "posticon2": "",
+                    "preicon1": "",
+                    "preicon2": "",
+                    "rule": 2,
+                    "showElts": false,
+                    "showGrid": false,
+                    "status": 0
+                },
+                "guideParams": {
+                    "badge": false,
+                    "elements": {
+                        "deAgr": {
+                            "autoupdate": true,
+                            "badge": false,
+                            "directedit": true,
+                            "format": "99",
+                            "hint": "",
+                            "label": "Agressivité DEC",
+                            "max": 0,
+                            "min": 0,
+                            "order": "04",
+                            "slider": 0,
+                            "step": 0,
+                            "type": "float",
+                            "value": 0.8
+                        },
+                        "pulsemax": {
+                            "autoupdate": true,
+                            "badge": false,
+                            "directedit": true,
+                            "format": "99",
+                            "hint": "",
+                            "label": "Pulse max (ms)",
+                            "max": 0,
+                            "min": 0,
+                            "order": "02",
+                            "slider": 0,
+                            "step": 0,
+                            "type": "int",
+                            "value": 2000
+                        },
+                        "pulsemin": {
+                            "autoupdate": true,
+                            "badge": false,
+                            "directedit": true,
+                            "format": "99",
+                            "hint": "",
+                            "label": "Pulse min (ms)",
+                            "max": 0,
+                            "min": 0,
+                            "order": "01",
+                            "slider": 0,
+                            "step": 0,
+                            "type": "int",
+                            "value": 20
+                        },
+                        "raAgr": {
+                            "autoupdate": true,
+                            "badge": false,
+                            "directedit": true,
+                            "format": "99.99",
+                            "hint": "",
+                            "label": "Agressivité AD",
+                            "max": 0,
+                            "min": 0,
+                            "order": "03",
+                            "slider": 0,
+                            "step": 0,
+                            "type": "float",
+                            "value": 0.8
+                        },
+                        "rmsOver": {
+                            "autoupdate": true,
+                            "badge": false,
+                            "directedit": true,
+                            "format": "99",
+                            "hint": "Nombre de valeurs pour le calcul du RMS de la dérive",
+                            "label": "Nombre de valeurs pour le calcul du RMS de la dérive",
+                            "max": 0,
+                            "min": 0,
+                            "order": "05",
+                            "slider": 0,
+                            "step": 0,
+                            "type": "int",
+                            "value": 10
+                        }
+                    },
+                    "enabled": true,
+                    "freevalue": "",
+                    "gridheaders": [
+                        "deAgr",
+                        "pulsemax",
+                        "pulsemin",
+                        "raAgr",
+                        "rmsOver"
+                    ],
+                    "hasGraph": false,
+                    "hasGrid": false,
+                    "hasprofile": true,
+                    "label": "Paramètres de guidage",
+                    "level1": "Paramètres",
+                    "level2": "",
+                    "order": "Parameters200",
+                    "permission": 2,
+                    "posticon1": "",
+                    "posticon2": "",
+                    "preicon1": "",
+                    "preicon2": "",
+                    "rule": 2,
+                    "showElts": true,
+                    "status": 0
+                },
+                "guiding": {
+                    "badge": false,
+                    "elements": {
+                        "DE": {
+                            "autoupdate": false,
+                            "badge": false,
+                            "directedit": false,
+                            "format": "99.99",
+                            "hint": "",
+                            "label": "Dérive (DE)",
+                            "max": 0,
+                            "min": 0,
+                            "order": "03",
+                            "slider": 0,
+                            "step": 0,
+                            "type": "float",
+                            "value": 0.8445626730688326
+                        },
+                        "RA": {
+                            "autoupdate": false,
+                            "badge": false,
+                            "directedit": false,
+                            "format": "99.99",
+                            "hint": "",
+                            "label": "Dérive (AD)",
+                            "max": 0,
+                            "min": 0,
+                            "order": "02",
+                            "slider": 0,
+                            "step": 0,
+                            "type": "float",
+                            "value": 14.45649351180991
+                        },
+                        "RMS": {
+                            "autoupdate": false,
+                            "badge": false,
+                            "directedit": false,
+                            "format": "",
+                            "hint": "",
+                            "label": "RMS",
+                            "max": 0,
+                            "min": 0,
+                            "order": "7",
+                            "slider": 0,
+                            "step": 0,
+                            "type": "float",
+                            "value": 6.8414790379657795
+                        },
+                        "SNR": {
+                            "autoupdate": false,
+                            "badge": false,
+                            "directedit": false,
+                            "format": "",
+                            "hint": "",
+                            "label": "RSB",
+                            "max": 0,
+                            "min": 0,
+                            "order": "6",
+                            "slider": 0,
+                            "step": 0,
+                            "type": "float",
+                            "value": 4.600870688416179
+                        },
+                        "pDE": {
+                            "autoupdate": false,
+                            "badge": false,
+                            "directedit": false,
+                            "format": "99.99",
+                            "hint": "",
+                            "label": "Pusle (DE)",
+                            "max": 0,
+                            "min": 0,
+                            "order": "05",
+                            "slider": 0,
+                            "step": 0,
+                            "type": "float",
+                            "value": 120
+                        },
+                        "pRA": {
+                            "autoupdate": false,
+                            "badge": false,
+                            "directedit": false,
+                            "format": "99.99",
+                            "hint": "",
+                            "label": "Pulse (RA)",
+                            "max": 0,
+                            "min": 0,
+                            "order": "04",
+                            "slider": 0,
+                            "step": 0,
+                            "type": "float",
+                            "value": 807
+                        },
+                        "time": {
+                            "autoupdate": false,
+                            "badge": false,
+                            "directedit": false,
+                            "format": "",
+                            "hint": "",
+                            "label": "heure",
+                            "max": 0,
+                            "min": 0,
+                            "order": "01",
+                            "slider": 0,
+                            "step": 0,
+                            "type": "float",
+                            "value": 1761155442932
+                        }
+                    },
+                    "enabled": true,
+                    "freevalue": "",
+                    "graphParams": {
+                        "D": "time",
+                        "DE": "DE",
+                        "RA": "RA",
+                        "RMS": "RMS",
+                        "RSB": "SNR",
+                        "pDE": "pDE",
+                        "pRA": "pRA"
+                    },
+                    "graphType": "PHD",
+                    "grid": [
+                        [
+                            0.4707098750101328,
+                            1.049684350443966,
+                            1.1503934205301356,
+                            4.612401023578216,
+                            67,
+                            58,
+                            1761155416265
+                        ],
+                        [
+                            0.8498793585479558,
+                            -0.5117848626914132,
+                            1.0741563414524393,
+                            4.614800869105095,
+                            121,
+                            -28,
+                            1761155418686
+                        ],
+                        [
+                            1.1022925940243848,
+                            -1.5641194730760704,
+                            1.4105722692890463,
+                            4.61572236695962,
+                            157,
+                            -87,
+                            1761155421108
+                        ],
+                        [
+                            1.0807169095732942,
+                            -2.953638815399981,
+                            1.9912981740021258,
+                            4.620822963778143,
+                            154,
+                            -166,
+                            1761155423677
+                        ],
+                        [
+                            0.5639314886474623,
+                            -4.892286449284802,
+                            2.8324391995903686,
+                            4.621945338239061,
+                            80,
+                            -275,
+                            1761155426156
+                        ],
+                        [
+                            -0.5825039642738592,
+                            -6.181471314965529,
+                            3.6208529746229936,
+                            4.623996039469372,
+                            -81,
+                            -347,
+                            1761155428899
+                        ],
+                        [
+                            -1.842820664744968,
+                            -4.890174144513367,
+                            3.890891354893507,
+                            4.626077706154687,
+                            -257,
+                            -274,
+                            1761155431664
+                        ],
+                        [
+                            -3.0197516197151257,
+                            -1.883783391330828,
+                            3.850986699199979,
+                            4.621467522107773,
+                            -422,
+                            -105,
+                            1761155434440
+                        ],
+                        [
+                            -3.3163352554772345,
+                            3.9366655210123604,
+                            4.015749596697289,
+                            4.615329131297034,
+                            -463,
+                            219,
+                            1761155437164
+                        ],
+                        [
+                            -2.2326630351466257,
+                            10.4669613970162,
+                            5.095863700350584,
+                            4.606850816987838,
+                            -312,
+                            584,
+                            1761155439904
+                        ],
+                        [
+                            0.8445626730688326,
+                            14.45649351180991,
+                            6.8414790379657795,
+                            4.600870688416179,
+                            120,
+                            807,
+                            1761155442932
+                        ]
+                    ],
+                    "gridLimit": 20,
+                    "gridheaders": [
+                        "DE",
+                        "RA",
+                        "RMS",
+                        "SNR",
+                        "pDE",
+                        "pRA",
+                        "time"
+                    ],
+                    "hasGraph": true,
+                    "hasGrid": true,
+                    "hasprofile": false,
+                    "label": "Graphique de guidage",
+                    "level1": "Contrôle",
+                    "level2": "",
+                    "order": "Control100",
+                    "permission": 0,
+                    "posticon1": "",
+                    "posticon2": "",
+                    "preicon1": "",
+                    "preicon2": "",
+                    "rule": 2,
+                    "showElts": false,
+                    "showGrid": false,
+                    "status": 0
+                },
+                "image": {
+                    "badge": false,
+                    "elements": {
+                        "image": {
+                            "autoupdate": false,
+                            "badge": false,
+                            "channels": 1,
+                            "height": 1024,
+                            "hfravg": 0,
+                            "hint": "",
+                            "histogram": [
+                                [
+                                    [
+                                        165148
+                                    ],
+                                    [
+                                        391088
+                                    ],
+                                    [
+                                        391758
+                                    ],
+                                    [
+                                        357628
+                                    ],
+                                    [
+                                        1230
+                                    ],
+                                    [
+                                        776
+                                    ],
+                                    [
+                                        548
+                                    ],
+                                    [
+                                        444
+                                    ],
+                                    [
+                                        370
+                                    ],
+                                    [
+                                        156
+                                    ],
+                                    [
+                                        174
+                                    ],
+                                    [
+                                        128
+                                    ],
+                                    [
+                                        126
+                                    ],
+                                    [
+                                        106
+                                    ],
+                                    [
+                                        82
+                                    ],
+                                    [
+                                        104
+                                    ],
+                                    [
+                                        78
+                                    ],
+                                    [
+                                        58
+                                    ],
+                                    [
+                                        64
+                                    ],
+                                    [
+                                        64
+                                    ],
+                                    [
+                                        42
+                                    ],
+                                    [
+                                        52
+                                    ],
+                                    [
+                                        44
+                                    ],
+                                    [
+                                        56
+                                    ],
+                                    [
+                                        42
+                                    ],
+                                    [
+                                        34
+                                    ],
+                                    [
+                                        18
+                                    ],
+                                    [
+                                        14
+                                    ],
+                                    [
+                                        24
+                                    ],
+                                    [
+                                        20
+                                    ],
+                                    [
+                                        6
+                                    ],
+                                    [
+                                        10
+                                    ],
+                                    [
+                                        12
+                                    ],
+                                    [
+                                        12
+                                    ],
+                                    [
+                                        14
+                                    ],
+                                    [
+                                        10
+                                    ],
+                                    [
+                                        4
+                                    ],
+                                    [
+                                        10
+                                    ],
+                                    [
+                                        10
+                                    ],
+                                    [
+                                        10
+                                    ],
+                                    [
+                                        2
+                                    ],
+                                    [
+                                        8
+                                    ],
+                                    [
+                                        10
+                                    ],
+                                    [
+                                        18
+                                    ],
+                                    [
+                                        10
+                                    ],
+                                    [
+                                        4
+                                    ],
+                                    [
+                                        6
+                                    ],
+                                    [
+                                        2
+                                    ],
+                                    [
+                                        8
+                                    ],
+                                    [
+                                        4
+                                    ],
+                                    [
+                                        6
+                                    ],
+                                    [
+                                        12
+                                    ],
+                                    [
+                                        6
+                                    ],
+                                    [
+                                        8
+                                    ],
+                                    [
+                                        8
+                                    ],
+                                    [
+                                        2
+                                    ],
+                                    [
+                                        4
+                                    ],
+                                    [
+                                        6
+                                    ],
+                                    [
+                                        6
+                                    ],
+                                    [
+                                        6
+                                    ],
+                                    [
+                                        6
+                                    ],
+                                    [
+                                        2
+                                    ],
+                                    [
+                                        2
+                                    ],
+                                    [
+                                        0
+                                    ]
+                                ]
+                            ],
+                            "issolved": false,
+                            "label": "",
+                            "max": [
+                                202
+                            ],
+                            "mean": [
+                                17.336842049047277
+                            ],
+                            "median": [
+                                17
+                            ],
+                            "min": [
+                                12
+                            ],
+                            "order": "00",
+                            "showstats": true,
+                            "snr": 4.597216709212121,
+                            "solverde": 0,
+                            "solverra": 0,
+                            "stars": 0,
+                            "stddev": [
+                                3.771160496808186
+                            ],
+                            "type": "img",
+                            "urlfits": "",
+                            "urljpeg": "Guider.jpeg",
+                            "urloverlay": "",
+                            "urlthumbnail": "",
+                            "width": 1280
+                        }
+                    },
+                    "enabled": true,
+                    "freevalue": "",
+                    "gridheaders": [
+                        "image"
+                    ],
+                    "hasGraph": false,
+                    "hasGrid": false,
+                    "hasprofile": false,
+                    "label": "Image",
+                    "level1": "Contrôle",
+                    "level2": "",
+                    "order": "000Control222",
+                    "permission": 1,
+                    "posticon1": "",
+                    "posticon2": "",
+                    "preicon1": "",
+                    "preicon2": "",
+                    "rule": 2,
+                    "showElts": true,
+                    "status": 0
+                },
+                "indiGit": {
+                    "badge": false,
+                    "elements": {
+                        "date": {
+                            "autoupdate": false,
+                            "badge": false,
+                            "directedit": false,
+                            "hint": "",
+                            "label": "Date",
+                            "order": "01",
+                            "type": "string",
+                            "value": "Sun Oct 19 14:04:48 2025"
+                        },
+                        "hash": {
+                            "autoupdate": false,
+                            "badge": false,
+                            "directedit": false,
+                            "hint": "",
+                            "label": "Hash",
+                            "order": "00",
+                            "type": "string",
+                            "value": "8159fcabaaf3f1dffa80788bceb6e6322b59c118-dirty"
+                        },
+                        "message": {
+                            "autoupdate": false,
+                            "badge": false,
+                            "directedit": false,
+                            "hint": "",
+                            "label": "Message de commit",
+                            "order": "02",
+                            "type": "string",
+                            "value": "Merge branch 'main' into translations"
+                        }
+                    },
+                    "enabled": true,
+                    "freevalue": "",
+                    "gridheaders": [
+                        "date",
+                        "hash",
+                        "message"
+                    ],
+                    "hasGraph": false,
+                    "hasGrid": false,
+                    "hasprofile": false,
+                    "label": "Git module Indi",
+                    "level1": "Module",
+                    "level2": "Info",
+                    "order": "00",
+                    "permission": 0,
+                    "posticon1": "",
+                    "posticon2": "",
+                    "preicon1": "",
+                    "preicon2": "",
+                    "rule": 2,
+                    "showElts": true,
+                    "status": 0
+                },
+                "loadprofile": {
+                    "badge": false,
+                    "elements": {
+                        "name": {
+                            "autoupdate": true,
+                            "badge": false,
+                            "directedit": true,
+                            "hint": "",
+                            "label": "",
+                            "listOfValues": {
+                                "default": "default"
+                            },
+                            "order": "00",
+                            "posticon": "redo",
+                            "preicon": "autorenew",
+                            "type": "string",
+                            "value": "default"
+                        }
+                    },
+                    "enabled": true,
+                    "freevalue": "",
+                    "gridheaders": [
+                        "name"
+                    ],
+                    "hasGraph": false,
+                    "hasGrid": false,
+                    "hasprofile": false,
+                    "label": "Charger un profil",
+                    "level1": "Module",
+                    "level2": "Profils",
+                    "order": "00",
+                    "permission": 2,
+                    "posticon1": "",
+                    "posticon2": "",
+                    "preicon1": "",
+                    "preicon2": "",
+                    "rule": 1,
+                    "showElts": true,
+                    "status": 0
+                },
+                "moduleInfo": {
+                    "badge": false,
+                    "elements": {
+                        "baseVersion": {
+                            "autoupdate": false,
+                            "badge": false,
+                            "directedit": false,
+                            "format": "",
+                            "hint": "",
+                            "label": "baseVersion",
+                            "max": 0,
+                            "min": 0,
+                            "order": "03",
+                            "slider": 0,
+                            "step": 0,
+                            "type": "int",
+                            "value": 1
+                        },
+                        "moduleDescription": {
+                            "autoupdate": false,
+                            "badge": false,
+                            "directedit": false,
+                            "hint": "",
+                            "label": "Description du module",
+                            "order": "00",
+                            "type": "string",
+                            "value": "Guider module - work in progress"
+                        },
+                        "moduleLabel": {
+                            "autoupdate": false,
+                            "badge": false,
+                            "directedit": false,
+                            "hint": "",
+                            "label": "Libellé du module",
+                            "order": "01",
+                            "type": "string",
+                            "value": "Guider"
+                        },
+                        "moduleName": {
+                            "autoupdate": false,
+                            "badge": false,
+                            "directedit": false,
+                            "hint": "",
+                            "label": "Nom du module",
+                            "order": "02",
+                            "type": "string",
+                            "value": "Guider"
+                        },
+                        "moduleVersion": {
+                            "autoupdate": false,
+                            "badge": false,
+                            "directedit": false,
+                            "hint": "",
+                            "label": "Version",
+                            "order": "02",
+                            "type": "string",
+                            "value": "0.1"
+                        }
+                    },
+                    "enabled": true,
+                    "freevalue": "",
+                    "gridheaders": [
+                        "baseVersion",
+                        "moduleDescription",
+                        "moduleLabel",
+                        "moduleName",
+                        "moduleVersion"
+                    ],
+                    "hasGraph": false,
+                    "hasGrid": false,
+                    "hasprofile": false,
+                    "label": "Informations du module",
+                    "level1": "Module",
+                    "level2": "Info",
+                    "order": "01",
+                    "permission": 0,
+                    "posticon1": "",
+                    "posticon2": "",
+                    "preicon1": "",
+                    "preicon2": "",
+                    "rule": 2,
+                    "showElts": true,
+                    "status": 0
+                },
+                "moduleactions": {
+                    "badge": false,
+                    "elements": {
+                        "kill": {
+                            "autoupdate": false,
+                            "badge": false,
+                            "directedit": false,
+                            "hint": "",
+                            "label": "Fermer le module",
+                            "order": "00",
+                            "type": "bool",
+                            "value": false
+                        }
+                    },
+                    "enabled": true,
+                    "freevalue": "",
+                    "gridheaders": [
+                        "kill"
+                    ],
+                    "hasGraph": false,
+                    "hasGrid": false,
+                    "hasprofile": false,
+                    "label": "Contrôles",
+                    "level1": "Module",
+                    "level2": "Actions",
+                    "order": "00",
+                    "permission": 1,
+                    "posticon1": "",
+                    "posticon2": "",
+                    "preicon1": "",
+                    "preicon2": "",
+                    "rule": 2,
+                    "showElts": true,
+                    "status": 0
+                },
+                "optic": {
+                    "badge": false,
+                    "elements": {
+                        "diam": {
+                            "autoupdate": true,
+                            "badge": false,
+                            "directedit": true,
+                            "format": "",
+                            "hint": "",
+                            "label": "Diamètre",
+                            "max": 4000,
+                            "min": 1,
+                            "order": "2",
+                            "slider": 0,
+                            "step": 0,
+                            "type": "float",
+                            "value": 250
+                        },
+                        "fl": {
+                            "autoupdate": true,
+                            "badge": false,
+                            "directedit": true,
+                            "format": "",
+                            "hint": "",
+                            "label": "Focale",
+                            "max": 4000,
+                            "min": 1,
+                            "order": "1",
+                            "slider": 0,
+                            "step": 0,
+                            "type": "float",
+                            "value": 600
+                        },
+                        "red": {
+                            "autoupdate": true,
+                            "badge": false,
+                            "directedit": true,
+                            "format": "",
+                            "hint": "",
+                            "label": "Réducteur",
+                            "max": 10,
+                            "min": 0.1,
+                            "order": "3",
+                            "slider": 0,
+                            "step": 0,
+                            "type": "float",
+                            "value": 1
+                        }
+                    },
+                    "enabled": true,
+                    "freevalue": "",
+                    "gridheaders": [
+                        "diam",
+                        "fl",
+                        "red"
+                    ],
+                    "hasGraph": false,
+                    "hasGrid": false,
+                    "hasprofile": true,
+                    "label": "Optique",
+                    "level1": "Paramètres",
+                    "level2": "",
+                    "order": "222Parms333",
+                    "permission": 2,
+                    "posticon1": "",
+                    "posticon2": "",
+                    "preicon1": "",
+                    "preicon2": "",
+                    "rule": 2,
+                    "showElts": true,
+                    "status": 0
+                },
+                "parms": {
+                    "badge": false,
+                    "elements": {
+                        "exposure": {
+                            "autoupdate": true,
+                            "badge": false,
+                            "directedit": true,
+                            "format": "",
+                            "hint": "",
+                            "label": "Exposition",
+                            "max": 300,
+                            "min": 0.00001,
+                            "order": "exp000",
+                            "slider": 2,
+                            "step": 0.001,
+                            "type": "float",
+                            "value": 2
+                        },
+                        "gain": {
+                            "autoupdate": true,
+                            "badge": false,
+                            "directedit": true,
+                            "format": "",
+                            "hint": "",
+                            "label": "Gain",
+                            "max": 500,
+                            "min": 0,
+                            "order": "exp020",
+                            "slider": 2,
+                            "step": 1,
+                            "type": "int",
+                            "value": 100
+                        },
+                        "offset": {
+                            "autoupdate": true,
+                            "badge": false,
+                            "directedit": true,
+                            "format": "",
+                            "hint": "",
+                            "label": "Offset",
+                            "max": 500,
+                            "min": 0,
+                            "order": "exp030",
+                            "slider": 2,
+                            "step": 1,
+                            "type": "int",
+                            "value": 10
+                        }
+                    },
+                    "enabled": true,
+                    "freevalue": "",
+                    "gridheaders": [
+                        "exposure",
+                        "gain",
+                        "offset"
+                    ],
+                    "hasGraph": false,
+                    "hasGrid": false,
+                    "hasprofile": true,
+                    "label": "Paramètres",
+                    "level1": "Paramètres",
+                    "level2": "",
+                    "order": "222Parms111",
+                    "permission": 2,
+                    "posticon1": "",
+                    "posticon2": "",
+                    "preicon1": "",
+                    "preicon2": "",
+                    "rule": 2,
+                    "showElts": true,
+                    "status": 0
+                },
+                "revCorrections": {
+                    "badge": false,
+                    "elements": {
+                        "revDE": {
+                            "autoupdate": true,
+                            "badge": false,
+                            "directedit": false,
+                            "hint": "",
+                            "label": "DEC",
+                            "order": "02",
+                            "type": "bool",
+                            "value": true
+                        },
+                        "revRA": {
+                            "autoupdate": true,
+                            "badge": false,
+                            "directedit": false,
+                            "hint": "",
+                            "label": "AD",
+                            "order": "01",
+                            "type": "bool",
+                            "value": true
+                        }
+                    },
+                    "enabled": true,
+                    "freevalue": "",
+                    "gridheaders": [
+                        "revDE",
+                        "revRA"
+                    ],
+                    "hasGraph": false,
+                    "hasGrid": false,
+                    "hasprofile": true,
+                    "label": "Inverser les corrections de guidage",
+                    "level1": "Paramètres",
+                    "level2": "",
+                    "order": "Parameters300",
+                    "permission": 2,
+                    "posticon1": "",
+                    "posticon2": "",
+                    "preicon1": "",
+                    "preicon2": "",
+                    "rule": 2,
+                    "showElts": true,
+                    "status": 0
+                },
+                "saveprofile": {
+                    "badge": false,
+                    "elements": {
+                        "name": {
+                            "autoupdate": true,
+                            "badge": false,
+                            "directedit": true,
+                            "hint": "",
+                            "label": "",
+                            "order": "00",
+                            "posticon": "save",
+                            "type": "string",
+                            "value": "default"
+                        }
+                    },
+                    "enabled": true,
+                    "freevalue": "",
+                    "gridheaders": [
+                        "name"
+                    ],
+                    "hasGraph": false,
+                    "hasGrid": false,
+                    "hasprofile": false,
+                    "label": "Sauvegarder le profil",
+                    "level1": "Module",
+                    "level2": "Profils",
+                    "order": "01",
+                    "permission": 2,
+                    "posticon1": "",
+                    "posticon2": "",
+                    "preicon1": "",
+                    "preicon2": "",
+                    "rule": 0,
+                    "showElts": true,
+                    "status": 0
+                },
+                "server": {
+                    "badge": false,
+                    "elements": {
+                        "host": {
+                            "autoupdate": true,
+                            "badge": false,
+                            "directedit": false,
+                            "hint": "",
+                            "label": "Hôte",
+                            "order": "00",
+                            "type": "string",
+                            "value": "localhost"
+                        },
+                        "port": {
+                            "autoupdate": true,
+                            "badge": false,
+                            "directedit": false,
+                            "format": "",
+                            "hint": "",
+                            "label": "Port",
+                            "max": 0,
+                            "min": 0,
+                            "order": "01",
+                            "slider": 0,
+                            "step": 0,
+                            "type": "int",
+                            "value": 7624
+                        }
+                    },
+                    "enabled": true,
+                    "freevalue": "",
+                    "gridheaders": [
+                        "host",
+                        "port"
+                    ],
+                    "hasGraph": false,
+                    "hasGrid": false,
+                    "hasprofile": true,
+                    "label": "Serveur",
+                    "level1": "Module",
+                    "level2": "Indi",
+                    "order": "99",
+                    "permission": 2,
+                    "posticon1": "",
+                    "posticon2": "",
+                    "preicon1": "",
+                    "preicon2": "",
+                    "rule": 2,
+                    "showElts": true,
+                    "status": 0
+                },
+                "serveractions": {
+                    "badge": false,
+                    "elements": {
+                        "conserv": {
+                            "autoupdate": false,
+                            "badge": false,
+                            "directedit": false,
+                            "hint": "",
+                            "label": "Connecter",
+                            "order": "00",
+                            "type": "bool",
+                            "value": false
+                        },
+                        "disconserv": {
+                            "autoupdate": false,
+                            "badge": false,
+                            "directedit": false,
+                            "hint": "",
+                            "label": "Déconnecter",
+                            "order": "01",
+                            "type": "bool",
+                            "value": false
+                        }
+                    },
+                    "enabled": true,
+                    "freevalue": "",
+                    "gridheaders": [
+                        "conserv",
+                        "disconserv"
+                    ],
+                    "hasGraph": false,
+                    "hasGrid": false,
+                    "hasprofile": false,
+                    "label": "Serveur",
+                    "level1": "Module",
+                    "level2": "Indi",
+                    "order": "01",
+                    "permission": 2,
+                    "posticon1": "",
+                    "posticon2": "",
+                    "preicon1": "",
+                    "preicon2": "",
+                    "rule": 2,
+                    "showElts": true,
+                    "status": 0
+                },
+                "startup": {
+                    "badge": false,
+                    "elements": {
+                        "confsatstart": {
+                            "autoupdate": true,
+                            "badge": false,
+                            "directedit": false,
+                            "hint": "",
+                            "label": "Charger la configuration des appareils",
+                            "order": "02",
+                            "type": "bool",
+                            "value": true
+                        },
+                        "devatstart": {
+                            "autoupdate": true,
+                            "badge": false,
+                            "directedit": false,
+                            "hint": "",
+                            "label": "Connecter les appareils",
+                            "order": "01",
+                            "type": "bool",
+                            "value": true
+                        },
+                        "indiatstart": {
+                            "autoupdate": true,
+                            "badge": false,
+                            "directedit": false,
+                            "hint": "",
+                            "label": "Connecter indi",
+                            "order": "00",
+                            "type": "bool",
+                            "value": true
+                        }
+                    },
+                    "enabled": true,
+                    "freevalue": "",
+                    "gridheaders": [
+                        "confsatstart",
+                        "devatstart",
+                        "indiatstart"
+                    ],
+                    "hasGraph": false,
+                    "hasGrid": false,
+                    "hasprofile": true,
+                    "label": "Actions au démarrage du module",
+                    "level1": "Module",
+                    "level2": "Indi",
+                    "order": "08",
+                    "permission": 2,
+                    "posticon1": "",
+                    "posticon2": "",
+                    "preicon1": "",
+                    "preicon2": "",
+                    "rule": 2,
+                    "showElts": true,
+                    "status": 0
+                },
+                "thisGit": {
+                    "badge": false,
+                    "elements": {
+                        "date": {
+                            "autoupdate": false,
+                            "badge": false,
+                            "directedit": false,
+                            "hint": "",
+                            "label": "Date",
+                            "order": "01",
+                            "type": "string",
+                            "value": "Sun Oct 19 21:21:50 2025"
+                        },
+                        "hash": {
+                            "autoupdate": false,
+                            "badge": false,
+                            "directedit": false,
+                            "hint": "",
+                            "label": "Hash",
+                            "order": "00",
+                            "type": "string",
+                            "value": "5d443e1deddb535f81239210c0ccfae35296dd5d"
+                        },
+                        "message": {
+                            "autoupdate": false,
+                            "badge": false,
+                            "directedit": false,
+                            "hint": "",
+                            "label": "Message de commit",
+                            "order": "02",
+                            "type": "string",
+                            "value": "Merge pull request #102 from gehelem/85-allsky-add-meteo-data"
+                        }
+                    },
+                    "enabled": true,
+                    "freevalue": "",
+                    "gridheaders": [
+                        "date",
+                        "hash",
+                        "message"
+                    ],
+                    "hasGraph": false,
+                    "hasGrid": false,
+                    "hasprofile": false,
+                    "label": "Git de ce module",
+                    "level1": "Module",
+                    "level2": "Info",
+                    "order": "00",
+                    "permission": 0,
+                    "posticon1": "",
+                    "posticon2": "",
+                    "preicon1": "",
+                    "preicon2": "",
+                    "rule": 2,
+                    "showElts": true,
+                    "status": 0
+                },
+                "values": {
+                    "badge": false,
+                    "elements": {
+                        "pulseE": {
+                            "autoupdate": false,
+                            "badge": false,
+                            "directedit": false,
+                            "format": "99.99",
+                            "hint": "",
+                            "label": "Pulse E",
+                            "max": 0,
+                            "min": 0,
+                            "order": "03",
+                            "slider": 0,
+                            "step": 0,
+                            "type": "int",
+                            "value": 807
+                        },
+                        "pulseN": {
+                            "autoupdate": false,
+                            "badge": false,
+                            "directedit": false,
+                            "format": "99.99",
+                            "hint": "",
+                            "label": "Pulse N",
+                            "max": 0,
+                            "min": 0,
+                            "order": "01",
+                            "slider": 0,
+                            "step": 0,
+                            "type": "int",
+                            "value": 120
+                        },
+                        "pulseS": {
+                            "autoupdate": false,
+                            "badge": false,
+                            "directedit": false,
+                            "format": "99.99",
+                            "hint": "",
+                            "label": "Pulse S",
+                            "max": 0,
+                            "min": 0,
+                            "order": "02",
+                            "slider": 0,
+                            "step": 0,
+                            "type": "int",
+                            "value": 0
+                        },
+                        "pulseW": {
+                            "autoupdate": false,
+                            "badge": false,
+                            "directedit": false,
+                            "format": "99.99",
+                            "hint": "",
+                            "label": "Pulse W",
+                            "max": 0,
+                            "min": 0,
+                            "order": "04",
+                            "slider": 0,
+                            "step": 0,
+                            "type": "int",
+                            "value": 0
+                        },
+                        "rmsDEC": {
+                            "autoupdate": false,
+                            "badge": false,
+                            "directedit": false,
+                            "format": "99.99",
+                            "hint": "",
+                            "label": "RMS DEC",
+                            "max": 0,
+                            "min": 0,
+                            "order": "06",
+                            "slider": 0,
+                            "step": 0,
+                            "type": "float",
+                            "value": 1.815865089399629
+                        },
+                        "rmsRA": {
+                            "autoupdate": false,
+                            "badge": false,
+                            "directedit": false,
+                            "format": "99.99",
+                            "hint": "",
+                            "label": "RMS RA",
+                            "max": 0,
+                            "min": 0,
+                            "order": "05",
+                            "slider": 0,
+                            "step": 0,
+                            "type": "float",
+                            "value": 6.596095011749364
+                        },
+                        "rmsTotal": {
+                            "autoupdate": false,
+                            "badge": false,
+                            "directedit": false,
+                            "format": "99.99",
+                            "hint": "",
+                            "label": "RMS Total",
+                            "max": 0,
+                            "min": 0,
+                            "order": "07",
+                            "slider": 0,
+                            "step": 0,
+                            "type": "float",
+                            "value": 6.8414790379657795
+                        }
+                    },
+                    "enabled": true,
+                    "freevalue": "",
+                    "gridheaders": [
+                        "pulseE",
+                        "pulseN",
+                        "pulseS",
+                        "pulseW",
+                        "rmsDEC",
+                        "rmsRA",
+                        "rmsTotal"
+                    ],
+                    "hasGraph": false,
+                    "hasGrid": false,
+                    "hasprofile": false,
+                    "label": "Valeurs",
+                    "level1": "Contrôle",
+                    "level2": "",
+                    "order": "Control800",
+                    "permission": 0,
+                    "posticon1": "",
+                    "posticon2": "",
+                    "preicon1": "",
+                    "preicon2": "",
+                    "rule": 2,
+                    "showElts": true,
+                    "status": 0
+                }
+            },
+            "state": {},
+            "warnings": {}
+        }
+    }
+}

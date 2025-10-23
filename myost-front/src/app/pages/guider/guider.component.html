@@ -1,1 +1,117 @@
-<p>guider works!</p>
+<div class="guider-container">
+  <!-- Image section -->
+  <div class="image-section">
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title>Image de guidage</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="image-container">
+          <img *ngIf="imageUrl" [src]="imageUrl" alt="Guider image" class="guider-image">
+          <div *ngIf="!imageUrl" class="no-image">Aucune image disponible</div>
+
+          <!-- Image action buttons (only shown when image exists) -->
+          <div *ngIf="imageUrl" class="image-actions">
+            <button mat-mini-fab color="primary"
+                    (click)="showHistogram($event)"
+                    matTooltip="Histogramme">
+              <mat-icon>bar_chart</mat-icon>
+            </button>
+            <button mat-mini-fab color="primary"
+                    (click)="showStatistics($event)"
+                    matTooltip="Statistiques">
+              <mat-icon>info</mat-icon>
+            </button>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <!-- Actions and Controls section -->
+  <div class="controls-section">
+    <!-- Actions card -->
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title>Actions</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="actions-grid">
+          <!-- Loop toggle -->
+          <div class="action-item">
+            <mat-slide-toggle
+              [(ngModel)]="loopValue"
+              (ngModelChange)="onLoopChange($event)"
+              [disabled]="!loopEnabled">
+              Loop
+            </mat-slide-toggle>
+          </div>
+
+          <!-- Dither toggle -->
+          <div class="action-item">
+            <mat-slide-toggle
+              [(ngModel)]="ditherValue"
+              (ngModelChange)="onDitherChange($event)"
+              [disabled]="!ditherEnabled">
+              Dither
+            </mat-slide-toggle>
+          </div>
+
+          <!-- Calibrate button -->
+          <button mat-raised-button
+                  color="primary"
+                  (click)="onCalibrate()"
+                  [disabled]="!calibrateEnabled"
+                  class="action-button">
+            <mat-icon>settings_backup_restore</mat-icon>
+            Calibrer
+          </button>
+
+          <!-- Guide button -->
+          <button mat-raised-button
+                  color="accent"
+                  (click)="onGuide()"
+                  [disabled]="!guideEnabled"
+                  class="action-button">
+            <mat-icon>explore</mat-icon>
+            Guider
+          </button>
+
+          <!-- Clear calibration button -->
+          <button mat-raised-button
+                  color="warn"
+                  (click)="onClearCalibration()"
+                  [disabled]="!clearCalibrationEnabled"
+                  class="action-button">
+            <mat-icon>clear</mat-icon>
+            Effacer calibration
+          </button>
+
+          <!-- Parameters button -->
+          <button mat-raised-button
+                  (click)="openParametersDialog()"
+                  class="action-button">
+            <mat-icon>settings</mat-icon>
+            Paramètres
+          </button>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <!-- Graphs placeholder -->
+    <mat-card class="graphs-card">
+      <mat-card-header>
+        <mat-card-title>Graphiques de guidage</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="graphs-placeholder">
+          <p>Les graphiques de guidage seront implémentés ultérieurement</p>
+          <ul>
+            <li>Graphique RA/DEC</li>
+            <li>Graphique de drift</li>
+          </ul>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

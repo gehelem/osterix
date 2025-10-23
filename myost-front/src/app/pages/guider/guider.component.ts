@@ -1,15 +1,246 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { Subscription } from 'rxjs';
+import { WebsocketService } from '../../services/websocket.service';
+import { Module, Property, Element, ImageElement } from '../../models/ost.models';
+import { ParametersDialogComponent, ParametersDialogData } from './parameters-dialog.component';
+import { GuiderHistogramDialogComponent } from './histogram-dialog.component';
+import { GuiderStatisticsDialogComponent } from './statistics-dialog.component';
 
 @Component({
   selector: 'app-guider',
   templateUrl: './guider.component.html',
   styleUrls: ['./guider.component.css']
 })
-export class GuiderComponent implements OnInit {
+export class GuiderComponent implements OnInit, OnDestroy {
+  guiderModule: Module | null = null;
+  private moduleSubscription?: Subscription;
 
-  constructor() { }
+  // Image
+  imageUrl: string = '';
+  imageElement: ImageElement | null = null;
+
+  // Actions property elements
+  loopEnabled: boolean = false;
+  loopValue: boolean = false;
+  ditherEnabled: boolean = false;
+  ditherValue: boolean = false;
+  calibrateEnabled: boolean = false;
+  guideEnabled: boolean = false;
+  clearCalibrationEnabled: boolean = false;
+
+  // Parameters property elements (for dialog)
+  parametersEnabled: boolean = false;
+  parametersElements: { [key: string]: Element } = {};
+
+  // Devices property elements (for dialog)
+  devicesEnabled: boolean = false;
+  devicesElements: { [key: string]: Element } = {};
+
+  // Optic property elements (for dialog)
+  opticEnabled: boolean = false;
+  opticElements: { [key: string]: Element } = {};
+
+  constructor(
+    private websocketService: WebsocketService,
+    private dialog: MatDialog
+  ) { }
 
   ngOnInit(): void {
+    this.moduleSubscription = this.websocketService.state$.subscribe(state => {
+      // Try both 'Guider' and 'guider' for module name (case sensitivity)
+      this.guiderModule = state.modules['Guider'] || state.modules['guider'] || null;
+      console.log('Guider module state:', this.guiderModule);
+      if (this.guiderModule) {
+        this.updateFromModule();
+      }
+    });
   }
 
+  ngOnDestroy(): void {
+    if (this.moduleSubscription) {
+      this.moduleSubscription.unsubscribe();
+    }
+  }
+
+  private updateFromModule(): void {
+    if (!this.guiderModule) return;
+
+    // Update image from 'image' property
+    const imageProperty = this.guiderModule.properties['image'];
+    console.log('Image property:', imageProperty);
+    if (imageProperty) {
+      const imageElement = imageProperty.elements['image'] as ImageElement;
+      console.log('Image element:', imageElement);
+      if (imageElement && imageElement.type === 'img' && imageElement.urljpeg) {
+        this.imageElement = imageElement;
+        // Build complete URL with protocol, host, port and /ostmedia/ folder
+        const protocol = window.location.protocol; // 'http:' or 'https:'
+        const hostname = window.location.hostname; // e.g., 'localhost'
+        const port = 80; // Web server port
+        // Add timestamp to force browser to reload the image (avoid cache)
+        const timestamp = new Date().getTime();
+        this.imageUrl = `${protocol}//${hostname}:${port}/ostmedia/${imageElement.urljpeg}?t=${timestamp}`;
+        console.log('Guider image URL loaded:', this.imageUrl);
+        console.log('urljpeg value:', imageElement.urljpeg);
+      } else {
+        console.log('Image element check failed:', {
+          hasElement: !!imageElement,
+          type: imageElement?.type,
+          hasUrljpeg: !!imageElement?.urljpeg
+        });
+      }
+    } else {
+      console.log('No image property found in module');
+    }
+
+    // Update actions from 'actions' property
+    const actionsProperty = this.guiderModule.properties['actions'];
+    if (actionsProperty) {
+      this.updateActionsFromProperty(actionsProperty);
+    }
+
+    // Update parameters from 'parameters' property
+    const parametersProperty = this.guiderModule.properties['parameters'];
+    if (parametersProperty) {
+      this.parametersEnabled = parametersProperty.enabled;
+      this.parametersElements = parametersProperty.elements;
+    }
+
+    // Update devices from 'devices' property
+    const devicesProperty = this.guiderModule.properties['devices'];
+    if (devicesProperty) {
+      this.devicesEnabled = devicesProperty.enabled;
+      this.devicesElements = devicesProperty.elements;
+    }
+
+    // Update optic from 'optic' property
+    const opticProperty = this.guiderModule.properties['optic'];
+    if (opticProperty) {
+      this.opticEnabled = opticProperty.enabled;
+      this.opticElements = opticProperty.elements;
+    }
+  }
+
+  private updateActionsFromProperty(property: Property): void {
+    // Loop toggle
+    const loopElement = property.elements['loop'];
+    if (loopElement && loopElement.type === 'bool') {
+      this.loopEnabled = property.enabled;
+      this.loopValue = loopElement.value;
+    }
+
+    // Dither toggle
+    const ditherElement = property.elements['dither'];
+    if (ditherElement && ditherElement.type === 'bool') {
+      this.ditherEnabled = property.enabled;
+      this.ditherValue = ditherElement.value;
+    }
+
+    // Action buttons
+    this.calibrateEnabled = property.enabled && !!property.elements['calibrate'];
+    this.guideEnabled = property.enabled && !!property.elements['guide'];
+    this.clearCalibrationEnabled = property.enabled && !!property.elements['clearcalibration'];
+  }
+
+  // Action handlers
+  onLoopChange(value: boolean): void {
+    this.websocketService.setProperty('Guider', 'actions', { loop: value });
+  }
+
+  onDitherChange(value: boolean): void {
+    this.websocketService.setProperty('Guider', 'actions', { dither: value });
+  }
+
+  onCalibrate(): void {
+    this.websocketService.setProperty('Guider', 'actions', { calibrate: true });
+  }
+
+  onGuide(): void {
+    this.websocketService.setProperty('Guider', 'actions', { guide: true });
+  }
+
+  onClearCalibration(): void {
+    this.websocketService.setProperty('Guider', 'actions', { clearcalibration: true });
+  }
+
+  // Parameters dialog
+  openParametersDialog(): void {
+    const dialogData: ParametersDialogData = {
+      parametersEnabled: this.parametersEnabled,
+      parametersElements: this.parametersElements,
+      devicesEnabled: this.devicesEnabled,
+      devicesElements: this.devicesElements,
+      opticEnabled: this.opticEnabled,
+      opticElements: this.opticElements,
+      globallovs: this.guiderModule?.globallovs || {},
+      onParametersChange: (name: string, value: any) => this.onParametersChange(name, value),
+      onDevicesChange: (name: string, value: any) => this.onDevicesChange(name, value),
+      onOpticChange: (name: string, value: any) => this.onOpticChange(name, value)
+    };
+
+    this.dialog.open(ParametersDialogComponent, {
+      width: '1200px',
+      maxWidth: '95vw',
+      data: dialogData
+    });
+  }
+
+  private onParametersChange(name: string, value: any): void {
+    const update: { [key: string]: any } = {};
+    update[name] = value;
+    this.websocketService.setProperty('Guider', 'parameters', update);
+  }
+
+  private onDevicesChange(name: string, value: any): void {
+    const update: { [key: string]: any } = {};
+    update[name] = value;
+    this.websocketService.setProperty('Guider', 'devices', update);
+  }
+
+  private onOpticChange(name: string, value: any): void {
+    const update: { [key: string]: any } = {};
+    update[name] = value;
+    this.websocketService.setProperty('Guider', 'optic', update);
+  }
+
+  /**
+   * Get current image element
+   */
+  private getCurrentImageElement(): ImageElement | null {
+    if (!this.guiderModule || !this.guiderModule.properties['image']) {
+      return null;
+    }
+    const imageElement = this.guiderModule.properties['image'].elements['image'];
+    if (imageElement && imageElement.type === 'img') {
+      return imageElement as ImageElement;
+    }
+    return null;
+  }
+
+  /**
+   * Show histogram dialog
+   */
+  showHistogram(event: Event): void {
+    event.stopPropagation(); // Prevent triggering fullscreen
+    const imageData = this.getCurrentImageElement();
+    this.dialog.open(GuiderHistogramDialogComponent, {
+      width: '800px',
+      height: '600px',
+      data: imageData
+    });
+  }
+
+  /**
+   * Show statistics dialog
+   */
+  showStatistics(event: Event): void {
+    event.stopPropagation(); // Prevent triggering fullscreen
+    const imageData = this.getCurrentImageElement();
+    this.dialog.open(GuiderStatisticsDialogComponent, {
+      width: '600px',
+      height: '600px',
+      data: imageData
+    });
+  }
 }

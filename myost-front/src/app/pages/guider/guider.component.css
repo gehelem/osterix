@@ -1,0 +1,155 @@
+.guider-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  padding: 20px;
+  height: calc(100vh - 120px);
+}
+
+/* Image section */
+.image-section {
+  display: flex;
+  flex-direction: column;
+}
+
+.image-section mat-card {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.image-section mat-card-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 16px;
+}
+
+.image-container {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #000;
+  border-radius: 4px;
+  overflow: hidden;
+  position: relative;
+}
+
+/* Image action buttons */
+.image-actions {
+  position: absolute;
+  bottom: 16px;
+  right: 16px;
+  display: flex;
+  gap: 8px;
+  z-index: 10;
+}
+
+.image-actions button {
+  opacity: 0.8;
+  transition: opacity 0.2s;
+}
+
+.image-actions button:hover {
+  opacity: 1;
+}
+
+.guider-image {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+.no-image {
+  color: #666;
+  font-size: 18px;
+  text-align: center;
+}
+
+/* Controls section */
+.controls-section {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Actions card */
+.actions-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  padding: 16px 0;
+}
+
+.action-item {
+  display: flex;
+  align-items: center;
+}
+
+.action-button {
+  width: 100%;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.action-button mat-icon {
+  margin-right: 4px;
+}
+
+/* Graphs card */
+.graphs-card {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.graphs-card mat-card-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.graphs-placeholder {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: #666;
+  text-align: center;
+  border: 2px dashed #ccc;
+  border-radius: 4px;
+  padding: 40px;
+}
+
+.graphs-placeholder ul {
+  list-style-position: inside;
+  margin-top: 16px;
+}
+
+/* Responsive design */
+@media (max-width: 1200px) {
+  .guider-container {
+    grid-template-columns: 1fr;
+    height: auto;
+  }
+
+  .image-container {
+    min-height: 400px;
+  }
+}
+
+@media (max-width: 768px) {
+  .actions-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .guider-container {
+    padding: 10px;
+    gap: 10px;
+  }
+}

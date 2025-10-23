@@ -12,9 +12,12 @@ import { StatisticsDialogComponent } from './pages/focus/statistics-dialog.compo
 import { ParametersDialogComponent } from './pages/focus/parameters-dialog.component';
 import { SequenceComponent } from './pages/sequence/sequence.component';
 import { NavigatorComponent } from './pages/navigator/navigator.component';
-import { GuiderComponent } from './pages/guider/guider.component';
 import { AllskyComponent } from './pages/allsky/allsky.component';
 import { HomeComponent } from './pages/home/home.component';
+import { GuiderComponent } from './pages/guider/guider.component';
+import { ParametersDialogComponent as GuiderParametersDialogComponent } from './pages/guider/parameters-dialog.component';
+import { GuiderHistogramDialogComponent } from './pages/guider/histogram-dialog.component';
+import { GuiderStatisticsDialogComponent } from './pages/guider/statistics-dialog.component';
 
 // Angular Material imports
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -43,6 +46,9 @@ import { MessagesComponent } from './pages/messages/messages.component';
     HistogramDialogComponent,
     StatisticsDialogComponent,
     ParametersDialogComponent,
+    GuiderParametersDialogComponent,
+    GuiderHistogramDialogComponent,
+    GuiderStatisticsDialogComponent,
     SequenceComponent,
     NavigatorComponent,
     GuiderComponent,
