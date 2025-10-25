@@ -143,6 +143,7 @@ export class GuidingGraphComponent implements OnChanges, AfterViewInit {
             display: true,
             position: 'right',
             offset: true,
+            min: 0,
             title: {
               display: true,
               text: 'SNR',
