@@ -20,6 +20,7 @@ export class GuiderComponent implements OnInit, OnDestroy {
   // Image
   imageUrl: string = '';
   imageElement: ImageElement | null = null;
+  fullscreenImageUrl: string | null = null;
 
   // Actions property elements
   loopEnabled: boolean = false;
@@ -431,5 +432,32 @@ export class GuiderComponent implements OnInit, OnDestroy {
       height: '600px',
       data: imageData
     });
+  }
+
+  /**
+   * Toggle fullscreen view of the image
+   */
+  toggleFullscreen(): void {
+    if (this.fullscreenImageUrl) {
+      this.closeFullscreen();
+    } else {
+      this.openImageFullscreen();
+    }
+  }
+
+  /**
+   * Open image in fullscreen
+   */
+  openImageFullscreen(): void {
+    if (this.imageUrl) {
+      this.fullscreenImageUrl = this.imageUrl;
+    }
+  }
+
+  /**
+   * Close fullscreen image
+   */
+  closeFullscreen(): void {
+    this.fullscreenImageUrl = null;
   }
 }

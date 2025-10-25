@@ -43,7 +43,7 @@
     <!-- Image card -->
     <mat-card>
       <mat-card-content>
-        <div class="image-container">
+        <div class="image-container" (click)="toggleFullscreen()">
           <img *ngIf="imageUrl" [src]="imageUrl" alt="Guider image" class="guider-image">
           <div *ngIf="!imageUrl" class="no-image">Aucune image disponible</div>
 
@@ -138,5 +138,10 @@
         </div>
       </mat-card-content>
     </mat-card>
+  </div>
+
+  <!-- Fullscreen image overlay -->
+  <div *ngIf="fullscreenImageUrl" class="fullscreen-overlay" (click)="closeFullscreen()">
+    <img [src]="fullscreenImageUrl" alt="Image de guidage en plein écran" class="fullscreen-image">
   </div>
 </div>
