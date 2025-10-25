@@ -54,6 +54,7 @@ export class DriftGraphComponent implements OnChanges, AfterViewInit {
       options: {
         responsive: true,
         maintainAspectRatio: true,
+        devicePixelRatio: 1,
         animation: false as any,
         interaction: {
           mode: 'nearest',
@@ -80,8 +81,13 @@ export class DriftGraphComponent implements OnChanges, AfterViewInit {
               display: true,
               text: 'RA (AD)',
               font: {
-                size: 12,
+                size: 14,
                 weight: 'bold'
+              }
+            },
+            ticks: {
+              font: {
+                size: 12
               }
             },
             min: graphParams?.Xmin || -5,
@@ -95,8 +101,13 @@ export class DriftGraphComponent implements OnChanges, AfterViewInit {
               display: true,
               text: 'DEC',
               font: {
-                size: 12,
+                size: 14,
                 weight: 'bold'
+              }
+            },
+            ticks: {
+              font: {
+                size: 12
               }
             },
             min: graphParams?.Ymin || -5,
