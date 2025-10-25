@@ -41,6 +41,18 @@ export class GuiderComponent implements OnInit, OnDestroy {
   opticEnabled: boolean = false;
   opticElements: { [key: string]: Element } = {};
 
+  // Guide parameters property elements (for dialog)
+  guideParamsEnabled: boolean = false;
+  guideParamsElements: { [key: string]: Element } = {};
+
+  // Calibration parameters property elements (for dialog)
+  calParamsEnabled: boolean = false;
+  calParamsElements: { [key: string]: Element } = {};
+
+  // Disabled corrections property elements (for dialog)
+  disCorrectionEnabled: boolean = false;
+  disCorrectionElements: { [key: string]: Element } = {};
+
   constructor(
     private websocketService: WebsocketService,
     private dialog: MatDialog
@@ -120,6 +132,27 @@ export class GuiderComponent implements OnInit, OnDestroy {
       this.opticEnabled = opticProperty.enabled;
       this.opticElements = opticProperty.elements;
     }
+
+    // Update guide parameters from 'guideParams' property
+    const guideParamsProperty = this.guiderModule.properties['guideParams'];
+    if (guideParamsProperty) {
+      this.guideParamsEnabled = guideParamsProperty.enabled;
+      this.guideParamsElements = guideParamsProperty.elements;
+    }
+
+    // Update calibration parameters from 'calParams' property
+    const calParamsProperty = this.guiderModule.properties['calParams'];
+    if (calParamsProperty) {
+      this.calParamsEnabled = calParamsProperty.enabled;
+      this.calParamsElements = calParamsProperty.elements;
+    }
+
+    // Update disabled corrections from 'disCorrections' property
+    const disCorrectionProperty = this.guiderModule.properties['disCorrections'];
+    if (disCorrectionProperty) {
+      this.disCorrectionEnabled = disCorrectionProperty.enabled;
+      this.disCorrectionElements = disCorrectionProperty.elements;
+    }
   }
 
   private updateActionsFromProperty(property: Property): void {
@@ -173,10 +206,19 @@ export class GuiderComponent implements OnInit, OnDestroy {
       devicesElements: this.devicesElements,
       opticEnabled: this.opticEnabled,
       opticElements: this.opticElements,
+      guideParamsEnabled: this.guideParamsEnabled,
+      guideParamsElements: this.guideParamsElements,
+      calParamsEnabled: this.calParamsEnabled,
+      calParamsElements: this.calParamsElements,
+      disCorrectionEnabled: this.disCorrectionEnabled,
+      disCorrectionElements: this.disCorrectionElements,
       globallovs: this.guiderModule?.globallovs || {},
       onParametersChange: (name: string, value: any) => this.onParametersChange(name, value),
       onDevicesChange: (name: string, value: any) => this.onDevicesChange(name, value),
-      onOpticChange: (name: string, value: any) => this.onOpticChange(name, value)
+      onOpticChange: (name: string, value: any) => this.onOpticChange(name, value),
+      onGuideParamsChange: (name: string, value: any) => this.onGuideParamsChange(name, value),
+      onCalParamsChange: (name: string, value: any) => this.onCalParamsChange(name, value),
+      onDisCorrectionChange: (name: string, value: any) => this.onDisCorrectionChange(name, value)
     };
 
     this.dialog.open(ParametersDialogComponent, {
@@ -202,6 +244,24 @@ export class GuiderComponent implements OnInit, OnDestroy {
     const update: { [key: string]: any } = {};
     update[name] = value;
     this.websocketService.setProperty('Guider', 'optic', update);
+  }
+
+  private onGuideParamsChange(name: string, value: any): void {
+    const update: { [key: string]: any } = {};
+    update[name] = value;
+    this.websocketService.setProperty('Guider', 'guideParams', update);
+  }
+
+  private onCalParamsChange(name: string, value: any): void {
+    const update: { [key: string]: any } = {};
+    update[name] = value;
+    this.websocketService.setProperty('Guider', 'calParams', update);
+  }
+
+  private onDisCorrectionChange(name: string, value: any): void {
+    const update: { [key: string]: any } = {};
+    update[name] = value;
+    this.websocketService.setProperty('Guider', 'disCorrections', update);
   }
 
   /**

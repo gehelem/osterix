@@ -13,6 +13,18 @@ export interface ParametersDialogData {
   opticElements: { [key: string]: Element };
   opticEnabled: boolean;
 
+  // Guiding parameters (guideParams property)
+  guideParamsElements: { [key: string]: Element };
+  guideParamsEnabled: boolean;
+
+  // Calibration parameters (calParams property)
+  calParamsElements: { [key: string]: Element };
+  calParamsEnabled: boolean;
+
+  // Disabled corrections (disCorrections property)
+  disCorrectionElements: { [key: string]: Element };
+  disCorrectionEnabled: boolean;
+
   // Global LOVs from module
   globallovs: { [key: string]: GlobalLov };
 
@@ -20,6 +32,9 @@ export interface ParametersDialogData {
   onParametersChange: (name: string, value: any) => void;
   onDevicesChange: (name: string, value: any) => void;
   onOpticChange: (name: string, value: any) => void;
+  onGuideParamsChange: (name: string, value: any) => void;
+  onCalParamsChange: (name: string, value: any) => void;
+  onDisCorrectionChange: (name: string, value: any) => void;
 }
 
 interface ListOfValue {
@@ -37,9 +52,24 @@ export class ParametersDialogComponent {
   parametersKeysCache: string[] = [];
   devicesKeysCache: string[] = [];
   opticKeysCache: string[] = [];
+  guideParamsKeysCache: string[] = [];
+  calParamsKeysCache: string[] = [];
+  disCorrectionKeysCache: string[] = [];
+
   parametersLovsCache: { [key: string]: ListOfValue[] } = {};
   devicesLovsCache: { [key: string]: ListOfValue[] } = {};
   opticLovsCache: { [key: string]: ListOfValue[] } = {};
+  guideParamsLovsCache: { [key: string]: ListOfValue[] } = {};
+  calParamsLovsCache: { [key: string]: ListOfValue[] } = {};
+  disCorrectionLovsCache: { [key: string]: ListOfValue[] } = {};
+
+  // Original values for reset functionality
+  private originalParametersValues: { [key: string]: any } = {};
+  private originalDevicesValues: { [key: string]: any } = {};
+  private originalOpticValues: { [key: string]: any } = {};
+  private originalGuideParamsValues: { [key: string]: any } = {};
+  private originalCalParamsValues: { [key: string]: any } = {};
+  private originalDisCorrectionValues: { [key: string]: any } = {};
 
   constructor(
     public dialogRef: MatDialogRef<ParametersDialogComponent>,
@@ -50,7 +80,7 @@ export class ParametersDialogComponent {
   }
 
   private initializeCaches(): void {
-    // Cache parameters keys
+    // Cache parameters keys and values
     if (this.data.parametersElements) {
       this.parametersKeysCache = Object.keys(this.data.parametersElements).sort((a, b) => {
         const orderA = this.data.parametersElements[a]?.order || '';
@@ -58,13 +88,14 @@ export class ParametersDialogComponent {
         return orderA.localeCompare(orderB);
       });
 
-      // Cache LOVs for each parameter element
+      // Cache LOVs and original values for each parameter element
       this.parametersKeysCache.forEach(key => {
         this.parametersLovsCache[key] = this.computeElementLovs(key, 'parameters');
+        this.originalParametersValues[key] = this.data.parametersElements[key]?.value;
       });
     }
 
-    // Cache devices keys
+    // Cache devices keys and values
     if (this.data.devicesElements) {
       this.devicesKeysCache = Object.keys(this.data.devicesElements).sort((a, b) => {
         const orderA = this.data.devicesElements[a]?.order || '';
@@ -72,13 +103,14 @@ export class ParametersDialogComponent {
         return orderA.localeCompare(orderB);
       });
 
-      // Cache LOVs for each device element
+      // Cache LOVs and original values for each device element
       this.devicesKeysCache.forEach(key => {
         this.devicesLovsCache[key] = this.computeElementLovs(key, 'devices');
+        this.originalDevicesValues[key] = this.data.devicesElements[key]?.value;
       });
     }
 
-    // Cache optic keys
+    // Cache optic keys and values
     if (this.data.opticElements) {
       this.opticKeysCache = Object.keys(this.data.opticElements).sort((a, b) => {
         const orderA = this.data.opticElements[a]?.order || '';
@@ -86,14 +118,60 @@ export class ParametersDialogComponent {
         return orderA.localeCompare(orderB);
       });
 
-      // Cache LOVs for each optic element
+      // Cache LOVs and original values for each optic element
       this.opticKeysCache.forEach(key => {
         this.opticLovsCache[key] = this.computeElementLovs(key, 'optic');
+        this.originalOpticValues[key] = this.data.opticElements[key]?.value;
+      });
+    }
+
+    // Cache guide params keys and values
+    if (this.data.guideParamsElements) {
+      this.guideParamsKeysCache = Object.keys(this.data.guideParamsElements).sort((a, b) => {
+        const orderA = this.data.guideParamsElements[a]?.order || '';
+        const orderB = this.data.guideParamsElements[b]?.order || '';
+        return orderA.localeCompare(orderB);
+      });
+
+      // Cache LOVs and original values for each guide param element
+      this.guideParamsKeysCache.forEach(key => {
+        this.guideParamsLovsCache[key] = this.computeElementLovs(key, 'guideParams');
+        this.originalGuideParamsValues[key] = this.data.guideParamsElements[key]?.value;
+      });
+    }
+
+    // Cache calibration params keys and values
+    if (this.data.calParamsElements) {
+      this.calParamsKeysCache = Object.keys(this.data.calParamsElements).sort((a, b) => {
+        const orderA = this.data.calParamsElements[a]?.order || '';
+        const orderB = this.data.calParamsElements[b]?.order || '';
+        return orderA.localeCompare(orderB);
+      });
+
+      // Cache LOVs and original values for each cal param element
+      this.calParamsKeysCache.forEach(key => {
+        this.calParamsLovsCache[key] = this.computeElementLovs(key, 'calParams');
+        this.originalCalParamsValues[key] = this.data.calParamsElements[key]?.value;
+      });
+    }
+
+    // Cache disabled corrections keys and values
+    if (this.data.disCorrectionElements) {
+      this.disCorrectionKeysCache = Object.keys(this.data.disCorrectionElements).sort((a, b) => {
+        const orderA = this.data.disCorrectionElements[a]?.order || '';
+        const orderB = this.data.disCorrectionElements[b]?.order || '';
+        return orderA.localeCompare(orderB);
+      });
+
+      // Cache LOVs and original values for each disCorrection element
+      this.disCorrectionKeysCache.forEach(key => {
+        this.disCorrectionLovsCache[key] = this.computeElementLovs(key, 'disCorrection');
+        this.originalDisCorrectionValues[key] = this.data.disCorrectionElements[key]?.value;
       });
     }
   }
 
-  private computeElementLovs(key: string, type: 'parameters' | 'devices' | 'optic'): ListOfValue[] {
+  private computeElementLovs(key: string, type: 'parameters' | 'devices' | 'optic' | 'guideParams' | 'calParams' | 'disCorrection'): ListOfValue[] {
     const element = this.getElement(key, type);
     if (!element) return [];
 
@@ -134,6 +212,18 @@ export class ParametersDialogComponent {
     return this.data.opticElements && Object.keys(this.data.opticElements).length > 0;
   }
 
+  hasGuideParams(): boolean {
+    return this.data.guideParamsElements && Object.keys(this.data.guideParamsElements).length > 0;
+  }
+
+  hasCalParams(): boolean {
+    return this.data.calParamsElements && Object.keys(this.data.calParamsElements).length > 0;
+  }
+
+  hasDisCorrection(): boolean {
+    return this.data.disCorrectionElements && Object.keys(this.data.disCorrectionElements).length > 0;
+  }
+
   getParametersKeys(): string[] {
     return this.parametersKeysCache;
   }
@@ -146,24 +236,42 @@ export class ParametersDialogComponent {
     return this.opticKeysCache;
   }
 
-  getElement(key: string, type: 'parameters' | 'devices' | 'optic'): Element | null {
+  getGuideParamsKeys(): string[] {
+    return this.guideParamsKeysCache;
+  }
+
+  getCalParamsKeys(): string[] {
+    return this.calParamsKeysCache;
+  }
+
+  getDisCorrectionKeys(): string[] {
+    return this.disCorrectionKeysCache;
+  }
+
+  getElement(key: string, type: 'parameters' | 'devices' | 'optic' | 'guideParams' | 'calParams' | 'disCorrection'): Element | null {
     let elements: { [key: string]: Element };
     if (type === 'parameters') {
       elements = this.data.parametersElements;
     } else if (type === 'devices') {
       elements = this.data.devicesElements;
-    } else {
+    } else if (type === 'optic') {
       elements = this.data.opticElements;
+    } else if (type === 'guideParams') {
+      elements = this.data.guideParamsElements;
+    } else if (type === 'calParams') {
+      elements = this.data.calParamsElements;
+    } else {
+      elements = this.data.disCorrectionElements;
     }
     return elements?.[key] || null;
   }
 
-  getElementLabel(key: string, type: 'parameters' | 'devices' | 'optic'): string {
+  getElementLabel(key: string, type: 'parameters' | 'devices' | 'optic' | 'guideParams' | 'calParams' | 'disCorrection'): string {
     const element = this.getElement(key, type);
     return element?.label || key;
   }
 
-  isStringWithLov(key: string, type: 'parameters' | 'devices' | 'optic'): boolean {
+  isStringWithLov(key: string, type: 'parameters' | 'devices' | 'optic' | 'guideParams' | 'calParams' | 'disCorrection'): boolean {
     const element = this.getElement(key, type);
     if (!element || element.type !== 'string') return false;
     const hasLocalLov = !!(element as any).listOfValues;
@@ -171,7 +279,7 @@ export class ParametersDialogComponent {
     return hasLocalLov || hasGlobalLov;
   }
 
-  isStringWithoutLov(key: string, type: 'parameters' | 'devices' | 'optic'): boolean {
+  isStringWithoutLov(key: string, type: 'parameters' | 'devices' | 'optic' | 'guideParams' | 'calParams' | 'disCorrection'): boolean {
     const element = this.getElement(key, type);
     if (!element || element.type !== 'string') return false;
     const hasLocalLov = !!(element as any).listOfValues;
@@ -179,25 +287,115 @@ export class ParametersDialogComponent {
     return !hasLocalLov && !hasGlobalLov;
   }
 
-  isNumeric(key: string, type: 'parameters' | 'devices' | 'optic'): boolean {
+  isNumeric(key: string, type: 'parameters' | 'devices' | 'optic' | 'guideParams' | 'calParams' | 'disCorrection'): boolean {
     const element = this.getElement(key, type);
     return element?.type === 'int' || element?.type === 'float';
   }
 
-  isBool(key: string, type: 'parameters' | 'devices' | 'optic'): boolean {
+  isBool(key: string, type: 'parameters' | 'devices' | 'optic' | 'guideParams' | 'calParams' | 'disCorrection'): boolean {
     const element = this.getElement(key, type);
     return element?.type === 'bool';
   }
 
-  getElementLovs(key: string, type: 'parameters' | 'devices' | 'optic'): ListOfValue[] {
+  getElementLovs(key: string, type: 'parameters' | 'devices' | 'optic' | 'guideParams' | 'calParams' | 'disCorrection'): ListOfValue[] {
     let cache: { [key: string]: ListOfValue[] };
     if (type === 'parameters') {
       cache = this.parametersLovsCache;
     } else if (type === 'devices') {
       cache = this.devicesLovsCache;
-    } else {
+    } else if (type === 'optic') {
       cache = this.opticLovsCache;
+    } else if (type === 'guideParams') {
+      cache = this.guideParamsLovsCache;
+    } else if (type === 'calParams') {
+      cache = this.calParamsLovsCache;
+    } else {
+      cache = this.disCorrectionLovsCache;
     }
     return cache[key] || [];
+  }
+
+  /**
+   * Reset all parameters to their original values
+   */
+  resetAllParameters(): void {
+    this.parametersKeysCache.forEach(key => {
+      this.data.parametersElements[key].value = this.originalParametersValues[key];
+    });
+  }
+
+  /**
+   * Reset all devices to their original values
+   */
+  resetAllDevices(): void {
+    this.devicesKeysCache.forEach(key => {
+      this.data.devicesElements[key].value = this.originalDevicesValues[key];
+    });
+  }
+
+  /**
+   * Reset all optic parameters to their original values
+   */
+  resetAllOptic(): void {
+    this.opticKeysCache.forEach(key => {
+      this.data.opticElements[key].value = this.originalOpticValues[key];
+    });
+  }
+
+  /**
+   * Reset all guide parameters to their original values
+   */
+  resetAllGuideParams(): void {
+    this.guideParamsKeysCache.forEach(key => {
+      this.data.guideParamsElements[key].value = this.originalGuideParamsValues[key];
+    });
+  }
+
+  /**
+   * Reset all calibration parameters to their original values
+   */
+  resetAllCalParams(): void {
+    this.calParamsKeysCache.forEach(key => {
+      this.data.calParamsElements[key].value = this.originalCalParamsValues[key];
+    });
+  }
+
+  /**
+   * Reset all disabled corrections to their original values
+   */
+  resetAllDisCorrection(): void {
+    this.disCorrectionKeysCache.forEach(key => {
+      this.data.disCorrectionElements[key].value = this.originalDisCorrectionValues[key];
+    });
+  }
+
+  /**
+   * Check if element has a description/help text
+   */
+  getElementDescription(key: string, type: 'parameters' | 'devices' | 'optic' | 'guideParams' | 'calParams' | 'disCorrection'): string {
+    const element = this.getElement(key, type);
+    return (element as any)?.description || (element as any)?.hint || '';
+  }
+
+  /**
+   * Check if element has min/max constraints
+   */
+  getElementConstraints(key: string, type: 'parameters' | 'devices' | 'optic' | 'guideParams' | 'calParams' | 'disCorrection'): string {
+    const element = this.getElement(key, type);
+    if (!element) return '';
+
+    const constraints: string[] = [];
+
+    if ((element as any)?.min !== undefined) {
+      constraints.push(`min: ${(element as any).min}`);
+    }
+    if ((element as any)?.max !== undefined) {
+      constraints.push(`max: ${(element as any).max}`);
+    }
+    if ((element as any)?.step !== undefined) {
+      constraints.push(`step: ${(element as any).step}`);
+    }
+
+    return constraints.length > 0 ? ` (${constraints.join(', ')})` : '';
   }
 }

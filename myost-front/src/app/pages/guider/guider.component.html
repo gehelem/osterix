@@ -37,26 +37,6 @@
       </mat-card-header>
       <mat-card-content>
         <div class="actions-grid">
-          <!-- Loop toggle -->
-          <div class="action-item">
-            <mat-slide-toggle
-              [(ngModel)]="loopValue"
-              (ngModelChange)="onLoopChange($event)"
-              [disabled]="!loopEnabled">
-              Loop
-            </mat-slide-toggle>
-          </div>
-
-          <!-- Dither toggle -->
-          <div class="action-item">
-            <mat-slide-toggle
-              [(ngModel)]="ditherValue"
-              (ngModelChange)="onDitherChange($event)"
-              [disabled]="!ditherEnabled">
-              Dither
-            </mat-slide-toggle>
-          </div>
-
           <!-- Calibrate button -->
           <button mat-raised-button
                   color="primary"
