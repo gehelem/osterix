@@ -55,6 +55,10 @@ export class GuiderComponent implements OnInit, OnDestroy {
   disCorrectionEnabled: boolean = false;
   disCorrectionElements: { [key: string]: Element } = {};
 
+  // Reversed corrections property elements (for dialog)
+  revCorrectionEnabled: boolean = false;
+  revCorrectionElements: { [key: string]: Element } = {};
+
   // Guiding graph data
   guidingData: GuidingData | null = null;
 
@@ -164,6 +168,13 @@ export class GuiderComponent implements OnInit, OnDestroy {
       this.disCorrectionElements = disCorrectionProperty.elements;
     }
 
+    // Update reversed corrections from 'revCorrections' property
+    const revCorrectionProperty = this.guiderModule.properties['revCorrections'];
+    if (revCorrectionProperty) {
+      this.revCorrectionEnabled = revCorrectionProperty.enabled;
+      this.revCorrectionElements = revCorrectionProperty.elements;
+    }
+
     // Update guiding data from 'guiding' property
     const guidingProperty = this.guiderModule.properties['guiding'];
     if (guidingProperty) {
@@ -258,13 +269,16 @@ export class GuiderComponent implements OnInit, OnDestroy {
       calParamsElements: this.calParamsElements,
       disCorrectionEnabled: this.disCorrectionEnabled,
       disCorrectionElements: this.disCorrectionElements,
+      revCorrectionEnabled: this.revCorrectionEnabled,
+      revCorrectionElements: this.revCorrectionElements,
       globallovs: this.guiderModule?.globallovs || {},
       onParametersChange: (name: string, value: any) => this.onParametersChange(name, value),
       onDevicesChange: (name: string, value: any) => this.onDevicesChange(name, value),
       onOpticChange: (name: string, value: any) => this.onOpticChange(name, value),
       onGuideParamsChange: (name: string, value: any) => this.onGuideParamsChange(name, value),
       onCalParamsChange: (name: string, value: any) => this.onCalParamsChange(name, value),
-      onDisCorrectionChange: (name: string, value: any) => this.onDisCorrectionChange(name, value)
+      onDisCorrectionChange: (name: string, value: any) => this.onDisCorrectionChange(name, value),
+      onRevCorrectionChange: (name: string, value: any) => this.onRevCorrectionChange(name, value)
     };
 
     this.dialog.open(ParametersDialogComponent, {
@@ -308,6 +322,12 @@ export class GuiderComponent implements OnInit, OnDestroy {
     const update: { [key: string]: any } = {};
     update[name] = value;
     this.websocketService.setProperty('Guider', 'disCorrections', update);
+  }
+
+  private onRevCorrectionChange(name: string, value: any): void {
+    const update: { [key: string]: any } = {};
+    update[name] = value;
+    this.websocketService.setProperty('Guider', 'revCorrections', update);
   }
 
   /**

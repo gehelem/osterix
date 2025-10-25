@@ -25,6 +25,10 @@ export interface ParametersDialogData {
   disCorrectionElements: { [key: string]: Element };
   disCorrectionEnabled: boolean;
 
+  // Reversed corrections (revCorrections property)
+  revCorrectionElements: { [key: string]: Element };
+  revCorrectionEnabled: boolean;
+
   // Global LOVs from module
   globallovs: { [key: string]: GlobalLov };
 
@@ -35,6 +39,7 @@ export interface ParametersDialogData {
   onGuideParamsChange: (name: string, value: any) => void;
   onCalParamsChange: (name: string, value: any) => void;
   onDisCorrectionChange: (name: string, value: any) => void;
+  onRevCorrectionChange: (name: string, value: any) => void;
 }
 
 interface ListOfValue {
@@ -55,6 +60,7 @@ export class ParametersDialogComponent {
   guideParamsKeysCache: string[] = [];
   calParamsKeysCache: string[] = [];
   disCorrectionKeysCache: string[] = [];
+  revCorrectionKeysCache: string[] = [];
 
   parametersLovsCache: { [key: string]: ListOfValue[] } = {};
   devicesLovsCache: { [key: string]: ListOfValue[] } = {};
@@ -62,6 +68,7 @@ export class ParametersDialogComponent {
   guideParamsLovsCache: { [key: string]: ListOfValue[] } = {};
   calParamsLovsCache: { [key: string]: ListOfValue[] } = {};
   disCorrectionLovsCache: { [key: string]: ListOfValue[] } = {};
+  revCorrectionLovsCache: { [key: string]: ListOfValue[] } = {};
 
   // Original values for reset functionality
   private originalParametersValues: { [key: string]: any } = {};
@@ -70,6 +77,7 @@ export class ParametersDialogComponent {
   private originalGuideParamsValues: { [key: string]: any } = {};
   private originalCalParamsValues: { [key: string]: any } = {};
   private originalDisCorrectionValues: { [key: string]: any } = {};
+  private originalRevCorrectionValues: { [key: string]: any } = {};
 
   constructor(
     public dialogRef: MatDialogRef<ParametersDialogComponent>,
@@ -169,9 +177,24 @@ export class ParametersDialogComponent {
         this.originalDisCorrectionValues[key] = this.data.disCorrectionElements[key]?.value;
       });
     }
+
+    // Cache reversed corrections keys and values
+    if (this.data.revCorrectionElements) {
+      this.revCorrectionKeysCache = Object.keys(this.data.revCorrectionElements).sort((a, b) => {
+        const orderA = this.data.revCorrectionElements[a]?.order || '';
+        const orderB = this.data.revCorrectionElements[b]?.order || '';
+        return orderA.localeCompare(orderB);
+      });
+
+      // Cache LOVs and original values for each revCorrection element
+      this.revCorrectionKeysCache.forEach(key => {
+        this.revCorrectionLovsCache[key] = this.computeElementLovs(key, 'revCorrection');
+        this.originalRevCorrectionValues[key] = this.data.revCorrectionElements[key]?.value;
+      });
+    }
   }
 
-  private computeElementLovs(key: string, type: 'parameters' | 'devices' | 'optic' | 'guideParams' | 'calParams' | 'disCorrection'): ListOfValue[] {
+  private computeElementLovs(key: string, type: 'parameters' | 'devices' | 'optic' | 'guideParams' | 'calParams' | 'disCorrection' | 'revCorrection'): ListOfValue[] {
     const element = this.getElement(key, type);
     if (!element) return [];
 
@@ -224,6 +247,10 @@ export class ParametersDialogComponent {
     return this.data.disCorrectionElements && Object.keys(this.data.disCorrectionElements).length > 0;
   }
 
+  hasRevCorrection(): boolean {
+    return this.data.revCorrectionElements && Object.keys(this.data.revCorrectionElements).length > 0;
+  }
+
   getParametersKeys(): string[] {
     return this.parametersKeysCache;
   }
@@ -248,7 +275,11 @@ export class ParametersDialogComponent {
     return this.disCorrectionKeysCache;
   }
 
-  getElement(key: string, type: 'parameters' | 'devices' | 'optic' | 'guideParams' | 'calParams' | 'disCorrection'): Element | null {
+  getRevCorrectionKeys(): string[] {
+    return this.revCorrectionKeysCache;
+  }
+
+  getElement(key: string, type: 'parameters' | 'devices' | 'optic' | 'guideParams' | 'calParams' | 'disCorrection' | 'revCorrection'): Element | null {
     let elements: { [key: string]: Element };
     if (type === 'parameters') {
       elements = this.data.parametersElements;
@@ -260,18 +291,20 @@ export class ParametersDialogComponent {
       elements = this.data.guideParamsElements;
     } else if (type === 'calParams') {
       elements = this.data.calParamsElements;
-    } else {
+    } else if (type === 'disCorrection') {
       elements = this.data.disCorrectionElements;
+    } else {
+      elements = this.data.revCorrectionElements;
     }
     return elements?.[key] || null;
   }
 
-  getElementLabel(key: string, type: 'parameters' | 'devices' | 'optic' | 'guideParams' | 'calParams' | 'disCorrection'): string {
+  getElementLabel(key: string, type: 'parameters' | 'devices' | 'optic' | 'guideParams' | 'calParams' | 'disCorrection' | 'revCorrection'): string {
     const element = this.getElement(key, type);
     return element?.label || key;
   }
 
-  isStringWithLov(key: string, type: 'parameters' | 'devices' | 'optic' | 'guideParams' | 'calParams' | 'disCorrection'): boolean {
+  isStringWithLov(key: string, type: 'parameters' | 'devices' | 'optic' | 'guideParams' | 'calParams' | 'disCorrection' | 'revCorrection'): boolean {
     const element = this.getElement(key, type);
     if (!element || element.type !== 'string') return false;
     const hasLocalLov = !!(element as any).listOfValues;
@@ -279,7 +312,7 @@ export class ParametersDialogComponent {
     return hasLocalLov || hasGlobalLov;
   }
 
-  isStringWithoutLov(key: string, type: 'parameters' | 'devices' | 'optic' | 'guideParams' | 'calParams' | 'disCorrection'): boolean {
+  isStringWithoutLov(key: string, type: 'parameters' | 'devices' | 'optic' | 'guideParams' | 'calParams' | 'disCorrection' | 'revCorrection'): boolean {
     const element = this.getElement(key, type);
     if (!element || element.type !== 'string') return false;
     const hasLocalLov = !!(element as any).listOfValues;
@@ -287,17 +320,17 @@ export class ParametersDialogComponent {
     return !hasLocalLov && !hasGlobalLov;
   }
 
-  isNumeric(key: string, type: 'parameters' | 'devices' | 'optic' | 'guideParams' | 'calParams' | 'disCorrection'): boolean {
+  isNumeric(key: string, type: 'parameters' | 'devices' | 'optic' | 'guideParams' | 'calParams' | 'disCorrection' | 'revCorrection'): boolean {
     const element = this.getElement(key, type);
     return element?.type === 'int' || element?.type === 'float';
   }
 
-  isBool(key: string, type: 'parameters' | 'devices' | 'optic' | 'guideParams' | 'calParams' | 'disCorrection'): boolean {
+  isBool(key: string, type: 'parameters' | 'devices' | 'optic' | 'guideParams' | 'calParams' | 'disCorrection' | 'revCorrection'): boolean {
     const element = this.getElement(key, type);
     return element?.type === 'bool';
   }
 
-  getElementLovs(key: string, type: 'parameters' | 'devices' | 'optic' | 'guideParams' | 'calParams' | 'disCorrection'): ListOfValue[] {
+  getElementLovs(key: string, type: 'parameters' | 'devices' | 'optic' | 'guideParams' | 'calParams' | 'disCorrection' | 'revCorrection'): ListOfValue[] {
     let cache: { [key: string]: ListOfValue[] };
     if (type === 'parameters') {
       cache = this.parametersLovsCache;
@@ -309,8 +342,10 @@ export class ParametersDialogComponent {
       cache = this.guideParamsLovsCache;
     } else if (type === 'calParams') {
       cache = this.calParamsLovsCache;
-    } else {
+    } else if (type === 'disCorrection') {
       cache = this.disCorrectionLovsCache;
+    } else {
+      cache = this.revCorrectionLovsCache;
     }
     return cache[key] || [];
   }
@@ -370,9 +405,18 @@ export class ParametersDialogComponent {
   }
 
   /**
+   * Reset all reversed corrections to their original values
+   */
+  resetAllRevCorrection(): void {
+    this.revCorrectionKeysCache.forEach(key => {
+      this.data.revCorrectionElements[key].value = this.originalRevCorrectionValues[key];
+    });
+  }
+
+  /**
    * Check if element has a description/help text
    */
-  getElementDescription(key: string, type: 'parameters' | 'devices' | 'optic' | 'guideParams' | 'calParams' | 'disCorrection'): string {
+  getElementDescription(key: string, type: 'parameters' | 'devices' | 'optic' | 'guideParams' | 'calParams' | 'disCorrection' | 'revCorrection'): string {
     const element = this.getElement(key, type);
     return (element as any)?.description || (element as any)?.hint || '';
   }
@@ -380,7 +424,7 @@ export class ParametersDialogComponent {
   /**
    * Check if element has min/max constraints
    */
-  getElementConstraints(key: string, type: 'parameters' | 'devices' | 'optic' | 'guideParams' | 'calParams' | 'disCorrection'): string {
+  getElementConstraints(key: string, type: 'parameters' | 'devices' | 'optic' | 'guideParams' | 'calParams' | 'disCorrection' | 'revCorrection'): string {
     const element = this.getElement(key, type);
     if (!element) return '';
 
