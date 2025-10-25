@@ -1,0 +1,64 @@
+.guiding-graph-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 20px;
+  background-color: #fafafa;
+  border-radius: 8px;
+}
+
+.graph-wrapper {
+  background: white;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  position: relative;
+  width: 100%;
+  height: 500px;
+}
+
+.graph-wrapper canvas {
+  max-width: 100%;
+  max-height: 100%;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .guiding-graph-container {
+    padding: 12px;
+    gap: 12px;
+  }
+
+  .graph-wrapper {
+    padding: 12px;
+    height: 400px;
+  }
+
+  .graph-legend {
+    grid-template-columns: 1fr;
+    padding: 12px;
+  }
+
+  .legend-section h4 {
+    font-size: 13px;
+  }
+
+  .legend-item {
+    font-size: 11px;
+  }
+
+  .color-box {
+    width: 14px;
+    height: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .graph-wrapper {
+    height: 300px;
+  }
+
+  .graph-legend {
+    grid-template-columns: 1fr;
+  }
+}

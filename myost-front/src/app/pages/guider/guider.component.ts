@@ -6,6 +6,7 @@ import { Module, Property, Element, ImageElement } from '../../models/ost.models
 import { ParametersDialogComponent, ParametersDialogData } from './parameters-dialog.component';
 import { GuiderHistogramDialogComponent } from './histogram-dialog.component';
 import { GuiderStatisticsDialogComponent } from './statistics-dialog.component';
+import { GuidingData } from './guiding-graph.component';
 
 @Component({
   selector: 'app-guider',
@@ -53,6 +54,9 @@ export class GuiderComponent implements OnInit, OnDestroy {
   // Disabled corrections property elements (for dialog)
   disCorrectionEnabled: boolean = false;
   disCorrectionElements: { [key: string]: Element } = {};
+
+  // Guiding graph data
+  guidingData: GuidingData | null = null;
 
   constructor(
     private websocketService: WebsocketService,
@@ -153,6 +157,24 @@ export class GuiderComponent implements OnInit, OnDestroy {
     if (disCorrectionProperty) {
       this.disCorrectionEnabled = disCorrectionProperty.enabled;
       this.disCorrectionElements = disCorrectionProperty.elements;
+    }
+
+    // Update guiding data from 'guiding' property
+    const guidingProperty = this.guiderModule.properties['guiding'];
+    if (guidingProperty) {
+      const guidingGrid = (guidingProperty as any).grid;
+      const elements = guidingProperty.elements;
+
+      this.guidingData = {
+        grid: guidingGrid || [],
+        time: elements?.['time']?.value,
+        RA: elements?.['RA']?.value,
+        DE: elements?.['DE']?.value,
+        RMS: elements?.['RMS']?.value,
+        SNR: elements?.['SNR']?.value,
+        pRA: elements?.['pRA']?.value,
+        pDE: elements?.['pDE']?.value
+      };
     }
   }
 

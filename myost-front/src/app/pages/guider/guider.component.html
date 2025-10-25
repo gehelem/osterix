@@ -88,18 +88,19 @@
       </mat-card-content>
     </mat-card>
 
-    <!-- Graphs placeholder -->
-    <mat-card class="graphs-card">
-      <mat-card-header>
-        <mat-card-title>Graphiques de guidage</mat-card-title>
-      </mat-card-header>
+    <!-- Guiding Graph -->
+    <mat-card class="graphs-card" *ngIf="guidingData && guidingData.grid && guidingData.grid.length > 0">
+      <mat-card-content>
+        <app-guiding-graph [guidingData]="guidingData"></app-guiding-graph>
+      </mat-card-content>
+    </mat-card>
+
+    <!-- Empty state when no guiding data -->
+    <mat-card class="graphs-card" *ngIf="!guidingData || !guidingData.grid || guidingData.grid.length === 0">
       <mat-card-content>
         <div class="graphs-placeholder">
-          <p>Les graphiques de guidage seront implémentés ultérieurement</p>
-          <ul>
-            <li>Graphique RA/DEC</li>
-            <li>Graphique de drift</li>
-          </ul>
+          <p>En attente de données de guidage...</p>
+          <p>Lancez une session de guidage pour afficher le graphique</p>
         </div>
       </mat-card-content>
     </mat-card>
