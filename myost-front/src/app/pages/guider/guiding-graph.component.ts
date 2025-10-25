@@ -245,8 +245,8 @@ export class GuidingGraphComponent implements OnChanges, AfterViewInit {
       {
         label: 'Pulse RA (AD)',
         data: pra,
-        borderColor: '#4CAF50',
-        backgroundColor: 'rgba(76, 175, 80, 0.6)',
+        borderColor: 'rgba(76, 175, 80, 0.2)',
+        backgroundColor: 'rgba(76, 175, 80, 0.2)',
         borderWidth: 1,
         yAxisID: 'yPulse',
         type: 'bar',
@@ -257,8 +257,8 @@ export class GuidingGraphComponent implements OnChanges, AfterViewInit {
       {
         label: 'Pulse DE',
         data: pde,
-        borderColor: '#2196F3',
-        backgroundColor: 'rgba(33, 150, 243, 0.6)',
+        borderColor: 'rgba(33, 150, 243, 0.2)',
+        backgroundColor: 'rgba(33, 150, 243, 0.2)',
         borderWidth: 1,
         yAxisID: 'yPulse',
         type: 'bar',
