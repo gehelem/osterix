@@ -58,6 +58,11 @@ export class GuiderComponent implements OnInit, OnDestroy {
   // Guiding graph data
   guidingData: GuidingData | null = null;
 
+  // Values property elements (current session values)
+  valuesEnabled: boolean = false;
+  valuesElements: { [key: string]: Element } = {};
+  valuesKeysCache: string[] = [];
+
   constructor(
     private websocketService: WebsocketService,
     private dialog: MatDialog
@@ -176,6 +181,19 @@ export class GuiderComponent implements OnInit, OnDestroy {
         pDE: elements?.['pDE']?.value
       };
     }
+
+    // Update values from 'values' property
+    const valuesProperty = this.guiderModule.properties['values'];
+    if (valuesProperty) {
+      this.valuesEnabled = valuesProperty.enabled;
+      this.valuesElements = valuesProperty.elements;
+      // Create sorted keys cache
+      this.valuesKeysCache = Object.keys(this.valuesElements).sort((a, b) => {
+        const orderA = this.valuesElements[a]?.order || '';
+        const orderB = this.valuesElements[b]?.order || '';
+        return orderA.localeCompare(orderB);
+      });
+    }
   }
 
   private updateActionsFromProperty(property: Property): void {
@@ -290,6 +308,69 @@ export class GuiderComponent implements OnInit, OnDestroy {
     const update: { [key: string]: any } = {};
     update[name] = value;
     this.websocketService.setProperty('Guider', 'disCorrections', update);
+  }
+
+  /**
+   * Check if values object is not empty
+   */
+  hasValues(): boolean {
+    return Object.keys(this.valuesElements).length > 0;
+  }
+
+  /**
+   * Get element format property
+   */
+  getElementFormat(element: Element): string {
+    return (element as any)?.format || '';
+  }
+
+  /**
+   * Translate element labels from English to French
+   */
+  getElementLabel(key: string): string {
+    const element = this.valuesElements[key];
+    if (!element) {
+      return key;
+    }
+
+    const label = element.label || key;
+
+    // Map direct translations based on key or label
+    const translations: { [key: string]: string } = {
+      // By label
+      'Pulse N': 'Pulse Nord',
+      'Pulse S': 'Pulse Sud',
+      'Pulse E': 'Pulse Est',
+      'Pulse W': 'Pulse Ouest',
+      'RMS RA': 'RMS AD',
+      'RMS DEC': 'RMS DEC',
+      'RMS Total': 'RMS Total',
+      // By key (fallback)
+      'pulseN': 'Pulse Nord',
+      'pulseS': 'Pulse Sud',
+      'pulseE': 'Pulse Est',
+      'pulseW': 'Pulse Ouest',
+      'rmsRA': 'RMS AD',
+      'rmsDEC': 'RMS DEC',
+      'rmsTotal': 'RMS Total'
+    };
+
+    // Try label first, then key
+    return translations[label] || translations[key] || label;
+  }
+
+  /**
+   * Check if value item is RMS
+   */
+  isRmsValue(key: string): boolean {
+    return key.toLowerCase().includes('rms');
+  }
+
+  /**
+   * Check if value item is Pulse
+   */
+  isPulseValue(key: string): boolean {
+    return key.toLowerCase().includes('pulse');
   }
 
   /**

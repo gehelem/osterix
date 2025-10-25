@@ -36,23 +36,19 @@
   position: relative;
 }
 
-/* Image action buttons */
-.image-actions {
+/* Image overlay buttons */
+.image-overlay-buttons {
   position: absolute;
-  bottom: 16px;
-  right: 16px;
+  top: 10px;
+  left: 10px;
   display: flex;
+  flex-direction: row;
   gap: 8px;
   z-index: 10;
 }
 
-.image-actions button {
-  opacity: 0.8;
-  transition: opacity 0.2s;
-}
-
-.image-actions button:hover {
-  opacity: 1;
+.image-overlay-buttons button {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 
 .guider-image {
@@ -129,6 +125,105 @@
 .graphs-placeholder ul {
   list-style-position: inside;
   margin-top: 16px;
+}
+
+/* Values card */
+.values-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 30px;
+  padding: 0;
+}
+
+.values-column {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* Reduce mat-card padding for values */
+.image-section mat-card:first-of-type mat-card-content {
+  padding: 12px 16px !important;
+}
+
+.value-item {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px;
+  background-color: #f5f5f5;
+  border-radius: 4px;
+  border-left: 4px solid #667eea;
+}
+
+.value-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: #666;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.value-content {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+}
+
+.value-number {
+  font-size: 18px;
+  font-weight: 500;
+  color: #333;
+}
+
+.value-unit {
+  font-size: 11px;
+  color: #999;
+  font-weight: 400;
+}
+
+/* Pulse items - smaller size */
+.pulse-item {
+  padding: 4px !important;
+  gap: 2px !important;
+}
+
+.pulse-item .value-label {
+  font-size: 9px !important;
+  line-height: 1;
+}
+
+.pulse-item .value-number {
+  font-size: 12px !important;
+  font-weight: 600;
+}
+
+.pulse-item .value-unit {
+  font-size: 8px !important;
+}
+
+/* RMS items - green styling */
+.rms-item {
+  padding: 6px !important;
+  gap: 3px !important;
+  border-left-color: #4CAF50 !important;
+  background-color: rgba(76, 175, 80, 0.08) !important;
+}
+
+.rms-item .value-label {
+  font-size: 10px !important;
+  color: #2E7D32 !important;
+  line-height: 1;
+}
+
+.rms-item .value-number {
+  font-size: 14px !important;
+  font-weight: 600;
+  color: #1B5E20 !important;
+}
+
+.rms-item .value-unit {
+  font-size: 9px !important;
 }
 
 /* Responsive design */

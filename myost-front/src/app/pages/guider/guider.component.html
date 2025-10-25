@@ -1,17 +1,54 @@
 <div class="guider-container">
   <!-- Image section -->
   <div class="image-section">
+    <!-- Values card -->
+    <mat-card *ngIf="hasValues()">
+      <mat-card-content>
+        <div class="values-container">
+          <!-- Pulses column (left) -->
+          <div class="values-column">
+            <ng-container *ngFor="let key of valuesKeysCache">
+              <div class="value-item pulse-item"
+                   *ngIf="isPulseValue(key)">
+                <div class="value-label">{{ getElementLabel(key) }}</div>
+                <div class="value-content">
+                  <span class="value-number">{{ valuesElements[key]?.value | number:'1.2-2' }}</span>
+                  <span class="value-unit" *ngIf="getElementFormat(valuesElements[key])">
+                    {{ getElementFormat(valuesElements[key]) }}
+                  </span>
+                </div>
+              </div>
+            </ng-container>
+          </div>
+
+          <!-- RMS column (right) -->
+          <div class="values-column">
+            <ng-container *ngFor="let key of valuesKeysCache">
+              <div class="value-item rms-item"
+                   *ngIf="isRmsValue(key)">
+                <div class="value-label">{{ getElementLabel(key) }}</div>
+                <div class="value-content">
+                  <span class="value-number">{{ valuesElements[key]?.value | number:'1.2-2' }}</span>
+                  <span class="value-unit" *ngIf="getElementFormat(valuesElements[key])">
+                    {{ getElementFormat(valuesElements[key]) }}
+                  </span>
+                </div>
+              </div>
+            </ng-container>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <!-- Image card -->
     <mat-card>
-      <mat-card-header>
-        <mat-card-title>Image de guidage</mat-card-title>
-      </mat-card-header>
       <mat-card-content>
         <div class="image-container">
           <img *ngIf="imageUrl" [src]="imageUrl" alt="Guider image" class="guider-image">
           <div *ngIf="!imageUrl" class="no-image">Aucune image disponible</div>
 
-          <!-- Image action buttons (only shown when image exists) -->
-          <div *ngIf="imageUrl" class="image-actions">
+          <!-- Image overlay buttons (only shown when image exists) -->
+          <div *ngIf="imageUrl" class="image-overlay-buttons">
             <button mat-mini-fab color="primary"
                     (click)="showHistogram($event)"
                     matTooltip="Histogramme">
@@ -20,7 +57,7 @@
             <button mat-mini-fab color="primary"
                     (click)="showStatistics($event)"
                     matTooltip="Statistiques">
-              <mat-icon>info</mat-icon>
+              <mat-icon>analytics</mat-icon>
             </button>
           </div>
         </div>
@@ -32,9 +69,6 @@
   <div class="controls-section">
     <!-- Actions card -->
     <mat-card>
-      <mat-card-header>
-        <mat-card-title>Actions</mat-card-title>
-      </mat-card-header>
       <mat-card-content>
         <div class="actions-grid">
           <!-- Calibrate button -->
