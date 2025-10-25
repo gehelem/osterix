@@ -57,6 +57,16 @@
             Guider
           </button>
 
+          <!-- Abort Guider button -->
+          <button mat-raised-button
+                  color="warn"
+                  (click)="onAbortGuider()"
+                  [disabled]="!abortGuiderEnabled"
+                  class="action-button">
+            <mat-icon>stop</mat-icon>
+            Arrêter le guidage
+          </button>
+
           <!-- Clear calibration button -->
           <button mat-raised-button
                   color="warn"
