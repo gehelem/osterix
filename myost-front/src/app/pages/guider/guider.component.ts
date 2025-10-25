@@ -299,8 +299,9 @@ export class GuiderComponent implements OnInit, OnDestroy {
     };
 
     this.dialog.open(ParametersDialogComponent, {
-      width: '1200px',
+      width: '900px',
       maxWidth: '95vw',
+      maxHeight: '90vh',
       data: dialogData
     });
   }

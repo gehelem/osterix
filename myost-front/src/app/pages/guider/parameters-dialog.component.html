@@ -1,10 +1,8 @@
-<h2 mat-dialog-title>
-  <mat-icon class="title-icon">settings</mat-icon>
-  Paramètres de guidage
-  <button mat-icon-button mat-dialog-close class="close-button">
+<div class="dialog-header">
+  <button mat-icon-button mat-dialog-close class="close-button" matTooltip="Fermer">
     <mat-icon>close</mat-icon>
   </button>
-</h2>
+</div>
 <mat-dialog-content>
   <div class="params-grid">
     <!-- Parameters card -->
@@ -64,136 +62,6 @@
                                   (ngModelChange)="data.onParametersChange(key, $event)"
                                   [disabled]="!data.parametersEnabled">
                   {{ getElementLabel(key, 'parameters') }}
-                </mat-slide-toggle>
-              </div>
-            </div>
-          </ng-container>
-        </form>
-      </mat-card-content>
-    </mat-card>
-
-    <!-- Devices card -->
-    <mat-card *ngIf="hasDevices()">
-      <mat-card-header>
-        <div class="card-header-container">
-          <mat-card-title>
-            <mat-icon class="card-icon">devices</mat-icon>
-            Périphériques
-          </mat-card-title>
-          <button mat-icon-button matTooltip="Réinitialiser les périphériques" (click)="resetAllDevices()"
-                  [disabled]="!data.devicesEnabled" class="reset-button">
-            <mat-icon>refresh</mat-icon>
-          </button>
-        </div>
-      </mat-card-header>
-      <mat-card-content>
-        <form class="guider-form">
-          <ng-container *ngFor="let key of getDevicesKeys()">
-            <div class="element-wrapper">
-              <mat-form-field appearance="fill" *ngIf="isStringWithLov(key, 'devices')" class="full-width">
-                <mat-label>{{ getElementLabel(key, 'devices') }}</mat-label>
-                <mat-select [(ngModel)]="data.devicesElements[key].value" [name]="'devices_' + key"
-                            (ngModelChange)="data.onDevicesChange(key, $event)"
-                            [disabled]="!data.devicesEnabled">
-                  <mat-option *ngFor="let option of getElementLovs(key, 'devices')" [value]="option.value">
-                    {{ option.label }}
-                  </mat-option>
-                </mat-select>
-                <mat-hint *ngIf="getElementDescription(key, 'devices')">
-                  {{ getElementDescription(key, 'devices') }}
-                </mat-hint>
-              </mat-form-field>
-
-              <mat-form-field appearance="fill" *ngIf="isStringWithoutLov(key, 'devices')" class="full-width">
-                <mat-label>{{ getElementLabel(key, 'devices') }}</mat-label>
-                <input matInput type="text" [(ngModel)]="data.devicesElements[key].value" [name]="'devices_' + key"
-                       (ngModelChange)="data.onDevicesChange(key, $event)"
-                       [disabled]="!data.devicesEnabled">
-                <mat-hint *ngIf="getElementDescription(key, 'devices')">
-                  {{ getElementDescription(key, 'devices') }}
-                </mat-hint>
-              </mat-form-field>
-
-              <mat-form-field appearance="fill" *ngIf="isNumeric(key, 'devices')" class="full-width">
-                <mat-label>{{ getElementLabel(key, 'devices') }}{{ getElementConstraints(key, 'devices') }}</mat-label>
-                <input matInput type="number" [(ngModel)]="data.devicesElements[key].value" [name]="'devices_' + key"
-                       (ngModelChange)="data.onDevicesChange(key, $event)"
-                       [disabled]="!data.devicesEnabled">
-                <mat-hint *ngIf="getElementDescription(key, 'devices')">
-                  {{ getElementDescription(key, 'devices') }}
-                </mat-hint>
-              </mat-form-field>
-
-              <div class="toggle-field" *ngIf="isBool(key, 'devices')">
-                <mat-slide-toggle [(ngModel)]="data.devicesElements[key].value" [name]="'devices_' + key"
-                                  (ngModelChange)="data.onDevicesChange(key, $event)"
-                                  [disabled]="!data.devicesEnabled">
-                  {{ getElementLabel(key, 'devices') }}
-                </mat-slide-toggle>
-              </div>
-            </div>
-          </ng-container>
-        </form>
-      </mat-card-content>
-    </mat-card>
-
-    <!-- Optic card -->
-    <mat-card *ngIf="hasOptic()">
-      <mat-card-header>
-        <div class="card-header-container">
-          <mat-card-title>
-            <mat-icon class="card-icon">lens</mat-icon>
-            Optique
-          </mat-card-title>
-          <button mat-icon-button matTooltip="Réinitialiser les paramètres optiques" (click)="resetAllOptic()"
-                  [disabled]="!data.opticEnabled" class="reset-button">
-            <mat-icon>refresh</mat-icon>
-          </button>
-        </div>
-      </mat-card-header>
-      <mat-card-content>
-        <form class="guider-form">
-          <ng-container *ngFor="let key of getOpticKeys()">
-            <div class="element-wrapper">
-              <mat-form-field appearance="fill" *ngIf="isStringWithLov(key, 'optic')" class="full-width">
-                <mat-label>{{ getElementLabel(key, 'optic') }}</mat-label>
-                <mat-select [(ngModel)]="data.opticElements[key].value" [name]="'optic_' + key"
-                            (ngModelChange)="data.onOpticChange(key, $event)"
-                            [disabled]="!data.opticEnabled">
-                  <mat-option *ngFor="let option of getElementLovs(key, 'optic')" [value]="option.value">
-                    {{ option.label }}
-                  </mat-option>
-                </mat-select>
-                <mat-hint *ngIf="getElementDescription(key, 'optic')">
-                  {{ getElementDescription(key, 'optic') }}
-                </mat-hint>
-              </mat-form-field>
-
-              <mat-form-field appearance="fill" *ngIf="isStringWithoutLov(key, 'optic')" class="full-width">
-                <mat-label>{{ getElementLabel(key, 'optic') }}</mat-label>
-                <input matInput type="text" [(ngModel)]="data.opticElements[key].value" [name]="'optic_' + key"
-                       (ngModelChange)="data.onOpticChange(key, $event)"
-                       [disabled]="!data.opticEnabled">
-                <mat-hint *ngIf="getElementDescription(key, 'optic')">
-                  {{ getElementDescription(key, 'optic') }}
-                </mat-hint>
-              </mat-form-field>
-
-              <mat-form-field appearance="fill" *ngIf="isNumeric(key, 'optic')" class="full-width">
-                <mat-label>{{ getElementLabel(key, 'optic') }}{{ getElementConstraints(key, 'optic') }}</mat-label>
-                <input matInput type="number" [(ngModel)]="data.opticElements[key].value" [name]="'optic_' + key"
-                       (ngModelChange)="data.onOpticChange(key, $event)"
-                       [disabled]="!data.opticEnabled">
-                <mat-hint *ngIf="getElementDescription(key, 'optic')">
-                  {{ getElementDescription(key, 'optic') }}
-                </mat-hint>
-              </mat-form-field>
-
-              <div class="toggle-field" *ngIf="isBool(key, 'optic')">
-                <mat-slide-toggle [(ngModel)]="data.opticElements[key].value" [name]="'optic_' + key"
-                                  (ngModelChange)="data.onOpticChange(key, $event)"
-                                  [disabled]="!data.opticEnabled">
-                  {{ getElementLabel(key, 'optic') }}
                 </mat-slide-toggle>
               </div>
             </div>
@@ -461,8 +329,135 @@
         </form>
       </mat-card-content>
     </mat-card>
+
+    <!-- Optic card -->
+    <mat-card *ngIf="hasOptic()">
+      <mat-card-header>
+        <div class="card-header-container">
+          <mat-card-title>
+            <mat-icon class="card-icon">lens</mat-icon>
+            Optique
+          </mat-card-title>
+          <button mat-icon-button matTooltip="Réinitialiser les paramètres optiques" (click)="resetAllOptic()"
+                  [disabled]="!data.opticEnabled" class="reset-button">
+            <mat-icon>refresh</mat-icon>
+          </button>
+        </div>
+      </mat-card-header>
+      <mat-card-content>
+        <form class="guider-form">
+          <ng-container *ngFor="let key of getOpticKeys()">
+            <div class="element-wrapper">
+              <mat-form-field appearance="fill" *ngIf="isStringWithLov(key, 'optic')" class="full-width">
+                <mat-label>{{ getElementLabel(key, 'optic') }}</mat-label>
+                <mat-select [(ngModel)]="data.opticElements[key].value" [name]="'optic_' + key"
+                            (ngModelChange)="data.onOpticChange(key, $event)"
+                            [disabled]="!data.opticEnabled">
+                  <mat-option *ngFor="let option of getElementLovs(key, 'optic')" [value]="option.value">
+                    {{ option.label }}
+                  </mat-option>
+                </mat-select>
+                <mat-hint *ngIf="getElementDescription(key, 'optic')">
+                  {{ getElementDescription(key, 'optic') }}
+                </mat-hint>
+              </mat-form-field>
+
+              <mat-form-field appearance="fill" *ngIf="isStringWithoutLov(key, 'optic')" class="full-width">
+                <mat-label>{{ getElementLabel(key, 'optic') }}</mat-label>
+                <input matInput type="text" [(ngModel)]="data.opticElements[key].value" [name]="'optic_' + key"
+                       (ngModelChange)="data.onOpticChange(key, $event)"
+                       [disabled]="!data.opticEnabled">
+                <mat-hint *ngIf="getElementDescription(key, 'optic')">
+                  {{ getElementDescription(key, 'optic') }}
+                </mat-hint>
+              </mat-form-field>
+
+              <mat-form-field appearance="fill" *ngIf="isNumeric(key, 'optic')" class="full-width">
+                <mat-label>{{ getElementLabel(key, 'optic') }}{{ getElementConstraints(key, 'optic') }}</mat-label>
+                <input matInput type="number" [(ngModel)]="data.opticElements[key].value" [name]="'optic_' + key"
+                       (ngModelChange)="data.onOpticChange(key, $event)"
+                       [disabled]="!data.opticEnabled">
+                <mat-hint *ngIf="getElementDescription(key, 'optic')">
+                  {{ getElementDescription(key, 'optic') }}
+                </mat-hint>
+              </mat-form-field>
+
+              <div class="toggle-field" *ngIf="isBool(key, 'optic')">
+                <mat-slide-toggle [(ngModel)]="data.opticElements[key].value" [name]="'optic_' + key"
+                                  (ngModelChange)="data.onOpticChange(key, $event)"
+                                  [disabled]="!data.opticEnabled">
+                  {{ getElementLabel(key, 'optic') }}
+                </mat-slide-toggle>
+              </div>
+            </div>
+          </ng-container>
+        </form>
+      </mat-card-content>
+    </mat-card>
+
+    <!-- Devices card -->
+    <mat-card *ngIf="hasDevices()">
+      <mat-card-header>
+        <div class="card-header-container">
+          <mat-card-title>
+            <mat-icon class="card-icon">devices</mat-icon>
+            Périphériques
+          </mat-card-title>
+          <button mat-icon-button matTooltip="Réinitialiser les périphériques" (click)="resetAllDevices()"
+                  [disabled]="!data.devicesEnabled" class="reset-button">
+            <mat-icon>refresh</mat-icon>
+          </button>
+        </div>
+      </mat-card-header>
+      <mat-card-content>
+        <form class="guider-form">
+          <ng-container *ngFor="let key of getDevicesKeys()">
+            <div class="element-wrapper">
+              <mat-form-field appearance="fill" *ngIf="isStringWithLov(key, 'devices')" class="full-width">
+                <mat-label>{{ getElementLabel(key, 'devices') }}</mat-label>
+                <mat-select [(ngModel)]="data.devicesElements[key].value" [name]="'devices_' + key"
+                            (ngModelChange)="data.onDevicesChange(key, $event)"
+                            [disabled]="!data.devicesEnabled">
+                  <mat-option *ngFor="let option of getElementLovs(key, 'devices')" [value]="option.value">
+                    {{ option.label }}
+                  </mat-option>
+                </mat-select>
+                <mat-hint *ngIf="getElementDescription(key, 'devices')">
+                  {{ getElementDescription(key, 'devices') }}
+                </mat-hint>
+              </mat-form-field>
+
+              <mat-form-field appearance="fill" *ngIf="isStringWithoutLov(key, 'devices')" class="full-width">
+                <mat-label>{{ getElementLabel(key, 'devices') }}</mat-label>
+                <input matInput type="text" [(ngModel)]="data.devicesElements[key].value" [name]="'devices_' + key"
+                       (ngModelChange)="data.onDevicesChange(key, $event)"
+                       [disabled]="!data.devicesEnabled">
+                <mat-hint *ngIf="getElementDescription(key, 'devices')">
+                  {{ getElementDescription(key, 'devices') }}
+                </mat-hint>
+              </mat-form-field>
+
+              <mat-form-field appearance="fill" *ngIf="isNumeric(key, 'devices')" class="full-width">
+                <mat-label>{{ getElementLabel(key, 'devices') }}{{ getElementConstraints(key, 'devices') }}</mat-label>
+                <input matInput type="number" [(ngModel)]="data.devicesElements[key].value" [name]="'devices_' + key"
+                       (ngModelChange)="data.onDevicesChange(key, $event)"
+                       [disabled]="!data.devicesEnabled">
+                <mat-hint *ngIf="getElementDescription(key, 'devices')">
+                  {{ getElementDescription(key, 'devices') }}
+                </mat-hint>
+              </mat-form-field>
+
+              <div class="toggle-field" *ngIf="isBool(key, 'devices')">
+                <mat-slide-toggle [(ngModel)]="data.devicesElements[key].value" [name]="'devices_' + key"
+                                  (ngModelChange)="data.onDevicesChange(key, $event)"
+                                  [disabled]="!data.devicesEnabled">
+                  {{ getElementLabel(key, 'devices') }}
+                </mat-slide-toggle>
+              </div>
+            </div>
+          </ng-container>
+        </form>
+      </mat-card-content>
+    </mat-card>
   </div>
 </mat-dialog-content>
-<mat-dialog-actions align="end">
-  <button mat-button mat-dialog-close>Fermer</button>
-</mat-dialog-actions>
