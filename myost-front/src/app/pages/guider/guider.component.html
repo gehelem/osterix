@@ -122,20 +122,44 @@
       </mat-card-content>
     </mat-card>
 
-    <!-- Guiding Graph -->
-    <mat-card class="graphs-card" *ngIf="guidingData && guidingData.grid && guidingData.grid.length > 0">
+    <!-- Guiding Graph with Tabs -->
+    <mat-card class="graphs-card">
       <mat-card-content>
-        <app-guiding-graph [guidingData]="guidingData"></app-guiding-graph>
-      </mat-card-content>
-    </mat-card>
+        <mat-tab-group>
+          <!-- Tab 1: Guiding Graph -->
+          <mat-tab label="Graphique de guidage">
+            <ng-template mat-tab-label>
+              <mat-icon class="tab-icon">trending_up</mat-icon>
+              Graphique de guidage
+            </ng-template>
+            <div class="tab-content">
+              <div *ngIf="guidingData && guidingData.grid && guidingData.grid.length > 0">
+                <app-guiding-graph [guidingData]="guidingData"></app-guiding-graph>
+              </div>
+              <div *ngIf="!guidingData || !guidingData.grid || guidingData.grid.length === 0" class="graphs-placeholder">
+                <p>En attente de données de guidage...</p>
+                <p>Lancez une session de guidage pour afficher le graphique</p>
+              </div>
+            </div>
+          </mat-tab>
 
-    <!-- Empty state when no guiding data -->
-    <mat-card class="graphs-card" *ngIf="!guidingData || !guidingData.grid || guidingData.grid.length === 0">
-      <mat-card-content>
-        <div class="graphs-placeholder">
-          <p>En attente de données de guidage...</p>
-          <p>Lancez une session de guidage pour afficher le graphique</p>
-        </div>
+          <!-- Tab 2: Drift Graph -->
+          <mat-tab label="Graphique Drift">
+            <ng-template mat-tab-label>
+              <mat-icon class="tab-icon">scatter_plot</mat-icon>
+              Drift
+            </ng-template>
+            <div class="tab-content">
+              <div *ngIf="driftData && driftData.grid && driftData.grid.length > 0">
+                <app-drift-graph [driftData]="driftData"></app-drift-graph>
+              </div>
+              <div *ngIf="!driftData || !driftData.grid || driftData.grid.length === 0" class="graphs-placeholder">
+                <p>En attente de données de dérive...</p>
+                <p>Lancez une session de guidage pour afficher le graphique</p>
+              </div>
+            </div>
+          </mat-tab>
+        </mat-tab-group>
       </mat-card-content>
     </mat-card>
   </div>

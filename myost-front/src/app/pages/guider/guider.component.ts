@@ -7,6 +7,7 @@ import { ParametersDialogComponent, ParametersDialogData } from './parameters-di
 import { GuiderHistogramDialogComponent } from './histogram-dialog.component';
 import { GuiderStatisticsDialogComponent } from './statistics-dialog.component';
 import { GuidingData } from './guiding-graph.component';
+import { DriftData } from './drift-graph.component';
 
 @Component({
   selector: 'app-guider',
@@ -62,6 +63,9 @@ export class GuiderComponent implements OnInit, OnDestroy {
 
   // Guiding graph data
   guidingData: GuidingData | null = null;
+
+  // Drift graph data
+  driftData: DriftData | null = null;
 
   // Values property elements (current session values)
   valuesEnabled: boolean = false;
@@ -191,6 +195,18 @@ export class GuiderComponent implements OnInit, OnDestroy {
         SNR: elements?.['SNR']?.value,
         pRA: elements?.['pRA']?.value,
         pDE: elements?.['pDE']?.value
+      };
+    }
+
+    // Update drift data from 'drift' property
+    const driftProperty = this.guiderModule.properties['drift'];
+    if (driftProperty) {
+      const driftGrid = (driftProperty as any).grid;
+      const graphParams = (driftProperty as any).graphParams;
+
+      this.driftData = {
+        grid: driftGrid || [],
+        graphParams: graphParams
       };
     }
 

@@ -19,6 +19,7 @@ import { ParametersDialogComponent as GuiderParametersDialogComponent } from './
 import { GuiderHistogramDialogComponent } from './pages/guider/histogram-dialog.component';
 import { GuiderStatisticsDialogComponent } from './pages/guider/statistics-dialog.component';
 import { GuidingGraphComponent } from './pages/guider/guiding-graph.component';
+import { DriftGraphComponent } from './pages/guider/drift-graph.component';
 
 // Angular Material imports
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -51,6 +52,7 @@ import { MessagesComponent } from './pages/messages/messages.component';
     GuiderHistogramDialogComponent,
     GuiderStatisticsDialogComponent,
     GuidingGraphComponent,
+    DriftGraphComponent,
     SequenceComponent,
     NavigatorComponent,
     GuiderComponent,
