@@ -140,6 +140,20 @@ mat-checkbox {
   outline: none;
 }
 
+/* Actions column */
+.sequence-table td:last-child {
+  text-align: center;
+}
+
+.sequence-table button[mat-icon-button] {
+  margin: 0 2px;
+  transform: scale(0.85);
+}
+
+.sequence-table button[mat-icon-button]:disabled {
+  opacity: 0.5;
+}
+
 .progress-cell {
   display: flex;
   align-items: center;

@@ -3,6 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { WebsocketService } from '../../services/websocket.service';
 import { Module, Property, Element } from '../../models/ost.models';
 import { Subscription } from 'rxjs';
+import { SequenceRowDialogComponent, SequenceRowData, SequenceRowDialogData } from './sequence-row-dialog.component';
 
 interface SequenceRow {
   count: number;
@@ -24,7 +25,7 @@ export class SequenceComponent implements OnInit, OnDestroy {
   sequencerModule: Module | null = null;
 
   // Display columns for the sequence grid
-  displayedColumns: string[] = ['frametype', 'filter', 'exposure', 'count', 'gain', 'offset', 'progress'];
+  displayedColumns: string[] = ['frametype', 'filter', 'exposure', 'count', 'gain', 'offset', 'progress', 'actions'];
 
   // Sequence grid data
   sequenceRows: SequenceRow[] = [];
@@ -329,12 +330,37 @@ export class SequenceComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Update sequence grid row
+   * Edit a sequence row by opening a dialog
    */
-  onSequenceRowChange(rowIndex: number, columnName: string, value: any): void {
-    console.log(`Updating sequence row ${rowIndex}, column ${columnName} to ${value}`);
-    // TODO: Implement grid update via WebSocket
-    // This would need to send the entire grid back to the server
+  editSequenceRow(rowIndex: number): void {
+    const row = this.sequenceRows[rowIndex];
+    if (!row) return;
+
+    const dialogData: SequenceRowDialogData = {
+      title: `Éditer ligne ${rowIndex + 1}`,
+      row: { ...row }, // Create a copy
+      filterOptions: this.filterOptions,
+      frameTypeOptions: this.frameTypeOptions,
+      isNewRow: false
+    };
+
+    this.dialog.open(SequenceRowDialogComponent, {
+      width: '500px',
+      data: dialogData
+    }).afterClosed().subscribe(result => {
+      if (result) {
+        console.log(`Updating sequence row ${rowIndex}`, result);
+        // Send Flupdate event to server
+        this.wsService.updateGridLine('Sequencer', 'sequence', rowIndex, {
+          count: result.count,
+          exposure: result.exposure,
+          filter: result.filter,
+          frametype: result.frametype,
+          gain: result.gain,
+          offset: result.offset
+        });
+      }
+    });
   }
 
   /**
@@ -342,17 +368,40 @@ export class SequenceComponent implements OnInit, OnDestroy {
    */
   addSequenceRow(): void {
     console.log('Adding new sequence row');
-    const newRow: SequenceRow = {
+    const newRow: SequenceRowData = {
       count: 1,
       exposure: 10,
       filter: 1,
       frametype: 'L',
       gain: 0,
-      offset: 0,
-      progress: { dynlabel: '0/1', value: 0 }
+      offset: 0
     };
-    this.sequenceRows.push(newRow);
-    // TODO: Send updated grid to server
+
+    const dialogData: SequenceRowDialogData = {
+      title: 'Ajouter une nouvelle ligne de séquence',
+      row: newRow,
+      filterOptions: this.filterOptions,
+      frameTypeOptions: this.frameTypeOptions,
+      isNewRow: true
+    };
+
+    this.dialog.open(SequenceRowDialogComponent, {
+      width: '500px',
+      data: dialogData
+    }).afterClosed().subscribe(result => {
+      if (result) {
+        console.log('Creating new sequence row', result);
+        // Send Flcreate event to server
+        this.wsService.createGridLine('Sequencer', 'sequence', {
+          count: result.count,
+          exposure: result.exposure,
+          filter: result.filter,
+          frametype: result.frametype,
+          gain: result.gain,
+          offset: result.offset
+        });
+      }
+    });
   }
 
   /**
@@ -360,8 +409,30 @@ export class SequenceComponent implements OnInit, OnDestroy {
    */
   deleteSequenceRow(rowIndex: number): void {
     console.log(`Deleting sequence row ${rowIndex}`);
-    this.sequenceRows.splice(rowIndex, 1);
-    // TODO: Send updated grid to server
+    // Send Fldelete event to server
+    this.wsService.deleteGridLine('Sequencer', 'sequence', rowIndex);
+  }
+
+  /**
+   * Move a sequence row up
+   */
+  moveSequenceRowUp(rowIndex: number): void {
+    if (rowIndex > 0) {
+      console.log(`Moving sequence row ${rowIndex} up`);
+      // Send Flup event to server
+      this.wsService.moveGridLineUp('Sequencer', 'sequence', rowIndex);
+    }
+  }
+
+  /**
+   * Move a sequence row down
+   */
+  moveSequenceRowDown(rowIndex: number): void {
+    if (rowIndex < this.sequenceRows.length - 1) {
+      console.log(`Moving sequence row ${rowIndex} down`);
+      // Send Fldown event to server
+      this.wsService.moveGridLineDown('Sequencer', 'sequence', rowIndex);
+    }
   }
 
   /**
