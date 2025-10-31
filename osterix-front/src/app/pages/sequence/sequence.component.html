@@ -1,1 +1,292 @@
-<p>sequence works!</p>
+<div class="sequence-container" *ngIf="isModuleLoaded; else noModule">
+  <!-- Main Title -->
+  <div class="header">
+    <h1>Séquenceur d'imagerie</h1>
+    <div class="status-badge" [ngClass]="isRunning ? 'running' : 'idle'">
+      {{ currentStatus }}
+    </div>
+  </div>
+
+  <!-- Action Buttons -->
+  <div class="actions-section">
+    <mat-card>
+      <mat-card-content>
+        <button mat-raised-button color="primary" (click)="startSequence()" [disabled]="isRunning">
+          <mat-icon>play_arrow</mat-icon>
+          Démarrer
+        </button>
+        <button mat-raised-button color="warn" (click)="stopSequence()" [disabled]="!isRunning">
+          <mat-icon>stop</mat-icon>
+          Arrêter
+        </button>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <!-- Tabs Container -->
+  <mat-tab-group>
+    <!-- Tab 1: Control -->
+    <mat-tab label="Contrôle">
+      <ng-template mat-tab-label>
+        <mat-icon class="tab-icon">settings_remote</mat-icon>
+        <span>Contrôle</span>
+      </ng-template>
+
+      <!-- Object Target -->
+      <mat-card class="config-card" *ngIf="devicesEnabled">
+        <mat-card-header>
+          <mat-card-title>Objet cible</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <mat-form-field appearance="fill" class="form-field">
+            <mat-label>Nom</mat-label>
+            <input matInput [(ngModel)]="objectName" (change)="onObjectChange('label', objectName)">
+          </mat-form-field>
+
+          <mat-form-field appearance="fill" class="form-field">
+            <mat-label>AD (RA)</mat-label>
+            <input matInput type="number" [(ngModel)]="objectRA" (change)="onObjectChange('ra', objectRA)">
+          </mat-form-field>
+
+          <mat-form-field appearance="fill" class="form-field">
+            <mat-label>DEC</mat-label>
+            <input matInput type="number" [(ngModel)]="objectDEC" (change)="onObjectChange('de', objectDEC)">
+          </mat-form-field>
+        </mat-card-content>
+      </mat-card>
+
+      <!-- Devices -->
+      <mat-card class="config-card" *ngIf="devicesEnabled">
+        <mat-card-header>
+          <mat-card-title>Appareils</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <mat-form-field appearance="fill" class="form-field" *ngFor="let element of devicesElements | keyvalue">
+            <mat-label>{{ element.value.label }}</mat-label>
+            <input matInput [(ngModel)]="element.value.value" (change)="onDevicesChange(element.key, element.value.value)">
+          </mat-form-field>
+        </mat-card-content>
+      </mat-card>
+
+      <!-- Progress -->
+      <mat-card class="config-card" *ngIf="true">
+        <mat-card-header>
+          <mat-card-title>Progression</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="progress-item">
+            <span>Séquence globale</span>
+            <mat-progress-bar mode="determinate" [value]="globalProgress"></mat-progress-bar>
+            <span class="progress-value">{{ globalProgress | number:'1.0-0' }}%</span>
+          </div>
+
+          <div class="progress-item">
+            <span>Exposition courante</span>
+            <mat-progress-bar mode="determinate" [value]="exposureProgress"></mat-progress-bar>
+            <span class="progress-value">{{ exposureProgress | number:'1.0-0' }}%</span>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </mat-tab>
+
+    <!-- Tab 2: Sequence -->
+    <mat-tab label="Séquence">
+      <ng-template mat-tab-label>
+        <mat-icon class="tab-icon">list</mat-icon>
+        <span>Séquence</span>
+      </ng-template>
+
+      <mat-card class="sequence-card">
+        <mat-card-header>
+          <mat-card-title>
+            Séquence d'imagerie ({{ sequenceRows.length }} lignes)
+          </mat-card-title>
+          <mat-card-subtitle>
+            <button mat-icon-button (click)="addSequenceRow()" title="Ajouter une ligne">
+              <mat-icon>add</mat-icon>
+            </button>
+          </mat-card-subtitle>
+        </mat-card-header>
+
+        <mat-card-content>
+          <!-- Sequence Table -->
+          <div class="table-container">
+            <table mat-table [dataSource]="sequenceRows" class="sequence-table">
+              <!-- Type d'image Column -->
+              <ng-container matColumnDef="frametype">
+                <th mat-header-cell *matHeaderCellDef>Type d'image</th>
+                <td mat-cell *matCellDef="let row; let i = index">
+                  <mat-select [(ngModel)]="row.frametype" (change)="onSequenceRowChange(i, 'frametype', row.frametype)">
+                    <mat-option *ngFor="let option of frameTypeOptions | keyvalue" [value]="option.key">
+                      {{ option.value }}
+                    </mat-option>
+                  </mat-select>
+                </td>
+              </ng-container>
+
+              <!-- Filter Column -->
+              <ng-container matColumnDef="filter">
+                <th mat-header-cell *matHeaderCellDef>Filtre</th>
+                <td mat-cell *matCellDef="let row; let i = index">
+                  <mat-select [(ngModel)]="row.filter" (change)="onSequenceRowChange(i, 'filter', row.filter)">
+                    <mat-option *ngFor="let option of filterOptions | keyvalue" [value]="option.key">
+                      {{ option.value }}
+                    </mat-option>
+                  </mat-select>
+                </td>
+              </ng-container>
+
+              <!-- Exposition Column -->
+              <ng-container matColumnDef="exposure">
+                <th mat-header-cell *matHeaderCellDef>Exposition (s)</th>
+                <td mat-cell *matCellDef="let row; let i = index">
+                  <input matInput type="number" [(ngModel)]="row.exposure" (change)="onSequenceRowChange(i, 'exposure', row.exposure)">
+                </td>
+              </ng-container>
+
+              <!-- Count Column -->
+              <ng-container matColumnDef="count">
+                <th mat-header-cell *matHeaderCellDef>Nombre</th>
+                <td mat-cell *matCellDef="let row; let i = index">
+                  <input matInput type="number" [(ngModel)]="row.count" (change)="onSequenceRowChange(i, 'count', row.count)">
+                </td>
+              </ng-container>
+
+              <!-- Gain Column -->
+              <ng-container matColumnDef="gain">
+                <th mat-header-cell *matHeaderCellDef>Gain</th>
+                <td mat-cell *matCellDef="let row; let i = index">
+                  <input matInput type="number" [(ngModel)]="row.gain" (change)="onSequenceRowChange(i, 'gain', row.gain)">
+                </td>
+              </ng-container>
+
+              <!-- Offset Column -->
+              <ng-container matColumnDef="offset">
+                <th mat-header-cell *matHeaderCellDef>Offset</th>
+                <td mat-cell *matCellDef="let row; let i = index">
+                  <input matInput type="number" [(ngModel)]="row.offset" (change)="onSequenceRowChange(i, 'offset', row.offset)">
+                </td>
+              </ng-container>
+
+              <!-- Progression Column -->
+              <ng-container matColumnDef="progress">
+                <th mat-header-cell *matHeaderCellDef>Progression</th>
+                <td mat-cell *matCellDef="let row">
+                  <div class="progress-cell">
+                    <mat-progress-bar mode="determinate" [value]="row.progress.value" class="cell-progress"></mat-progress-bar>
+                    <span class="progress-label">{{ row.progress.dynlabel }}</span>
+                  </div>
+                </td>
+              </ng-container>
+
+              <!-- Actions Column -->
+              <ng-container matColumnDef="actions">
+                <th mat-header-cell *matHeaderCellDef>Actions</th>
+                <td mat-cell *matCellDef="let row; let i = index">
+                  <button mat-icon-button color="warn" (click)="deleteSequenceRow(i)" title="Supprimer">
+                    <mat-icon>delete</mat-icon>
+                  </button>
+                </td>
+              </ng-container>
+
+              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </mat-tab>
+
+    <!-- Tab 3: Parameters -->
+    <mat-tab label="Paramètres">
+      <ng-template mat-tab-label>
+        <mat-icon class="tab-icon">tune</mat-icon>
+        <span>Paramètres</span>
+      </ng-template>
+
+      <!-- Advanced Parameters -->
+      <mat-card class="config-card" *ngIf="parametersEnabled">
+        <mat-card-header>
+          <mat-card-title>Options avancées</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <mat-checkbox [(ngModel)]="autoFocusAtStart" (change)="onParametersChange('autofocusatstart', autoFocusAtStart)">
+            Focus au démarrage de la séquence
+          </mat-checkbox>
+
+          <mat-checkbox [(ngModel)]="autoFocusOnFilterChange" (change)="onParametersChange('autofocusonfilterchange', autoFocusOnFilterChange)">
+            Focus au changement de filtre
+          </mat-checkbox>
+
+          <mat-form-field appearance="fill" class="form-field">
+            <mat-label>Instance de module focus</mat-label>
+            <input matInput [(ngModel)]="focusModule" (change)="onParametersChange('focusmodule', focusModule)">
+          </mat-form-field>
+
+          <mat-checkbox [(ngModel)]="suspendGuidingDuringFocus" (change)="onParametersChange('suspendguidingduringfocus', suspendGuidingDuringFocus)">
+            Suspendre le guidage pendant le focus
+          </mat-checkbox>
+
+          <mat-form-field appearance="fill" class="form-field">
+            <mat-label>Instance de module guidage</mat-label>
+            <input matInput [(ngModel)]="guiderModule" (change)="onParametersChange('guidermodule', guiderModule)">
+          </mat-form-field>
+
+          <mat-form-field appearance="fill" class="form-field">
+            <mat-label>Latence après reprise du guidage (s)</mat-label>
+            <input matInput type="number" [(ngModel)]="guidingSettleTime" (change)="onParametersChange('guidingsettletime', guidingSettleTime)">
+          </mat-form-field>
+        </mat-card-content>
+      </mat-card>
+
+      <!-- Camera Parameters -->
+      <mat-card class="config-card" *ngIf="parmsEnabled">
+        <mat-card-header>
+          <mat-card-title>Paramètres caméra</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <mat-form-field appearance="fill" class="form-field">
+            <mat-label>Exposition (s)</mat-label>
+            <input matInput type="number" [(ngModel)]="exposure" (change)="onParmsChange('exposure', exposure)">
+          </mat-form-field>
+
+          <mat-form-field appearance="fill" class="form-field">
+            <mat-label>Gain</mat-label>
+            <input matInput type="number" [(ngModel)]="gain" (change)="onParmsChange('gain', gain)">
+          </mat-form-field>
+
+          <mat-form-field appearance="fill" class="form-field">
+            <mat-label>Offset</mat-label>
+            <input matInput type="number" [(ngModel)]="offset" (change)="onParmsChange('offset', offset)">
+          </mat-form-field>
+        </mat-card-content>
+      </mat-card>
+
+      <!-- Optics -->
+      <mat-card class="config-card" *ngIf="opticEnabled">
+        <mat-card-header>
+          <mat-card-title>Optique</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <mat-form-field appearance="fill" class="form-field" *ngFor="let element of opticElements | keyvalue">
+            <mat-label>{{ element.value.label }}</mat-label>
+            <input matInput type="number" [(ngModel)]="element.value.value" (change)="onOpticChange(element.key, element.value.value)">
+          </mat-form-field>
+        </mat-card-content>
+      </mat-card>
+    </mat-tab>
+  </mat-tab-group>
+</div>
+
+<!-- No Module Loaded -->
+<ng-template #noModule>
+  <div class="no-module">
+    <mat-card>
+      <mat-card-content>
+        <mat-icon class="warning-icon">warning</mat-icon>
+        <p>Le module Sequencer n'est pas chargé.</p>
+        <p>Veuillez vérifier que le serveur OST est connecté et que le module est disponible.</p>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</ng-template>

@@ -1,0 +1,256 @@
+.sequence-container {
+  padding: 20px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.header h1 {
+  margin: 0;
+  color: #333;
+}
+
+.status-badge {
+  padding: 10px 20px;
+  border-radius: 20px;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.status-badge.idle {
+  background-color: #f0f0f0;
+  color: #666;
+}
+
+.status-badge.running {
+  background-color: #4caf50;
+  color: white;
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.8;
+  }
+}
+
+.actions-section {
+  margin-bottom: 30px;
+}
+
+.actions-section button {
+  margin-right: 10px;
+}
+
+.config-card {
+  margin: 20px 0;
+  padding: 20px;
+}
+
+.config-card mat-card-header {
+  margin-bottom: 20px;
+  padding: 0;
+}
+
+.config-card mat-card-content {
+  padding: 0;
+}
+
+.form-field {
+  width: 100%;
+  margin-bottom: 15px;
+}
+
+mat-checkbox {
+  display: block;
+  margin-bottom: 15px;
+}
+
+.tab-icon {
+  margin-right: 8px;
+}
+
+.sequence-card {
+  margin: 20px 0;
+  padding: 20px;
+}
+
+.sequence-card mat-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding: 0;
+}
+
+.sequence-card mat-card-content {
+  padding: 0;
+}
+
+.table-container {
+  overflow-x: auto;
+  border-radius: 4px;
+  border: 1px solid #e0e0e0;
+}
+
+.sequence-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.sequence-table th {
+  background-color: #f5f5f5;
+  padding: 15px;
+  text-align: left;
+  font-weight: 600;
+  color: #333;
+  border-bottom: 2px solid #ddd;
+}
+
+.sequence-table td {
+  padding: 12px 15px;
+  border-bottom: 1px solid #eee;
+}
+
+.sequence-table tr:hover {
+  background-color: #fafafa;
+}
+
+.sequence-table input[type="number"],
+.sequence-table mat-select {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.sequence-table input[type="number"]:focus,
+.sequence-table mat-select:focus {
+  border-color: #2196f3;
+  outline: none;
+}
+
+.progress-cell {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.cell-progress {
+  flex: 1;
+  height: 4px;
+}
+
+.progress-label {
+  font-size: 12px;
+  color: #666;
+  min-width: 50px;
+  text-align: right;
+}
+
+.progress-item {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.progress-item span:first-child {
+  min-width: 150px;
+  font-weight: 500;
+  color: #333;
+}
+
+.progress-item mat-progress-bar {
+  flex: 1;
+}
+
+.progress-value {
+  min-width: 50px;
+  text-align: right;
+  color: #666;
+  font-weight: 500;
+}
+
+.no-module {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 400px;
+  padding: 20px;
+}
+
+.no-module mat-card {
+  width: 100%;
+  max-width: 600px;
+  text-align: center;
+}
+
+.no-module mat-card-content {
+  padding: 40px 20px;
+}
+
+.warning-icon {
+  font-size: 64px;
+  width: 64px;
+  height: 64px;
+  color: #ff9800;
+  margin: 0 auto 20px;
+}
+
+.no-module p {
+  margin: 10px 0;
+  color: #666;
+  line-height: 1.5;
+}
+
+/* Material overrides */
+mat-form-field {
+  width: 100%;
+}
+
+mat-select {
+  width: 100%;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .sequence-container {
+    padding: 10px;
+  }
+
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+  }
+
+  .sequence-table th,
+  .sequence-table td {
+    padding: 10px 8px;
+    font-size: 12px;
+  }
+
+  .table-container {
+    overflow-x: auto;
+  }
+
+  .progress-item {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .progress-value {
+    align-self: flex-end;
+  }
+}

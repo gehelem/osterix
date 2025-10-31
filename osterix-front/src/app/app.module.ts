@@ -39,6 +39,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MessagesComponent } from './pages/messages/messages.component';
 
 @NgModule({
@@ -81,7 +82,8 @@ import { MessagesComponent } from './pages/messages/messages.component';
     MatDialogModule,
     MatTooltipModule,
     MatSlideToggleModule,
-    MatProgressBarModule
+    MatProgressBarModule,
+    MatCheckboxModule
   ],
   providers: [
     { provide: LocationStrategy, useClass: HashLocationStrategy }
