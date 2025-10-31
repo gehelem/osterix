@@ -9,7 +9,7 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit, OnDestroy {
-  title = 'myost-front';
+  title = 'osterix-front';
   connected = false;
   moduleCount = 0;
   isDarkMode = false;

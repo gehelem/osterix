@@ -265,10 +265,10 @@ Aucun problème majeur. L'application compile et fonctionne correctement.
 ## 🔗 Fichiers modifiés/créés
 
 ```
-MyOST/
+OstErix/
 ├── WEBSOCKET_PROTOCOL.md           (nouveau) - Documentation du protocole
 ├── WEBSOCKET_INTEGRATION.md        (nouveau) - Ce fichier
-└── myost-front/
+└── osterix-front/
     └── src/app/
         ├── models/
         │   └── ost.models.ts        (nouveau) - Interfaces TypeScript

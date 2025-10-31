@@ -1,15 +1,15 @@
-# MyOST Frontend
+# OstErix Frontend
 
 Interface Angular simplifiée pour le système OST (Observatoire Sans Tête).
 
 ## Description
 
-MyOST est un frontend Angular statique qui présente les différents modules d'OST avec des pages dédiées pour chaque fonctionnalité. Contrairement à ost-front (le frontend complet avec Ionic/Capacitor), MyOST est une version légère uniquement web avec Angular Material.
+OstErix est un frontend Angular statique qui présente les différents modules d'OST avec des pages dédiées pour chaque fonctionnalité. Contrairement à ost-front (le frontend complet avec Ionic/Capacitor), OstErix est une version légère uniquement web avec Angular Material.
 
 ## Structure du projet
 
 ```
-myost-front/
+osterix-front/
 ├── src/
 │   ├── app/
 │   │   ├── pages/                # Pages statiques des modules
@@ -35,7 +35,7 @@ myost-front/
 ## Installation
 
 ```bash
-cd /home/gilles/claude/OST/MyOST/myost-front
+cd /home/gilles/claude/OST/OstErix/osterix-front
 npm install
 ```
 
@@ -94,8 +94,8 @@ Les fichiers de build seront dans le répertoire `dist/`.
 
 ## Différences avec ost-front
 
-| Caractéristique | ost-front | MyOST |
-|-----------------|-----------|--------|
+| Caractéristique | ost-front | OstErix |
+|-----------------|-----------|---------|
 | Framework UI | Ionic 8 + Angular | Angular Material |
 | Mobile | iOS/Android via Capacitor | Web uniquement |
 | Complexité | Dynamique, WebSocket, ZeroConf | Statique, pages fixes |
@@ -139,7 +139,7 @@ ng build --prod
 
 # Analyser la taille du build
 ng build --prod --stats-json
-npx webpack-bundle-analyzer dist/myost-front/stats.json
+npx webpack-bundle-analyzer dist/osterix-front/stats.json
 ```
 
 ## Auteur
