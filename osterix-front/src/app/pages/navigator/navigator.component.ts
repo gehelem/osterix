@@ -81,6 +81,7 @@ export class NavigatorComponent implements OnInit, OnDestroy {
 
   private subscription = new Subscription();
   private targetChangeTimeout: any = null;
+  private searchNameChangeTimeout: any = null;
 
   constructor(
     public wsService: WebsocketService,
@@ -270,16 +271,24 @@ export class NavigatorComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Update search name in backend
+   * Update search name in backend (with debounce)
    */
   onSearchNameChange(): void {
-    console.log(`Updated search name to: ${this.searchName}`);
-    // Track the value we're sending to avoid overwriting it when backend responds
-    this.searchNameLastSent = this.searchName;
-    // Send property update to backend
-    this.wsService.setProperty('Navigator', 'search', {
-      name: this.searchName
-    });
+    // Clear existing timeout
+    if (this.searchNameChangeTimeout) {
+      clearTimeout(this.searchNameChangeTimeout);
+    }
+
+    // Set new timeout to send after user stops typing (500ms)
+    this.searchNameChangeTimeout = setTimeout(() => {
+      console.log(`Updated search name to: ${this.searchName}`);
+      // Track the value we're sending to avoid overwriting it when backend responds
+      this.searchNameLastSent = this.searchName;
+      // Send property update to backend
+      this.wsService.setProperty('Navigator', 'search', {
+        name: this.searchName
+      });
+    }, 500);
   }
 
   /**
