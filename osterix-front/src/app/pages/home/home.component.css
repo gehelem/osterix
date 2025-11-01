@@ -141,46 +141,37 @@ mat-grid-list {
 }
 
 .sequence-card mat-card-content {
-  padding: 12px !important;
-  overflow: visible;
-}
-
-.sequence-card mat-card-content p {
-  margin: 0 0 12px 0;
-  font-size: 13px;
-  color: #333;
+  padding: 16px !important;
 }
 
 .progress-items {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 16px;
 }
 
 .progress-item {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 12px;
 }
 
 .progress-item span:first-child {
-  min-width: 110px;
+  min-width: 140px;
   font-weight: 500;
   color: #333;
-  font-size: 12px;
-  flex-shrink: 0;
+  font-size: 14px;
 }
 
 .progress-item mat-progress-bar {
   flex: 1;
-  min-width: 0;
+  height: 6px;
 }
 
 .progress-value {
-  min-width: 38px;
+  min-width: 45px;
   text-align: right;
   color: #666;
   font-weight: 500;
-  font-size: 12px;
-  flex-shrink: 0;
+  font-size: 13px;
 }
