@@ -170,7 +170,16 @@ mat-grid-list {
 
 .progress-item mat-progress-bar {
   flex: 1;
-  height: 6px;
+  height: 6px !important;
+  width: 100%;
+}
+
+::ng-deep .progress-item mat-progress-bar {
+  height: 6px !important;
+}
+
+::ng-deep mat-progress-bar {
+  height: 6px !important;
 }
 
 .progress-value {
