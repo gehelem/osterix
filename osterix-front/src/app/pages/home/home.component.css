@@ -133,3 +133,69 @@ mat-grid-list {
   font-weight: 500;
   color: #333;
 }
+
+/* Sequence card specific styles */
+.sequence-card mat-card-content {
+  padding: 12px !important;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.sequence-content {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  height: 100%;
+}
+
+.status-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+}
+
+.status-label {
+  font-weight: 600;
+  color: #333;
+}
+
+.status-value {
+  color: #666;
+  font-size: 12px;
+}
+
+.progress-section {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex: 1;
+  justify-content: center;
+}
+
+.progress-item-mini {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+}
+
+.progress-label {
+  font-weight: 500;
+  color: #333;
+  min-width: 70px;
+}
+
+.progress-item-mini mat-progress-bar {
+  flex: 1;
+  height: 5px;
+}
+
+.progress-value-mini {
+  min-width: 35px;
+  text-align: right;
+  color: #666;
+  font-weight: 500;
+  font-size: 11px;
+}

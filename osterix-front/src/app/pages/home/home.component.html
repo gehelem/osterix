@@ -27,13 +27,30 @@
     </mat-grid-tile>
 
     <mat-grid-tile>
-      <mat-card class="module-card">
+      <mat-card class="module-card sequence-card">
         <div class="card-header-custom clickable-header" routerLink="/sequence">
           <mat-icon color="primary">view_list</mat-icon>
           <span class="card-title">Séquence</span>
         </div>
         <mat-card-content>
-          Séquenceur d'imagerie avec gestion des filtres
+          <div class="sequence-content">
+            <div class="status-info">
+              <span class="status-label">Statut:</span>
+              <span class="status-value">{{ sequenceStatus }}</span>
+            </div>
+            <div class="progress-section">
+              <div class="progress-item-mini">
+                <span class="progress-label">Global</span>
+                <mat-progress-bar mode="determinate" [value]="sequenceGlobalProgress"></mat-progress-bar>
+                <span class="progress-value-mini">{{ sequenceGlobalProgress | number:'1.0-0' }}%</span>
+              </div>
+              <div class="progress-item-mini">
+                <span class="progress-label">Exposition</span>
+                <mat-progress-bar mode="determinate" [value]="sequenceExposureProgress"></mat-progress-bar>
+                <span class="progress-value-mini">{{ sequenceExposureProgress | number:'1.0-0' }}%</span>
+              </div>
+            </div>
+          </div>
         </mat-card-content>
       </mat-card>
     </mat-grid-tile>

@@ -17,17 +17,26 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   resultHFR: number | null = null;
   resultPos: number | null = null;
 
+  sequenceModule: Module | null = null;
+  sequenceStatus: string = 'Idle';
+  sequenceGlobalProgress: number = 0;
+  sequenceExposureProgress: number = 0;
+
   private subscription = new Subscription();
 
   constructor(public wsService: WebsocketService) { }
 
   ngOnInit(): void {
-    // Subscribe to state changes to get Focus module data
+    // Subscribe to state changes to get Focus and Sequence module data
     this.subscription.add(
       this.wsService.state$.subscribe(state => {
         if (state.modules['Focus']) {
           this.focusModule = state.modules['Focus'];
-          this.updateFromModule();
+          this.updateFromFocusModule();
+        }
+        if (state.modules['Sequencer']) {
+          this.sequenceModule = state.modules['Sequencer'];
+          this.updateFromSequenceModule();
         }
       })
     );
@@ -49,7 +58,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 
-  private updateFromModule(): void {
+  private updateFromFocusModule(): void {
     if (!this.focusModule) return;
 
     const properties = this.focusModule.properties;
@@ -72,6 +81,42 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
     // Update focus chart
     this.updateFocusChart();
+  }
+
+  private updateFromSequenceModule(): void {
+    if (!this.sequenceModule) return;
+
+    const properties = this.sequenceModule.properties;
+
+    // Extract status from 'actions' property
+    if (properties['actions']) {
+      const actions = properties['actions'];
+      if (actions.elements['status']) {
+        const statusValue = actions.elements['status'].value;
+        this.sequenceStatus = this.getSequenceStatusText(statusValue);
+      }
+    }
+
+    // Extract progress from 'progress' property
+    if (properties['progress']) {
+      const progress = properties['progress'];
+      if (progress.elements['global']) {
+        this.sequenceGlobalProgress = progress.elements['global'].value || 0;
+      }
+      if (progress.elements['exposure']) {
+        this.sequenceExposureProgress = progress.elements['exposure'].value || 0;
+      }
+    }
+  }
+
+  private getSequenceStatusText(status: number): string {
+    switch (status) {
+      case 0: return 'Idle';
+      case 1: return 'Paused';
+      case 2: return 'Running';
+      case 3: return 'Completed';
+      default: return 'Unknown';
+    }
   }
 
   private updateFocusChart(): void {
