@@ -50,17 +50,17 @@
               <div class="target-inputs">
                 <mat-form-field appearance="fill" class="target-field">
                   <mat-label>Nom</mat-label>
-                  <input matInput [(ngModel)]="targetName" (change)="onTargetChange()">
+                  <input matInput [(ngModel)]="targetName" (input)="onTargetChange()">
                 </mat-form-field>
 
                 <mat-form-field appearance="fill" class="target-field">
                   <mat-label>AD</mat-label>
-                  <input matInput type="number" [(ngModel)]="targetRA" (change)="onTargetChange()" step="0.01">
+                  <input matInput type="number" [(ngModel)]="targetRA" (input)="onTargetChange()" step="0.01">
                 </mat-form-field>
 
                 <mat-form-field appearance="fill" class="target-field">
                   <mat-label>DEC</mat-label>
-                  <input matInput type="number" [(ngModel)]="targetDEC" (change)="onTargetChange()" step="0.01">
+                  <input matInput type="number" [(ngModel)]="targetDEC" (input)="onTargetChange()" step="0.01">
                 </mat-form-field>
               </div>
             </div>

@@ -80,6 +80,7 @@ export class NavigatorComponent implements OnInit, OnDestroy {
   progressValue: number = 0;
 
   private subscription = new Subscription();
+  private targetChangeTimeout: any = null;
 
   constructor(
     public wsService: WebsocketService,
@@ -319,20 +320,28 @@ export class NavigatorComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Update target properties in backend
+   * Update target properties in backend (with debounce)
    */
   onTargetChange(): void {
-    console.log(`Updated target: ${this.targetName} (${this.targetRA}, ${this.targetDEC})`);
-    // Track what we're sending
-    this.targetNameLastSent = this.targetName;
-    this.targetRALastSent = this.targetRA;
-    this.targetDECLastSent = this.targetDEC;
-    // Send property update to backend
-    this.wsService.setProperty('Navigator', 'actions', {
-      targetname: this.targetName,
-      targetra: this.targetRA,
-      targetde: this.targetDEC
-    });
+    // Clear existing timeout
+    if (this.targetChangeTimeout) {
+      clearTimeout(this.targetChangeTimeout);
+    }
+
+    // Set new timeout to send after user stops typing (500ms)
+    this.targetChangeTimeout = setTimeout(() => {
+      console.log(`Updated target: ${this.targetName} (${this.targetRA}, ${this.targetDEC})`);
+      // Track what we're sending
+      this.targetNameLastSent = this.targetName;
+      this.targetRALastSent = this.targetRA;
+      this.targetDECLastSent = this.targetDEC;
+      // Send property update to backend
+      this.wsService.setProperty('Navigator', 'actions', {
+        targetname: this.targetName,
+        targetra: this.targetRA,
+        targetde: this.targetDEC
+      });
+    }, 500);
   }
 
   /**
