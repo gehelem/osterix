@@ -135,10 +135,16 @@ mat-grid-list {
 }
 
 /* Sequence card specific styles */
+.module-card.sequence-card .card-header-custom {
+  height: auto;
+  padding: 16px;
+}
+
 .sequence-card mat-card-content {
   padding: 12px !important;
   display: flex;
   flex-direction: column;
+  flex: 1;
 }
 
 .sequence-content {
