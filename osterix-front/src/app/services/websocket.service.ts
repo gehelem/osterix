@@ -290,6 +290,36 @@ export class WebsocketService {
   }
 
   /**
+   * Send post icon event (Fposticon)
+   */
+  sendPostIcon(module: string, property: string, elements: { [key: string]: any }): void {
+    this.send({
+      evt: 'Fposticon',
+      mod: module,
+      dta: {
+        [property]: {
+          elements
+        }
+      }
+    } as any);
+  }
+
+  /**
+   * Send grid line selection event (Flselect)
+   */
+  selectGridLine(module: string, property: string, line: number): void {
+    this.send({
+      evt: 'Flselect',
+      mod: module,
+      dta: {
+        [property]: {
+          line
+        }
+      }
+    } as any);
+  }
+
+  /**
    * Handle incoming messages from server
    */
   private handleMessage(message: ServerMessage): void {

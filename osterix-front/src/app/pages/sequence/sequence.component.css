@@ -111,18 +111,6 @@ mat-checkbox {
   margin-right: 8px;
 }
 
-.sequence-card mat-card-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 15px;
-  padding: 0;
-}
-
-.sequence-card mat-card-header mat-card-title {
-  margin: 0;
-}
-
 .sequence-card mat-card-content {
   padding: 0;
   flex: 1;

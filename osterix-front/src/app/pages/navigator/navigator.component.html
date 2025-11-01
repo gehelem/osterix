@@ -1,1 +1,163 @@
-<p>navigator works!</p>
+<div class="navigator-container" *ngIf="isModuleLoaded; else noModule">
+  <!-- Cards Grid -->
+  <div class="cards-grid">
+    <!-- Card 1: Image -->
+    <mat-card>
+      <mat-card-content>
+        <div class="navigator-image-container">
+          <img *ngIf="imageUrl" [src]="imageUrl" alt="Image du navigateur" class="navigator-image" (click)="openImageFullscreen()">
+
+          <!-- Buttons overlay on image -->
+          <div *ngIf="imageUrl" class="image-overlay-buttons">
+            <button mat-mini-fab color="primary" (click)="showHistogram($event)" matTooltip="Histogramme">
+              <mat-icon>bar_chart</mat-icon>
+            </button>
+            <button mat-mini-fab color="primary" (click)="showStatistics($event)" matTooltip="Statistiques">
+              <mat-icon>analytics</mat-icon>
+            </button>
+          </div>
+
+          <div *ngIf="!imageUrl" class="image-placeholder">
+            <p>Aucune image disponible</p>
+            <p class="hint">L'image apparaîtra ici après une recherche/centrage</p>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <!-- Card 2: Actions & Status -->
+    <mat-card>
+      <mat-card-content>
+        <div class="actions-container">
+          <div class="status-section">
+            <div class="status-header">
+              <p><strong>Statut:</strong> {{ currentStatus }}</p>
+            </div>
+
+            <div class="search-section">
+              <mat-form-field appearance="fill" class="search-field">
+                <mat-label>Objet</mat-label>
+                <input matInput [(ngModel)]="searchName" (keyup.enter)="performSearch()" placeholder="ex: M13, NGC281...">
+              </mat-form-field>
+              <button mat-raised-button color="primary" (click)="performSearch()" class="search-button">
+                <mat-icon>search</mat-icon>
+                Chercher
+              </button>
+            </div>
+
+            <div class="target-section" *ngIf="selectedTarget">
+              <h4>Cible sélectionnée</h4>
+              <div class="target-info">
+                <p><strong>Nom:</strong> {{ targetName }}</p>
+                <p><strong>Coordinates:</strong> {{ formatCoordinates(targetRA, targetDEC) }}</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="action-buttons">
+            <button mat-raised-button color="primary" (click)="centerTarget()" [disabled]="!selectedTarget">
+              <mat-icon>gps_fixed</mat-icon>
+              Centrer
+            </button>
+            <button mat-raised-button color="warn" (click)="abortNavigation()" [disabled]="!isRunning">
+              <mat-icon>stop</mat-icon>
+              Arrêter
+            </button>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <!-- Card 3: Search Results Grid -->
+    <mat-card class="results-card">
+      <mat-card-content>
+        <!-- Results Table -->
+        <div class="table-container">
+          <table mat-table [dataSource]="searchResults" class="results-table">
+            <!-- Catalog Column -->
+            <ng-container matColumnDef="catalog">
+              <th mat-header-cell *matHeaderCellDef>Catalogue</th>
+              <td mat-cell *matCellDef="let row">{{ row.catalog }}</td>
+            </ng-container>
+
+            <!-- Code Column -->
+            <ng-container matColumnDef="code">
+              <th mat-header-cell *matHeaderCellDef>Code</th>
+              <td mat-cell *matCellDef="let row">{{ row.code }}</td>
+            </ng-container>
+
+            <!-- Name Column -->
+            <ng-container matColumnDef="name">
+              <th mat-header-cell *matHeaderCellDef>Nom</th>
+              <td mat-cell *matCellDef="let row">{{ row.name }}</td>
+            </ng-container>
+
+            <!-- RA Column -->
+            <ng-container matColumnDef="ra">
+              <th mat-header-cell *matHeaderCellDef>AD</th>
+              <td mat-cell *matCellDef="let row">{{ row.ra | number:'1.3-3' }}</td>
+            </ng-container>
+
+            <!-- DEC Column -->
+            <ng-container matColumnDef="dec">
+              <th mat-header-cell *matHeaderCellDef>DEC</th>
+              <td mat-cell *matCellDef="let row">{{ row.dec | number:'1.3-3' }}</td>
+            </ng-container>
+
+            <!-- Magnitude Column -->
+            <ng-container matColumnDef="mag">
+              <th mat-header-cell *matHeaderCellDef>Magnitude</th>
+              <td mat-cell *matCellDef="let row">{{ row.mag | number:'1.1-1' }}</td>
+            </ng-container>
+
+            <!-- Diameter Column -->
+            <ng-container matColumnDef="diam">
+              <th mat-header-cell *matHeaderCellDef>Diamètre</th>
+              <td mat-cell *matCellDef="let row">{{ row.diam | number:'1.1-1' }}</td>
+            </ng-container>
+
+            <!-- Alias Column -->
+            <ng-container matColumnDef="alias">
+              <th mat-header-cell *matHeaderCellDef>Alias</th>
+              <td mat-cell *matCellDef="let row">{{ row.alias || '-' }}</td>
+            </ng-container>
+
+            <!-- Actions Column -->
+            <ng-container matColumnDef="actions">
+              <th mat-header-cell *matHeaderCellDef></th>
+              <td mat-cell *matCellDef="let row; let i = index">
+                <button mat-icon-button color="primary" (click)="selectTarget(row, i)" title="Sélectionner">
+                  <mat-icon>check_circle</mat-icon>
+                </button>
+              </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+          </table>
+
+          <div *ngIf="searchResults.length === 0" class="no-results">
+            <p>Aucun résultat - Utilisez la recherche pour trouver des objets</p>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>
+
+<!-- Fullscreen image overlay -->
+<div *ngIf="fullscreenImageUrl" class="fullscreen-overlay" (click)="closeFullscreen()">
+  <img [src]="fullscreenImageUrl" alt="Image du navigateur en plein écran" class="fullscreen-image">
+</div>
+
+<!-- No Module Loaded -->
+<ng-template #noModule>
+  <div class="no-module">
+    <mat-card>
+      <mat-card-content>
+        <mat-icon class="warning-icon">warning</mat-icon>
+        <p>Le module Navigator n'est pas chargé.</p>
+        <p>Veuillez vérifier que le serveur OST est connecté et que le module est disponible.</p>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</ng-template>
