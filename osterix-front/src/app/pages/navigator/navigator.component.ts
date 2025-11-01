@@ -5,6 +5,7 @@ import { Module, Property, Element, ImageElement } from '../../models/ost.models
 import { Subscription } from 'rxjs';
 import { HistogramDialogComponent } from '../focus/histogram-dialog.component';
 import { StatisticsDialogComponent } from '../focus/statistics-dialog.component';
+import { NavigatorParametersDialogComponent } from './parameters-dialog.component';
 
 interface SearchResult {
   catalog: string;
@@ -426,6 +427,73 @@ export class NavigatorComponent implements OnInit, OnDestroy {
       width: '600px',
       height: '600px',
       data: imageData
+    });
+  }
+
+  /**
+   * Show parameters dialog
+   */
+  showParameters(): void {
+    this.dialog.open(NavigatorParametersDialogComponent, {
+      width: '1000px',
+      maxWidth: '95vw',
+      data: {
+        // Camera parameters from 'parms' property
+        exposure: this.exposure,
+        gain: this.gain,
+        offset: this.offset,
+        parmsEnabled: this.parmsEnabled,
+
+        // Centering parameters from 'centeringparams' property
+        maxIterations: this.maxIterations,
+        tolerance: this.tolerance,
+        centeringEnabled: this.centeringEnabled,
+
+        // Devices and optic properties
+        devicesElements: this.devicesElements,
+        devicesEnabled: this.devicesEnabled,
+        opticElements: this.opticElements,
+        opticEnabled: this.opticEnabled,
+
+        // Global LOVs
+        globallovs: this.navigatorModule?.globallovs || {},
+
+        // Callbacks for changes
+        onParmsChange: (name: string, value: any) => {
+          if (name === 'exposure') this.exposure = value;
+          if (name === 'gain') this.gain = value;
+          if (name === 'offset') this.offset = value;
+          this.wsService.setProperty('Navigator', 'parms', {
+            [name]: value
+          });
+        },
+
+        onCenteringChange: (name: string, value: any) => {
+          if (name === 'maxiterations') this.maxIterations = value;
+          if (name === 'tolerance') this.tolerance = value;
+          this.wsService.setProperty('Navigator', 'centeringparams', {
+            [name]: value
+          });
+        },
+
+        onDevicesChange: (name: string, value: any) => {
+          if (this.devicesElements[name]) {
+            this.devicesElements[name].value = value;
+          }
+          this.wsService.setProperty('Navigator', 'devices', {
+            [name]: value
+          });
+        },
+
+        onOpticChange: (name: string, value: any) => {
+          if (this.opticElements[name]) {
+            this.opticElements[name].value = value;
+          }
+          this.wsService.setProperty('Navigator', 'optic', {
+            [name]: value
+          });
+        }
+      }
     });
   }
 
