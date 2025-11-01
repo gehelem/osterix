@@ -34,20 +34,19 @@
         </div>
         <mat-card-content>
           <div class="sequence-content">
-            <div class="status-info">
-              <span class="status-label">Statut:</span>
-              <span class="status-value">{{ sequenceStatus }}</span>
+            <div class="status-header">
+              <p><strong>Statut:</strong> {{ sequenceStatus }}</p>
             </div>
-            <div class="progress-section">
-              <div class="progress-item-mini">
-                <span class="progress-label">Global</span>
+            <div class="progress-items">
+              <div class="progress-item">
+                <span>Progression globale</span>
                 <mat-progress-bar mode="determinate" [value]="sequenceGlobalProgress"></mat-progress-bar>
-                <span class="progress-value-mini">{{ sequenceGlobalProgress | number:'1.0-0' }}%</span>
+                <span class="progress-value">{{ sequenceGlobalProgress | number:'1.0-0' }}%</span>
               </div>
-              <div class="progress-item-mini">
-                <span class="progress-label">Exposition</span>
+              <div class="progress-item">
+                <span>Exposition</span>
                 <mat-progress-bar mode="determinate" [value]="sequenceExposureProgress"></mat-progress-bar>
-                <span class="progress-value-mini">{{ sequenceExposureProgress | number:'1.0-0' }}%</span>
+                <span class="progress-value">{{ sequenceExposureProgress | number:'1.0-0' }}%</span>
               </div>
             </div>
           </div>
