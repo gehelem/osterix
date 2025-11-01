@@ -142,23 +142,11 @@ mat-grid-list {
 
 .sequence-card mat-card-content {
   padding: 12px !important;
-  display: flex;
-  flex-direction: column;
-  flex: 1;
+  overflow: visible;
 }
 
-.sequence-content {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.status-header {
-  margin-bottom: 0;
-}
-
-.status-header p {
-  margin: 0;
+.sequence-card mat-card-content p {
+  margin: 0 0 12px 0;
   font-size: 13px;
   color: #333;
 }
@@ -180,11 +168,12 @@ mat-grid-list {
   font-weight: 500;
   color: #333;
   font-size: 12px;
+  flex-shrink: 0;
 }
 
 .progress-item mat-progress-bar {
   flex: 1;
-  height: 4px;
+  min-width: 0;
 }
 
 .progress-value {
@@ -193,4 +182,5 @@ mat-grid-list {
   color: #666;
   font-weight: 500;
   font-size: 12px;
+  flex-shrink: 0;
 }
