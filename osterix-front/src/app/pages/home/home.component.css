@@ -1,15 +1,5 @@
 .home-container {
-  padding: 20px;
-}
-
-h1 {
-  color: #3f51b5;
-  margin-bottom: 10px;
-}
-
-p {
-  color: #666;
-  margin-bottom: 30px;
+  padding: 12px;
 }
 
 mat-grid-list {
