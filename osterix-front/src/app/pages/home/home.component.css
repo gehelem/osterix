@@ -18,12 +18,12 @@ mat-grid-list {
   align-items: center;
   justify-content: center;
   height: 100%;
-  padding: 16px;
+  padding: 8px;
 }
 
 .module-card.focus-card .card-header-custom {
   height: auto;
-  padding: 16px;
+  padding: 8px;
 }
 
 .clickable-header {
@@ -56,7 +56,7 @@ mat-grid-list {
   align-items: center;
   justify-content: center;
   text-align: center;
-  padding: 20px;
+  padding: 12px;
 }
 
 .status-section {
@@ -137,55 +137,57 @@ mat-grid-list {
 /* Sequence card specific styles */
 .module-card.sequence-card .card-header-custom {
   height: auto;
-  padding: 16px;
+  padding: 8px;
 }
 
 .sequence-card mat-card-content {
-  padding: 16px !important;
+  padding: 12px !important;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
 }
 
 .sequence-card mat-card-content p {
-  margin: 0 0 16px 0;
-  font-size: 14px;
+  margin: 0 0 20px 0;
+  font-size: 16px;
 }
 
-.progress-items {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-.progress-item {
+.progress-row {
   display: flex;
   align-items: center;
   gap: 12px;
+  margin: 12px 0;
+  width: 100%;
+  min-width: 0;
 }
 
-.progress-item span:first-child {
-  min-width: 140px;
-  font-weight: 500;
+.progress-label {
+  font-weight: 600;
   color: #333;
   font-size: 14px;
+  min-width: 40px;
 }
 
-.progress-item mat-progress-bar {
+.progress-bar-container {
   flex: 1;
-  height: 6px !important;
-  width: 100%;
+  min-width: 0;
+  height: 8px;
+  background-color: #e0e0e0;
+  border-radius: 4px;
+  overflow: hidden;
 }
 
-::ng-deep .progress-item mat-progress-bar {
-  height: 6px !important;
+.progress-bar {
+  height: 100%;
+  background-color: #2196f3;
+  width: 0%;
+  transition: width 0.3s ease;
 }
 
-::ng-deep mat-progress-bar {
-  height: 6px !important;
-}
-
-.progress-value {
-  min-width: 45px;
-  text-align: right;
+.progress-percent {
+  font-size: 13px;
   color: #666;
   font-weight: 500;
-  font-size: 13px;
+  min-width: 35px;
+  text-align: right;
 }

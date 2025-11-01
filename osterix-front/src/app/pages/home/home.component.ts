@@ -27,6 +27,11 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   constructor(public wsService: WebsocketService) { }
 
   ngOnInit(): void {
+    // Initialize sequence values
+    this.sequenceStatus = 'Idle';
+    this.sequenceGlobalProgress = 0;
+    this.sequenceExposureProgress = 0;
+
     // Subscribe to state changes to get Focus and Sequence module data
     this.subscription.add(
       this.wsService.state$.subscribe(state => {
