@@ -510,8 +510,11 @@ export class SequenceComponent implements OnInit, OnDestroy {
     };
 
     this.dialog.open(SequenceParametersDialogComponent, {
-      width: '700px',
-      maxWidth: '90vw',
+      width: '100vw',
+      height: '100vh',
+      maxWidth: '100vw',
+      maxHeight: '100vh',
+      panelClass: 'fullscreen-dialog',
       data: dialogData
     });
   }

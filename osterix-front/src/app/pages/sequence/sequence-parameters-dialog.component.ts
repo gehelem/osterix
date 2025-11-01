@@ -46,7 +46,7 @@ export interface SequenceParametersDialogData {
     <h2 mat-dialog-title>Paramètres</h2>
     <mat-dialog-content>
       <!-- Tabs -->
-      <mat-tab-group>
+      <mat-tab-group animationDuration="0">
         <!-- Object Target Tab -->
         <mat-tab label="Objet cible" *ngIf="data.objectEnabled">
           <ng-template mat-tab-label>
@@ -231,17 +231,24 @@ export interface SequenceParametersDialogData {
   styles: [`
     mat-dialog-content {
       padding: 20px;
-      min-width: 500px;
-      max-height: 600px;
       overflow-y: auto;
+      display: flex;
+      flex-direction: column;
     }
 
     mat-tab-group {
-      margin: 0 -20px -20px -20px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    :host ::ng-deep .mat-tab-body-wrapper {
+      flex: 1;
     }
 
     .tab-content {
       padding: 20px;
+      overflow-y: auto;
     }
 
     .tab-icon {
@@ -260,6 +267,14 @@ export interface SequenceParametersDialogData {
 
     mat-dialog-actions {
       padding: 16px 0 0 0;
+      border-top: 1px solid #e0e0e0;
+      margin-top: auto;
+    }
+
+    h2[mat-dialog-title] {
+      margin: 0;
+      padding: 20px 20px 10px 20px;
+      background-color: #f5f5f5;
     }
   `]
 })
