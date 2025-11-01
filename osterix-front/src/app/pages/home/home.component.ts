@@ -84,29 +84,42 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   private updateFromSequenceModule(): void {
-    if (!this.sequenceModule) return;
+    if (!this.sequenceModule) {
+      this.sequenceStatus = 'Module non chargé';
+      return;
+    }
 
     const properties = this.sequenceModule.properties;
 
     // Extract status from 'actions' property
-    if (properties['actions']) {
+    if (properties && properties['actions']) {
       const actions = properties['actions'];
-      if (actions.elements['status']) {
+      if (actions.elements && actions.elements['status']) {
         const statusValue = actions.elements['status'].value;
         this.sequenceStatus = this.getSequenceStatusText(statusValue);
       }
     }
 
     // Extract progress from 'progress' property
-    if (properties['progress']) {
+    if (properties && properties['progress']) {
       const progress = properties['progress'];
-      if (progress.elements['global']) {
-        this.sequenceGlobalProgress = progress.elements['global'].value || 0;
-      }
-      if (progress.elements['exposure']) {
-        this.sequenceExposureProgress = progress.elements['exposure'].value || 0;
+      if (progress.elements) {
+        if (progress.elements['global']) {
+          const val = parseFloat(progress.elements['global'].value);
+          this.sequenceGlobalProgress = isNaN(val) ? 0 : val;
+        }
+        if (progress.elements['exposure']) {
+          const val = parseFloat(progress.elements['exposure'].value);
+          this.sequenceExposureProgress = isNaN(val) ? 0 : val;
+        }
       }
     }
+
+    console.log('Sequence module updated:', {
+      status: this.sequenceStatus,
+      global: this.sequenceGlobalProgress,
+      exposure: this.sequenceExposureProgress
+    });
   }
 
   private getSequenceStatusText(status: number): string {

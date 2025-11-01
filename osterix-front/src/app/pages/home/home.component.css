@@ -144,6 +144,11 @@ mat-grid-list {
   padding: 16px !important;
 }
 
+.sequence-card mat-card-content p {
+  margin: 0 0 16px 0;
+  font-size: 14px;
+}
+
 .progress-items {
   display: flex;
   flex-direction: column;
