@@ -187,6 +187,57 @@ mat-checkbox {
   outline: none;
 }
 
+/* Status section */
+.status-section {
+  padding: 16px;
+  background-color: rgba(33, 150, 243, 0.1);
+  border-radius: 4px;
+  border-left: 4px solid #2196f3;
+  margin-bottom: 20px;
+}
+
+.status-header {
+  margin-bottom: 16px;
+}
+
+.status-header p {
+  margin: 0;
+  font-weight: 500;
+  color: #333;
+}
+
+.progress-items {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.progress-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.progress-item span:first-child {
+  min-width: 140px;
+  font-weight: 500;
+  color: #333;
+  font-size: 14px;
+}
+
+.progress-item mat-progress-bar {
+  flex: 1;
+  height: 6px;
+}
+
+.progress-value {
+  min-width: 45px;
+  text-align: right;
+  color: #666;
+  font-weight: 500;
+  font-size: 13px;
+}
+
 /* Actions column */
 .sequence-table td:last-child {
   text-align: center;
@@ -412,6 +463,22 @@ mat-select {
     width: 100%;
   }
 
+  .progress-item {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .progress-item span:first-child {
+    min-width: auto;
+    width: 100%;
+    margin-bottom: 6px;
+  }
+
+  .progress-value {
+    align-self: flex-end;
+    margin-top: -30px;
+  }
+
   .sequence-table {
     font-size: 12px;
   }
@@ -424,14 +491,5 @@ mat-select {
   .sequence-table button[mat-icon-button] {
     transform: scale(0.8);
     margin: 0 1px;
-  }
-
-  .progress-item {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .progress-value {
-    align-self: flex-end;
   }
 }

@@ -1,12 +1,4 @@
 <div class="sequence-container" *ngIf="isModuleLoaded; else noModule">
-  <!-- Main Title -->
-  <div class="header">
-    <h1>Séquenceur d'imagerie</h1>
-    <div class="status-badge" [ngClass]="isRunning ? 'running' : 'idle'">
-      {{ currentStatus }}
-    </div>
-  </div>
-
   <!-- Cards Grid -->
   <div class="cards-grid">
     <!-- Card 1: Image de séquence -->
@@ -37,10 +29,26 @@
     <mat-card>
       <mat-card-content>
         <div class="actions-container">
-          <div class="status-info">
-            <p><strong>Statut:</strong> {{ currentStatus }}</p>
-            <mat-progress-bar mode="determinate" [value]="globalProgress"></mat-progress-bar>
+          <div class="status-section">
+            <div class="status-header">
+              <p><strong>Statut:</strong> {{ currentStatus }}</p>
+            </div>
+
+            <div class="progress-items">
+              <div class="progress-item">
+                <span>Progression globale</span>
+                <mat-progress-bar mode="determinate" [value]="globalProgress"></mat-progress-bar>
+                <span class="progress-value">{{ globalProgress | number:'1.0-0' }}%</span>
+              </div>
+
+              <div class="progress-item">
+                <span>Exposition</span>
+                <mat-progress-bar mode="determinate" [value]="exposureProgress"></mat-progress-bar>
+                <span class="progress-value">{{ exposureProgress | number:'1.0-0' }}%</span>
+              </div>
+            </div>
           </div>
+
           <div class="action-buttons">
             <button mat-raised-button color="primary" (click)="startSequence()" [disabled]="isRunning">
               <mat-icon>play_arrow</mat-icon>
