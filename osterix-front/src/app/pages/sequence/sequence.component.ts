@@ -4,6 +4,7 @@ import { WebsocketService } from '../../services/websocket.service';
 import { Module, Property, Element } from '../../models/ost.models';
 import { Subscription } from 'rxjs';
 import { SequenceRowDialogComponent, SequenceRowData, SequenceRowDialogData } from './sequence-row-dialog.component';
+import { SequenceParametersDialogComponent, SequenceParametersDialogData } from './sequence-parameters-dialog.component';
 
 interface SequenceRow {
   count: number;
@@ -464,5 +465,54 @@ export class SequenceComponent implements OnInit, OnDestroy {
       return null;
     }
     return this.sequencerModule.properties[propertyName].elements[elementName];
+  }
+
+  /**
+   * Open parameters dialog
+   */
+  openParametersDialog(): void {
+    const dialogData: SequenceParametersDialogData = {
+      // Object target
+      objectName: this.objectName,
+      objectRA: this.objectRA,
+      objectDEC: this.objectDEC,
+      objectEnabled: this.devicesEnabled,
+
+      // Devices
+      devicesElements: this.devicesElements,
+      devicesEnabled: this.devicesEnabled,
+
+      // Advanced parameters
+      autoFocusAtStart: this.autoFocusAtStart,
+      autoFocusOnFilterChange: this.autoFocusOnFilterChange,
+      focusModule: this.focusModule,
+      suspendGuidingDuringFocus: this.suspendGuidingDuringFocus,
+      guiderModule: this.guiderModule,
+      guidingSettleTime: this.guidingSettleTime,
+      parametersEnabled: this.parametersEnabled,
+
+      // Camera parameters
+      exposure: this.exposure,
+      gain: this.gain,
+      offset: this.offset,
+      parmsEnabled: this.parmsEnabled,
+
+      // Optic
+      opticElements: this.opticElements,
+      opticEnabled: this.opticEnabled,
+
+      // Callbacks
+      onObjectChange: (name: string, value: any) => this.onObjectChange(name, value),
+      onDevicesChange: (name: string, value: any) => this.onDevicesChange(name, value),
+      onParametersChange: (name: string, value: any) => this.onParametersChange(name, value),
+      onParmsChange: (name: string, value: any) => this.onParmsChange(name, value),
+      onOpticChange: (name: string, value: any) => this.onOpticChange(name, value)
+    };
+
+    this.dialog.open(SequenceParametersDialogComponent, {
+      width: '700px',
+      maxWidth: '90vw',
+      data: dialogData
+    });
   }
 }

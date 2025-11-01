@@ -1,0 +1,300 @@
+import { Component, Inject } from '@angular/core';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Element } from '../../models/ost.models';
+
+export interface SequenceParametersDialogData {
+  // Object target properties
+  objectName: string;
+  objectRA: number;
+  objectDEC: number;
+  objectEnabled: boolean;
+
+  // Devices properties
+  devicesElements: { [key: string]: Element };
+  devicesEnabled: boolean;
+
+  // Parameters from 'parameters' property (Advanced options)
+  autoFocusAtStart: boolean;
+  autoFocusOnFilterChange: boolean;
+  focusModule: string;
+  suspendGuidingDuringFocus: boolean;
+  guiderModule: string;
+  guidingSettleTime: number;
+  parametersEnabled: boolean;
+
+  // Parameters from 'parms' property (Camera)
+  exposure: number;
+  gain: number;
+  offset: number;
+  parmsEnabled: boolean;
+
+  // Optic properties
+  opticElements: { [key: string]: Element };
+  opticEnabled: boolean;
+
+  // Callbacks for direct changes
+  onObjectChange: (name: string, value: any) => void;
+  onDevicesChange: (name: string, value: any) => void;
+  onParametersChange: (name: string, value: any) => void;
+  onParmsChange: (name: string, value: any) => void;
+  onOpticChange: (name: string, value: any) => void;
+}
+
+@Component({
+  selector: 'app-sequence-parameters-dialog',
+  template: `
+    <h2 mat-dialog-title>Paramètres</h2>
+    <mat-dialog-content>
+      <!-- Tabs -->
+      <mat-tab-group>
+        <!-- Object Target Tab -->
+        <mat-tab label="Objet cible" *ngIf="data.objectEnabled">
+          <ng-template mat-tab-label>
+            <mat-icon class="tab-icon">public</mat-icon>
+            <span>Objet</span>
+          </ng-template>
+
+          <div class="tab-content">
+            <mat-form-field appearance="fill" class="dialog-field">
+              <mat-label>Nom</mat-label>
+              <input
+                matInput
+                [(ngModel)]="data.objectName"
+                (change)="data.onObjectChange('label', data.objectName)">
+            </mat-form-field>
+
+            <mat-form-field appearance="fill" class="dialog-field">
+              <mat-label>AD (RA)</mat-label>
+              <input
+                matInput
+                type="number"
+                [(ngModel)]="data.objectRA"
+                (change)="data.onObjectChange('ra', data.objectRA)">
+            </mat-form-field>
+
+            <mat-form-field appearance="fill" class="dialog-field">
+              <mat-label>DEC</mat-label>
+              <input
+                matInput
+                type="number"
+                [(ngModel)]="data.objectDEC"
+                (change)="data.onObjectChange('de', data.objectDEC)">
+            </mat-form-field>
+          </div>
+        </mat-tab>
+
+        <!-- Devices Tab -->
+        <mat-tab label="Appareils" *ngIf="data.devicesEnabled">
+          <ng-template mat-tab-label>
+            <mat-icon class="tab-icon">devices</mat-icon>
+            <span>Appareils</span>
+          </ng-template>
+
+          <div class="tab-content">
+            <mat-form-field
+              appearance="fill"
+              class="dialog-field"
+              *ngFor="let key of devicesKeysCache">
+              <mat-label>{{ data.devicesElements[key].label }}</mat-label>
+              <input
+                matInput
+                [(ngModel)]="data.devicesElements[key].value"
+                (change)="data.onDevicesChange(key, data.devicesElements[key].value)">
+            </mat-form-field>
+          </div>
+        </mat-tab>
+
+        <!-- Advanced Parameters Tab -->
+        <mat-tab label="Options avancées" *ngIf="data.parametersEnabled">
+          <ng-template mat-tab-label>
+            <mat-icon class="tab-icon">settings</mat-icon>
+            <span>Options avancées</span>
+          </ng-template>
+
+          <div class="tab-content">
+            <mat-checkbox
+              [(ngModel)]="data.autoFocusAtStart"
+              (change)="data.onParametersChange('autofocusatstart', data.autoFocusAtStart)">
+              Focus au démarrage de la séquence
+            </mat-checkbox>
+
+            <mat-checkbox
+              [(ngModel)]="data.autoFocusOnFilterChange"
+              (change)="data.onParametersChange('autofocusonfilterchange', data.autoFocusOnFilterChange)">
+              Focus au changement de filtre
+            </mat-checkbox>
+
+            <mat-form-field appearance="fill" class="dialog-field">
+              <mat-label>Instance de module focus</mat-label>
+              <input
+                matInput
+                [(ngModel)]="data.focusModule"
+                (change)="data.onParametersChange('focusmodule', data.focusModule)">
+            </mat-form-field>
+
+            <mat-checkbox
+              [(ngModel)]="data.suspendGuidingDuringFocus"
+              (change)="data.onParametersChange('suspendguidingduringfocus', data.suspendGuidingDuringFocus)">
+              Suspendre le guidage pendant le focus
+            </mat-checkbox>
+
+            <mat-form-field appearance="fill" class="dialog-field">
+              <mat-label>Instance de module guidage</mat-label>
+              <input
+                matInput
+                [(ngModel)]="data.guiderModule"
+                (change)="data.onParametersChange('guidermodule', data.guiderModule)">
+            </mat-form-field>
+
+            <mat-form-field appearance="fill" class="dialog-field">
+              <mat-label>Latence après reprise du guidage (s)</mat-label>
+              <input
+                matInput
+                type="number"
+                [(ngModel)]="data.guidingSettleTime"
+                (change)="data.onParametersChange('guidingsettletime', data.guidingSettleTime)">
+            </mat-form-field>
+          </div>
+        </mat-tab>
+
+        <!-- Camera Parameters Tab -->
+        <mat-tab label="Paramètres caméra" *ngIf="data.parmsEnabled">
+          <ng-template mat-tab-label>
+            <mat-icon class="tab-icon">photo_camera</mat-icon>
+            <span>Caméra</span>
+          </ng-template>
+
+          <div class="tab-content">
+            <mat-form-field appearance="fill" class="dialog-field">
+              <mat-label>Exposition (s)</mat-label>
+              <input
+                matInput
+                type="number"
+                [(ngModel)]="data.exposure"
+                (change)="data.onParmsChange('exposure', data.exposure)"
+                min="0.00001"
+                step="0.001">
+            </mat-form-field>
+
+            <mat-form-field appearance="fill" class="dialog-field">
+              <mat-label>Gain</mat-label>
+              <input
+                matInput
+                type="number"
+                [(ngModel)]="data.gain"
+                (change)="data.onParmsChange('gain', data.gain)"
+                min="0"
+                step="1">
+            </mat-form-field>
+
+            <mat-form-field appearance="fill" class="dialog-field">
+              <mat-label>Offset</mat-label>
+              <input
+                matInput
+                type="number"
+                [(ngModel)]="data.offset"
+                (change)="data.onParmsChange('offset', data.offset)"
+                min="0"
+                step="1">
+            </mat-form-field>
+          </div>
+        </mat-tab>
+
+        <!-- Optics Tab -->
+        <mat-tab label="Optique" *ngIf="data.opticEnabled">
+          <ng-template mat-tab-label>
+            <mat-icon class="tab-icon">lens</mat-icon>
+            <span>Optique</span>
+          </ng-template>
+
+          <div class="tab-content">
+            <mat-form-field
+              appearance="fill"
+              class="dialog-field"
+              *ngFor="let key of opticKeysCache">
+              <mat-label>{{ data.opticElements[key].label }}</mat-label>
+              <input
+                matInput
+                type="number"
+                [(ngModel)]="data.opticElements[key].value"
+                (change)="data.onOpticChange(key, data.opticElements[key].value)">
+            </mat-form-field>
+          </div>
+        </mat-tab>
+      </mat-tab-group>
+    </mat-dialog-content>
+
+    <mat-dialog-actions align="end">
+      <button mat-button (click)="onClose()">Fermer</button>
+    </mat-dialog-actions>
+  `,
+  styles: [`
+    mat-dialog-content {
+      padding: 20px;
+      min-width: 500px;
+      max-height: 600px;
+      overflow-y: auto;
+    }
+
+    mat-tab-group {
+      margin: 0 -20px -20px -20px;
+    }
+
+    .tab-content {
+      padding: 20px;
+    }
+
+    .tab-icon {
+      margin-right: 8px;
+    }
+
+    .dialog-field {
+      width: 100%;
+      margin-bottom: 20px;
+    }
+
+    mat-checkbox {
+      display: block;
+      margin-bottom: 15px;
+    }
+
+    mat-dialog-actions {
+      padding: 16px 0 0 0;
+    }
+  `]
+})
+export class SequenceParametersDialogComponent {
+  devicesKeysCache: string[] = [];
+  opticKeysCache: string[] = [];
+
+  constructor(
+    public dialogRef: MatDialogRef<SequenceParametersDialogComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: SequenceParametersDialogData
+  ) {
+    this.initializeCache();
+  }
+
+  private initializeCache(): void {
+    // Cache devices keys sorted by order
+    if (this.data.devicesElements) {
+      this.devicesKeysCache = Object.keys(this.data.devicesElements).sort((a, b) => {
+        const orderA = this.data.devicesElements[a]?.order || '';
+        const orderB = this.data.devicesElements[b]?.order || '';
+        return orderA.localeCompare(orderB);
+      });
+    }
+
+    // Cache optic keys sorted by order
+    if (this.data.opticElements) {
+      this.opticKeysCache = Object.keys(this.data.opticElements).sort((a, b) => {
+        const orderA = this.data.opticElements[a]?.order || '';
+        const orderB = this.data.opticElements[b]?.order || '';
+        return orderA.localeCompare(orderB);
+      });
+    }
+  }
+
+  onClose(): void {
+    this.dialogRef.close();
+  }
+}

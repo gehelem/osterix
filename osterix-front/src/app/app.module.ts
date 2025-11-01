@@ -21,6 +21,7 @@ import { GuiderStatisticsDialogComponent } from './pages/guider/statistics-dialo
 import { GuidingGraphComponent } from './pages/guider/guiding-graph.component';
 import { DriftGraphComponent } from './pages/guider/drift-graph.component';
 import { SequenceRowDialogComponent } from './pages/sequence/sequence-row-dialog.component';
+import { SequenceParametersDialogComponent } from './pages/sequence/sequence-parameters-dialog.component';
 
 // Angular Material imports
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -57,6 +58,7 @@ import { MessagesComponent } from './pages/messages/messages.component';
     DriftGraphComponent,
     SequenceComponent,
     SequenceRowDialogComponent,
+    SequenceParametersDialogComponent,
     NavigatorComponent,
     GuiderComponent,
     AllskyComponent,
