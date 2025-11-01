@@ -435,8 +435,8 @@ export class NavigatorComponent implements OnInit, OnDestroy {
    */
   showParameters(): void {
     this.dialog.open(NavigatorParametersDialogComponent, {
-      width: '1000px',
-      maxWidth: '95vw',
+      width: '100vw',
+      height: '100vh',
       data: {
         // Camera parameters from 'parms' property
         exposure: this.exposure,
