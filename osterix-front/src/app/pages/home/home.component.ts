@@ -22,6 +22,11 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   sequenceGlobalProgress: number = 0;
   sequenceExposureProgress: number = 0;
 
+  guiderModule: Module | null = null;
+  rmsRA: number | null = null;
+  rmsDEC: number | null = null;
+  rmsTotal: number | null = null;
+
   private subscription = new Subscription();
 
   constructor(public wsService: WebsocketService) { }
@@ -32,7 +37,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     this.sequenceGlobalProgress = 0;
     this.sequenceExposureProgress = 0;
 
-    // Subscribe to state changes to get Focus and Sequence module data
+    // Subscribe to state changes to get Focus, Sequence and Guider module data
     this.subscription.add(
       this.wsService.state$.subscribe(state => {
         if (state.modules['Focus']) {
@@ -42,6 +47,10 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
         if (state.modules['Sequencer']) {
           this.sequenceModule = state.modules['Sequencer'];
           this.updateFromSequenceModule();
+        }
+        if (state.modules['Guider']) {
+          this.guiderModule = state.modules['Guider'];
+          this.updateFromGuiderModule();
         }
       })
     );
@@ -134,6 +143,44 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       case 2: return 'Running';
       case 3: return 'Completed';
       default: return 'Unknown';
+    }
+  }
+
+  private updateFromGuiderModule(): void {
+    if (!this.guiderModule) return;
+
+    const properties = this.guiderModule.properties;
+
+    // Extract RMS values from 'values' property
+    if (properties['values']) {
+      const values = properties['values'];
+
+      // Look for RMS RA (also try rmsRA, RMS_RA variations)
+      if (values.elements['RMS RA']) {
+        this.rmsRA = parseFloat(values.elements['RMS RA'].value);
+      } else if (values.elements['rmsRA']) {
+        this.rmsRA = parseFloat(values.elements['rmsRA'].value);
+      } else if (values.elements['RMS_RA']) {
+        this.rmsRA = parseFloat(values.elements['RMS_RA'].value);
+      }
+
+      // Look for RMS DEC (also try rmsDEC, RMS_DEC variations)
+      if (values.elements['RMS DEC']) {
+        this.rmsDEC = parseFloat(values.elements['RMS DEC'].value);
+      } else if (values.elements['rmsDEC']) {
+        this.rmsDEC = parseFloat(values.elements['rmsDEC'].value);
+      } else if (values.elements['RMS_DEC']) {
+        this.rmsDEC = parseFloat(values.elements['RMS_DEC'].value);
+      }
+
+      // Look for RMS Total (also try rmsTotal, RMS_Total variations)
+      if (values.elements['RMS Total']) {
+        this.rmsTotal = parseFloat(values.elements['RMS Total'].value);
+      } else if (values.elements['rmsTotal']) {
+        this.rmsTotal = parseFloat(values.elements['rmsTotal'].value);
+      } else if (values.elements['RMS_Total']) {
+        this.rmsTotal = parseFloat(values.elements['RMS_Total'].value);
+      }
     }
   }
 

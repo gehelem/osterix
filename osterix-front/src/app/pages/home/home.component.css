@@ -191,3 +191,47 @@ mat-grid-list {
   min-width: 35px;
   text-align: right;
 }
+
+/* Guider card specific styles */
+.module-card.guider-card .card-header-custom {
+  height: auto;
+  padding: 8px;
+}
+
+.guider-card mat-card-content {
+  padding: 12px !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.rms-container {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+}
+
+.rms-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 8px;
+  background-color: rgba(76, 175, 80, 0.1);
+  border-radius: 4px;
+  border-left: 3px solid #4caf50;
+}
+
+.rms-label {
+  font-weight: 600;
+  color: #333;
+  font-size: 13px;
+  min-width: 70px;
+}
+
+.rms-value {
+  font-size: 14px;
+  color: #4caf50;
+  font-weight: 500;
+}

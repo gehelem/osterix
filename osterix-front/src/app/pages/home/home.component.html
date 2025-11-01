@@ -65,13 +65,26 @@
     </mat-grid-tile>
 
     <mat-grid-tile>
-      <mat-card class="module-card">
+      <mat-card class="module-card guider-card">
         <div class="card-header-custom clickable-header" routerLink="/guider">
           <mat-icon color="primary">gps_fixed</mat-icon>
           <span class="card-title">Guidage</span>
         </div>
         <mat-card-content>
-          Autoguidage avec graphiques de dérive
+          <div class="rms-container">
+            <div class="rms-item">
+              <span class="rms-label">RMS AD</span>
+              <span class="rms-value">{{ rmsRA !== null ? (rmsRA | number:'1.2-2') : '-' }}</span>
+            </div>
+            <div class="rms-item">
+              <span class="rms-label">RMS DEC</span>
+              <span class="rms-value">{{ rmsDEC !== null ? (rmsDEC | number:'1.2-2') : '-' }}</span>
+            </div>
+            <div class="rms-item">
+              <span class="rms-label">RMS Total</span>
+              <span class="rms-value">{{ rmsTotal !== null ? (rmsTotal | number:'1.2-2') : '-' }}</span>
+            </div>
+          </div>
         </mat-card-content>
       </mat-card>
     </mat-grid-tile>
