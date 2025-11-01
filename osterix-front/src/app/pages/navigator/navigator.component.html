@@ -45,17 +45,29 @@
               </button>
             </div>
 
-            <div class="target-section" *ngIf="selectedTarget">
-              <h4>Cible sélectionnée</h4>
-              <div class="target-info">
-                <p><strong>Nom:</strong> {{ targetName }}</p>
-                <p><strong>Coordinates:</strong> {{ formatCoordinates(targetRA, targetDEC) }}</p>
+            <div class="target-section">
+              <h4>Cible</h4>
+              <div class="target-inputs">
+                <mat-form-field appearance="fill" class="target-field">
+                  <mat-label>Nom</mat-label>
+                  <input matInput [(ngModel)]="targetName" (change)="onTargetChange()">
+                </mat-form-field>
+
+                <mat-form-field appearance="fill" class="target-field">
+                  <mat-label>AD</mat-label>
+                  <input matInput type="number" [(ngModel)]="targetRA" (change)="onTargetChange()" step="0.01">
+                </mat-form-field>
+
+                <mat-form-field appearance="fill" class="target-field">
+                  <mat-label>DEC</mat-label>
+                  <input matInput type="number" [(ngModel)]="targetDEC" (change)="onTargetChange()" step="0.01">
+                </mat-form-field>
               </div>
             </div>
           </div>
 
           <div class="action-buttons">
-            <button mat-raised-button color="primary" (click)="centerTarget()" [disabled]="!selectedTarget">
+            <button mat-raised-button color="primary" (click)="centerTarget()" [disabled]="!targetName">
               <mat-icon>gps_fixed</mat-icon>
               Centrer
             </button>

@@ -166,21 +166,19 @@
 }
 
 .target-section h4 {
-  margin: 0 0 8px 0;
+  margin: 0 0 12px 0;
   color: #333;
   font-size: 14px;
 }
 
-.target-info {
+.target-inputs {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 12px;
 }
 
-.target-info p {
-  margin: 0;
-  font-size: 13px;
-  color: #555;
+.target-field {
+  width: 100%;
 }
 
 /* Actions container */

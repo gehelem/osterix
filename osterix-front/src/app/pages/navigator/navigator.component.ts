@@ -40,6 +40,9 @@ export class NavigatorComponent implements OnInit, OnDestroy {
   targetName: string = '';
   targetRA: number = 0;
   targetDEC: number = 0;
+  targetNameLastSent: string = '';
+  targetRALastSent: number = 0;
+  targetDECLastSent: number = 0;
 
   // Current selection in JNOW
   selectionJD: string = '';
@@ -132,13 +135,25 @@ export class NavigatorComponent implements OnInit, OnDestroy {
     if (properties['actions']) {
       const actions = properties['actions'];
       if (actions.elements['targetname']) {
-        this.targetName = actions.elements['targetname'].value;
+        const newValue = actions.elements['targetname'].value;
+        // Only update if different from what we sent
+        if (newValue !== this.targetNameLastSent) {
+          this.targetName = newValue;
+        }
       }
       if (actions.elements['targetra']) {
-        this.targetRA = actions.elements['targetra'].value;
+        const newValue = actions.elements['targetra'].value;
+        // Only update if different from what we sent
+        if (newValue !== this.targetRALastSent) {
+          this.targetRA = newValue;
+        }
       }
       if (actions.elements['targetde']) {
-        this.targetDEC = actions.elements['targetde'].value;
+        const newValue = actions.elements['targetde'].value;
+        // Only update if different from what we sent
+        if (newValue !== this.targetDECLastSent) {
+          this.targetDEC = newValue;
+        }
       }
     }
 
@@ -294,7 +309,25 @@ export class NavigatorComponent implements OnInit, OnDestroy {
     this.targetRA = result.ra;
     this.targetDEC = result.dec;
 
+    // Track what we're sending
+    this.targetNameLastSent = this.targetName;
+    this.targetRALastSent = this.targetRA;
+    this.targetDECLastSent = this.targetDEC;
+
     // Update the target properties in the backend
+    this.onTargetChange();
+  }
+
+  /**
+   * Update target properties in backend
+   */
+  onTargetChange(): void {
+    console.log(`Updated target: ${this.targetName} (${this.targetRA}, ${this.targetDEC})`);
+    // Track what we're sending
+    this.targetNameLastSent = this.targetName;
+    this.targetRALastSent = this.targetRA;
+    this.targetDECLastSent = this.targetDEC;
+    // Send property update to backend
     this.wsService.setProperty('Navigator', 'actions', {
       targetname: this.targetName,
       targetra: this.targetRA,
