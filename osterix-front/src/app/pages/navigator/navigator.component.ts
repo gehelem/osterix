@@ -29,6 +29,7 @@ export class NavigatorComponent implements OnInit, OnDestroy {
 
   // Search parameters
   searchName: string = '';
+  searchNameLastSent: string = ''; // Track last sent value to avoid circular updates
 
   // Search results grid
   displayedColumns: string[] = ['catalog', 'code', 'name', 'ra', 'dec', 'mag', 'diam', 'alias', 'actions'];
@@ -111,7 +112,11 @@ export class NavigatorComponent implements OnInit, OnDestroy {
     if (properties['search']) {
       const search = properties['search'];
       if (search.elements['name']) {
-        this.searchName = search.elements['name'].value;
+        const newValue = search.elements['name'].value;
+        // Only update if it's different from what we sent (avoid overwriting user input)
+        if (newValue !== this.searchNameLastSent) {
+          this.searchName = newValue;
+        }
       }
     }
 
@@ -253,6 +258,8 @@ export class NavigatorComponent implements OnInit, OnDestroy {
    */
   onSearchNameChange(): void {
     console.log(`Updated search name to: ${this.searchName}`);
+    // Track the value we're sending to avoid overwriting it when backend responds
+    this.searchNameLastSent = this.searchName;
     // Send property update to backend
     this.wsService.setProperty('Navigator', 'search', {
       name: this.searchName
