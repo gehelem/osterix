@@ -11,7 +11,9 @@ import { Chart, ChartConfiguration } from 'chart.js';
 })
 export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('focusChart') chartCanvasRef?: ElementRef<HTMLCanvasElement>;
+  @ViewChild('guiderChart') guiderChartRef?: ElementRef<HTMLCanvasElement>;
   private focusChart?: Chart;
+  private guiderChart?: Chart;
 
   focusModule: Module | null = null;
   resultHFR: number | null = null;
@@ -26,6 +28,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   rmsRA: number | null = null;
   rmsDEC: number | null = null;
   rmsTotal: number | null = null;
+  guidingData: any[] = [];
 
   private subscription = new Subscription();
 
@@ -57,10 +60,15 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    // If module data is already loaded, create the chart now
+    // If module data is already loaded, create the charts now
     if (this.focusModule) {
       setTimeout(() => {
         this.updateFocusChart();
+      }, 0);
+    }
+    if (this.guiderModule && this.guidingData.length > 0) {
+      setTimeout(() => {
+        this.updateGuiderChart();
       }, 0);
     }
   }
@@ -69,6 +77,9 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     this.subscription.unsubscribe();
     if (this.focusChart) {
       this.focusChart.destroy();
+    }
+    if (this.guiderChart) {
+      this.guiderChart.destroy();
     }
   }
 
@@ -182,6 +193,18 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
         this.rmsTotal = parseFloat(values.elements['RMS_Total'].value);
       }
     }
+
+    // Extract guiding data from 'guiding' property
+    if (properties['guiding']) {
+      const guidingProperty = properties['guiding'];
+      if ((guidingProperty as any).grid) {
+        // Keep only last 20 points for the mini chart
+        const grid = (guidingProperty as any).grid;
+        this.guidingData = grid.slice(Math.max(0, grid.length - 20));
+        // Update the chart
+        this.updateGuiderChart();
+      }
+    }
   }
 
   private updateFocusChart(): void {
@@ -265,6 +288,101 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     };
 
     this.focusChart = new Chart(this.chartCanvasRef.nativeElement, config);
+  }
+
+  private updateGuiderChart(): void {
+    if (!this.guiderChartRef || this.guidingData.length === 0) {
+      return;
+    }
+
+    // Grid structure: [DE, RA, RMS, SNR, pDE, pRA, time]
+    const de = this.guidingData.map(row => row[0]); // Dérive DE
+    const ra = this.guidingData.map(row => row[1]); // Dérive RA
+    const labels = this.guidingData.map((_, index) => index.toString());
+
+    // Destroy existing chart if any
+    if (this.guiderChart) {
+      this.guiderChart.destroy();
+    }
+
+    // Create new chart with only RA and DE drifts
+    const config: ChartConfiguration = {
+      type: 'line',
+      data: {
+        labels: labels,
+        datasets: [
+          // RA - Green line
+          {
+            label: 'Dérive RA (AD)',
+            data: ra,
+            borderColor: '#4CAF50',
+            backgroundColor: 'rgba(76, 175, 80, 0.1)',
+            borderWidth: 2,
+            tension: 0.3,
+            pointRadius: 2,
+            pointBackgroundColor: '#4CAF50',
+            pointBorderColor: '#fff',
+            pointBorderWidth: 1,
+            fill: false
+          },
+          // DE - Blue line
+          {
+            label: 'Dérive DE',
+            data: de,
+            borderColor: '#2196F3',
+            backgroundColor: 'rgba(33, 150, 243, 0.1)',
+            borderWidth: 2,
+            tension: 0.3,
+            pointRadius: 2,
+            pointBackgroundColor: '#2196F3',
+            pointBorderColor: '#fff',
+            pointBorderWidth: 1,
+            fill: false
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: true,
+        animation: false,
+        plugins: {
+          legend: {
+            display: true,
+            position: 'bottom',
+            labels: {
+              padding: 10,
+              font: {
+                size: 10
+              }
+            }
+          },
+          tooltip: {
+            enabled: true,
+            mode: 'index',
+            intersect: false
+          }
+        },
+        scales: {
+          x: {
+            display: false,
+            title: {
+              display: false
+            }
+          },
+          y: {
+            title: {
+              display: false
+            },
+            beginAtZero: false
+          }
+        }
+      }
+    };
+
+    const ctx = this.guiderChartRef.nativeElement.getContext('2d');
+    if (ctx) {
+      this.guiderChart = new Chart(ctx, config);
+    }
   }
 
 }

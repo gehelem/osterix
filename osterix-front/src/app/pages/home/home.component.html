@@ -71,18 +71,23 @@
           <span class="card-title">Guidage</span>
         </div>
         <mat-card-content>
-          <div class="rms-container">
-            <div class="rms-item">
-              <span class="rms-label">RMS AD</span>
-              <span class="rms-value">{{ rmsRA !== null ? (rmsRA | number:'1.2-2') : '-' }}</span>
+          <div class="guider-content">
+            <div class="rms-column">
+              <div class="rms-item">
+                <span class="rms-label">RMS AD</span>
+                <span class="rms-value">{{ rmsRA !== null ? (rmsRA | number:'1.2-2') : '-' }}</span>
+              </div>
+              <div class="rms-item">
+                <span class="rms-label">RMS DEC</span>
+                <span class="rms-value">{{ rmsDEC !== null ? (rmsDEC | number:'1.2-2') : '-' }}</span>
+              </div>
+              <div class="rms-item">
+                <span class="rms-label">RMS Total</span>
+                <span class="rms-value">{{ rmsTotal !== null ? (rmsTotal | number:'1.2-2') : '-' }}</span>
+              </div>
             </div>
-            <div class="rms-item">
-              <span class="rms-label">RMS DEC</span>
-              <span class="rms-value">{{ rmsDEC !== null ? (rmsDEC | number:'1.2-2') : '-' }}</span>
-            </div>
-            <div class="rms-item">
-              <span class="rms-label">RMS Total</span>
-              <span class="rms-value">{{ rmsTotal !== null ? (rmsTotal | number:'1.2-2') : '-' }}</span>
+            <div class="chart-column" *ngIf="guidingData.length > 0">
+              <canvas #guiderChart></canvas>
             </div>
           </div>
         </mat-card-content>
