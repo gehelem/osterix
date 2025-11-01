@@ -249,6 +249,17 @@ export class NavigatorComponent implements OnInit, OnDestroy {
   }
 
   /**
+   * Update search name in backend
+   */
+  onSearchNameChange(): void {
+    console.log(`Updated search name to: ${this.searchName}`);
+    // Send property update to backend
+    this.wsService.setProperty('Navigator', 'search', {
+      name: this.searchName
+    });
+  }
+
+  /**
    * Search for an object (send Fposticon event)
    */
   performSearch(): void {
