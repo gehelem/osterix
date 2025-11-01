@@ -7,112 +7,72 @@
     </div>
   </div>
 
-  <!-- Action Buttons -->
-  <div class="actions-section">
+  <!-- Cards Grid -->
+  <div class="cards-grid">
+    <!-- Card 1: Image de séquence -->
     <mat-card>
       <mat-card-content>
-        <button mat-raised-button color="primary" (click)="startSequence()" [disabled]="isRunning">
-          <mat-icon>play_arrow</mat-icon>
-          Démarrer
-        </button>
-        <button mat-raised-button color="warn" (click)="stopSequence()" [disabled]="!isRunning">
-          <mat-icon>stop</mat-icon>
-          Arrêter
-        </button>
-        <button mat-raised-button (click)="openParametersDialog()">
-          <mat-icon>tune</mat-icon>
-          Paramètres
-        </button>
+        <div class="sequence-image-container">
+          <img *ngIf="imageUrl" [src]="imageUrl" alt="Image de séquence" class="sequence-image" (click)="openImageFullscreen()">
+
+          <!-- Buttons overlay on image -->
+          <div *ngIf="imageUrl" class="image-overlay-buttons">
+            <button mat-mini-fab color="primary" (click)="showHistogram($event)" matTooltip="Histogramme">
+              <mat-icon>bar_chart</mat-icon>
+            </button>
+            <button mat-mini-fab color="primary" (click)="showStatistics($event)" matTooltip="Statistiques">
+              <mat-icon>analytics</mat-icon>
+            </button>
+          </div>
+
+          <div *ngIf="!imageUrl" class="image-placeholder">
+            <p>Aucune image disponible</p>
+            <p class="hint">L'image apparaîtra ici après une acquisition</p>
+          </div>
+        </div>
       </mat-card-content>
     </mat-card>
-  </div>
 
-  <!-- Tabs Container -->
-  <mat-tab-group>
-    <!-- Tab 1: Control -->
-    <mat-tab label="Contrôle">
-      <ng-template mat-tab-label>
-        <mat-icon class="tab-icon">settings_remote</mat-icon>
-        <span>Contrôle</span>
-      </ng-template>
-
-      <!-- Object Target -->
-      <mat-card class="config-card" *ngIf="devicesEnabled">
-        <mat-card-header>
-          <mat-card-title>Objet cible</mat-card-title>
-        </mat-card-header>
-        <mat-card-content>
-          <mat-form-field appearance="fill" class="form-field">
-            <mat-label>Nom</mat-label>
-            <input matInput [(ngModel)]="objectName" (change)="onObjectChange('label', objectName)">
-          </mat-form-field>
-
-          <mat-form-field appearance="fill" class="form-field">
-            <mat-label>AD (RA)</mat-label>
-            <input matInput type="number" [(ngModel)]="objectRA" (change)="onObjectChange('ra', objectRA)">
-          </mat-form-field>
-
-          <mat-form-field appearance="fill" class="form-field">
-            <mat-label>DEC</mat-label>
-            <input matInput type="number" [(ngModel)]="objectDEC" (change)="onObjectChange('de', objectDEC)">
-          </mat-form-field>
-        </mat-card-content>
-      </mat-card>
-
-      <!-- Devices -->
-      <mat-card class="config-card" *ngIf="devicesEnabled">
-        <mat-card-header>
-          <mat-card-title>Appareils</mat-card-title>
-        </mat-card-header>
-        <mat-card-content>
-          <mat-form-field appearance="fill" class="form-field" *ngFor="let element of devicesElements | keyvalue">
-            <mat-label>{{ element.value.label }}</mat-label>
-            <input matInput [(ngModel)]="element.value.value" (change)="onDevicesChange(element.key, element.value.value)">
-          </mat-form-field>
-        </mat-card-content>
-      </mat-card>
-
-      <!-- Progress -->
-      <mat-card class="config-card" *ngIf="true">
-        <mat-card-header>
-          <mat-card-title>Progression</mat-card-title>
-        </mat-card-header>
-        <mat-card-content>
-          <div class="progress-item">
-            <span>Séquence globale</span>
+    <!-- Card 2: Actions & Status -->
+    <mat-card>
+      <mat-card-content>
+        <div class="actions-container">
+          <div class="status-info">
+            <p><strong>Statut:</strong> {{ currentStatus }}</p>
             <mat-progress-bar mode="determinate" [value]="globalProgress"></mat-progress-bar>
-            <span class="progress-value">{{ globalProgress | number:'1.0-0' }}%</span>
           </div>
-
-          <div class="progress-item">
-            <span>Exposition courante</span>
-            <mat-progress-bar mode="determinate" [value]="exposureProgress"></mat-progress-bar>
-            <span class="progress-value">{{ exposureProgress | number:'1.0-0' }}%</span>
-          </div>
-        </mat-card-content>
-      </mat-card>
-    </mat-tab>
-
-    <!-- Tab 2: Sequence -->
-    <mat-tab label="Séquence">
-      <ng-template mat-tab-label>
-        <mat-icon class="tab-icon">list</mat-icon>
-        <span>Séquence</span>
-      </ng-template>
-
-      <mat-card class="sequence-card">
-        <mat-card-header>
-          <mat-card-title>
-            Séquence d'imagerie ({{ sequenceRows.length }} lignes)
-          </mat-card-title>
-          <mat-card-subtitle>
-            <button mat-icon-button (click)="addSequenceRow()" title="Ajouter une ligne">
-              <mat-icon>add</mat-icon>
+          <div class="action-buttons">
+            <button mat-raised-button color="primary" (click)="startSequence()" [disabled]="isRunning">
+              <mat-icon>play_arrow</mat-icon>
+              Démarrer
             </button>
-          </mat-card-subtitle>
-        </mat-card-header>
+            <button mat-raised-button color="warn" (click)="stopSequence()" [disabled]="!isRunning">
+              <mat-icon>stop</mat-icon>
+              Arrêter
+            </button>
+            <button mat-raised-button (click)="openParametersDialog()">
+              <mat-icon>tune</mat-icon>
+              Paramètres
+            </button>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
 
-        <mat-card-content>
+    <!-- Card 3: Sequence Grid -->
+    <mat-card class="sequence-card">
+      <mat-card-header>
+        <mat-card-title>
+          Séquence d'imagerie ({{ sequenceRows.length }} lignes)
+        </mat-card-title>
+        <mat-card-subtitle>
+          <button mat-icon-button (click)="addSequenceRow()" title="Ajouter une ligne">
+            <mat-icon>add</mat-icon>
+          </button>
+        </mat-card-subtitle>
+      </mat-card-header>
+
+      <mat-card-content>
           <!-- Sequence Table -->
           <div class="table-container">
             <table mat-table [dataSource]="sequenceRows" class="sequence-table">
@@ -186,89 +146,14 @@
               <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
             </table>
           </div>
-        </mat-card-content>
-      </mat-card>
-    </mat-tab>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>
 
-    <!-- Tab 3: Parameters -->
-    <mat-tab label="Paramètres">
-      <ng-template mat-tab-label>
-        <mat-icon class="tab-icon">tune</mat-icon>
-        <span>Paramètres</span>
-      </ng-template>
-
-      <!-- Advanced Parameters -->
-      <mat-card class="config-card" *ngIf="parametersEnabled">
-        <mat-card-header>
-          <mat-card-title>Options avancées</mat-card-title>
-        </mat-card-header>
-        <mat-card-content>
-          <mat-checkbox [(ngModel)]="autoFocusAtStart" (change)="onParametersChange('autofocusatstart', autoFocusAtStart)">
-            Focus au démarrage de la séquence
-          </mat-checkbox>
-
-          <mat-checkbox [(ngModel)]="autoFocusOnFilterChange" (change)="onParametersChange('autofocusonfilterchange', autoFocusOnFilterChange)">
-            Focus au changement de filtre
-          </mat-checkbox>
-
-          <mat-form-field appearance="fill" class="form-field">
-            <mat-label>Instance de module focus</mat-label>
-            <input matInput [(ngModel)]="focusModule" (change)="onParametersChange('focusmodule', focusModule)">
-          </mat-form-field>
-
-          <mat-checkbox [(ngModel)]="suspendGuidingDuringFocus" (change)="onParametersChange('suspendguidingduringfocus', suspendGuidingDuringFocus)">
-            Suspendre le guidage pendant le focus
-          </mat-checkbox>
-
-          <mat-form-field appearance="fill" class="form-field">
-            <mat-label>Instance de module guidage</mat-label>
-            <input matInput [(ngModel)]="guiderModule" (change)="onParametersChange('guidermodule', guiderModule)">
-          </mat-form-field>
-
-          <mat-form-field appearance="fill" class="form-field">
-            <mat-label>Latence après reprise du guidage (s)</mat-label>
-            <input matInput type="number" [(ngModel)]="guidingSettleTime" (change)="onParametersChange('guidingsettletime', guidingSettleTime)">
-          </mat-form-field>
-        </mat-card-content>
-      </mat-card>
-
-      <!-- Camera Parameters -->
-      <mat-card class="config-card" *ngIf="parmsEnabled">
-        <mat-card-header>
-          <mat-card-title>Paramètres caméra</mat-card-title>
-        </mat-card-header>
-        <mat-card-content>
-          <mat-form-field appearance="fill" class="form-field">
-            <mat-label>Exposition (s)</mat-label>
-            <input matInput type="number" [(ngModel)]="exposure" (change)="onParmsChange('exposure', exposure)">
-          </mat-form-field>
-
-          <mat-form-field appearance="fill" class="form-field">
-            <mat-label>Gain</mat-label>
-            <input matInput type="number" [(ngModel)]="gain" (change)="onParmsChange('gain', gain)">
-          </mat-form-field>
-
-          <mat-form-field appearance="fill" class="form-field">
-            <mat-label>Offset</mat-label>
-            <input matInput type="number" [(ngModel)]="offset" (change)="onParmsChange('offset', offset)">
-          </mat-form-field>
-        </mat-card-content>
-      </mat-card>
-
-      <!-- Optics -->
-      <mat-card class="config-card" *ngIf="opticEnabled">
-        <mat-card-header>
-          <mat-card-title>Optique</mat-card-title>
-        </mat-card-header>
-        <mat-card-content>
-          <mat-form-field appearance="fill" class="form-field" *ngFor="let element of opticElements | keyvalue">
-            <mat-label>{{ element.value.label }}</mat-label>
-            <input matInput type="number" [(ngModel)]="element.value.value" (change)="onOpticChange(element.key, element.value.value)">
-          </mat-form-field>
-        </mat-card-content>
-      </mat-card>
-    </mat-tab>
-  </mat-tab-group>
+<!-- Fullscreen image overlay -->
+<div *ngIf="fullscreenImageUrl" class="fullscreen-overlay" (click)="closeFullscreen()">
+  <img [src]="fullscreenImageUrl" alt="Image de séquence en plein écran" class="fullscreen-image">
 </div>
 
 <!-- No Module Loaded -->

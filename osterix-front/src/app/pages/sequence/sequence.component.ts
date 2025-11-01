@@ -1,10 +1,12 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { WebsocketService } from '../../services/websocket.service';
-import { Module, Property, Element } from '../../models/ost.models';
+import { Module, Property, Element, ImageElement } from '../../models/ost.models';
 import { Subscription } from 'rxjs';
 import { SequenceRowDialogComponent, SequenceRowData, SequenceRowDialogData } from './sequence-row-dialog.component';
 import { SequenceParametersDialogComponent, SequenceParametersDialogData } from './sequence-parameters-dialog.component';
+import { HistogramDialogComponent } from '../focus/histogram-dialog.component';
+import { StatisticsDialogComponent } from '../focus/statistics-dialog.component';
 
 interface SequenceRow {
   count: number;
@@ -60,6 +62,12 @@ export class SequenceComponent implements OnInit, OnDestroy {
   // Progress
   globalProgress: number = 0;
   exposureProgress: number = 0;
+
+  // Image URL from backend
+  imageUrl: string | null = null;
+
+  // Fullscreen image
+  fullscreenImageUrl: string | null = null;
 
   // Status
   isRunning: boolean = false;
@@ -211,6 +219,21 @@ export class SequenceComponent implements OnInit, OnDestroy {
       // Parse grid data
       if (sequence.grid && sequence.gridheaders) {
         this.sequenceRows = this.parseSequenceGrid(sequence);
+      }
+    }
+
+    // Extract image URL from 'image' property
+    if (properties['image'] && properties['image'].elements['image']) {
+      const imageElement = properties['image'].elements['image'] as ImageElement;
+      if (imageElement.type === 'img' && imageElement.urljpeg) {
+        // Build complete URL with protocol, host, port and /ostmedia/ folder
+        const protocol = window.location.protocol; // 'http:' or 'https:'
+        const hostname = window.location.hostname; // e.g., 'localhost'
+        const port = 80; // Web server port
+        // Add timestamp to force browser to reload the image (avoid cache)
+        const timestamp = new Date().getTime();
+        this.imageUrl = `${protocol}//${hostname}:${port}/ostmedia/${imageElement.urljpeg}?t=${timestamp}`;
+        console.log('Image URL loaded:', this.imageUrl);
       }
     }
   }
@@ -516,6 +539,62 @@ export class SequenceComponent implements OnInit, OnDestroy {
       maxHeight: '100vh',
       panelClass: 'fullscreen-dialog',
       data: dialogData
+    });
+  }
+
+  /**
+   * Open image in fullscreen
+   */
+  openImageFullscreen(): void {
+    if (this.imageUrl) {
+      this.fullscreenImageUrl = this.imageUrl;
+    }
+  }
+
+  /**
+   * Close fullscreen image
+   */
+  closeFullscreen(): void {
+    this.fullscreenImageUrl = null;
+  }
+
+  /**
+   * Get current image element
+   */
+  private getCurrentImageElement(): ImageElement | null {
+    if (!this.sequencerModule || !this.sequencerModule.properties['image']) {
+      return null;
+    }
+    const imageElement = this.sequencerModule.properties['image'].elements['image'];
+    if (imageElement && imageElement.type === 'img') {
+      return imageElement as ImageElement;
+    }
+    return null;
+  }
+
+  /**
+   * Show histogram dialog
+   */
+  showHistogram(event: Event): void {
+    event.stopPropagation(); // Prevent triggering fullscreen
+    const imageData = this.getCurrentImageElement();
+    this.dialog.open(HistogramDialogComponent, {
+      width: '800px',
+      height: '600px',
+      data: imageData
+    });
+  }
+
+  /**
+   * Show statistics dialog
+   */
+  showStatistics(event: Event): void {
+    event.stopPropagation(); // Prevent triggering fullscreen
+    const imageData = this.getCurrentImageElement();
+    this.dialog.open(StatisticsDialogComponent, {
+      width: '600px',
+      height: '600px',
+      data: imageData
     });
   }
 }
