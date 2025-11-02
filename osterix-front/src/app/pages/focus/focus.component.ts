@@ -399,6 +399,9 @@ export class FocusComponent implements OnInit, OnDestroy, AfterViewInit {
     this.dialog.open(ParametersDialogComponent, {
       width: '100vw',
       height: '100vh',
+      maxWidth: '100vw',
+      maxHeight: '100vh',
+      panelClass: 'fullscreen-dialog',
       data: dialogData
     });
   }

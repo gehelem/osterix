@@ -228,42 +228,36 @@ interface ListOfValue {
   `,
   styles: [`
     h2[mat-dialog-title] {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
       margin: 0;
-      padding: 8px 16px;
-    }
-
-    .close-button {
-      margin-left: auto;
+      padding: 20px 20px 10px 20px;
+      background-color: #f5f5f5;
     }
 
     mat-dialog-content {
-      padding: 0;
-      height: 100%;
-      overflow: hidden;
+      padding: 20px;
+      overflow-y: auto;
       display: flex;
       flex-direction: column;
+      flex: 1;
     }
 
     mat-tab-group {
       flex: 1;
-      overflow: hidden;
+      display: flex;
+      flex-direction: column;
     }
 
-    ::ng-deep .mat-mdc-tab-group .mat-mdc-tab-body-wrapper {
-      height: 100%;
-    }
-
-    ::ng-deep .mat-mdc-tab-body {
-      height: 100%;
+    :host ::ng-deep .mat-tab-body-wrapper {
+      flex: 1;
     }
 
     .tab-content {
-      padding: 24px;
+      padding: 20px;
       overflow-y: auto;
-      height: 100%;
+    }
+
+    .tab-icon {
+      margin-right: 8px;
     }
 
     .focus-form {
@@ -277,12 +271,8 @@ interface ListOfValue {
     }
 
     .toggle-field {
-      margin: 8px 0;
-      padding: 8px 0;
-    }
-
-    .tab-icon {
-      margin-right: 8px;
+      display: block;
+      margin: 15px 0;
     }
   `]
 })
