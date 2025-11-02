@@ -301,6 +301,9 @@ export class GuiderComponent implements OnInit, OnDestroy {
     this.dialog.open(ParametersDialogComponent, {
       width: '100vw',
       height: '100vh',
+      maxWidth: '100vw',
+      maxHeight: '100vh',
+      panelClass: 'fullscreen-dialog',
       data: dialogData
     });
   }

@@ -522,10 +522,6 @@ interface ListOfValue {
         </mat-tab>
       </mat-tab-group>
     </mat-dialog-content>
-
-    <mat-dialog-actions align="end">
-      <button mat-button (click)="onClose()">Fermer</button>
-    </mat-dialog-actions>
   `,
   styles: [`
     mat-dialog-content {
@@ -569,12 +565,6 @@ interface ListOfValue {
     mat-slide-toggle {
       display: block;
       margin-bottom: 15px;
-    }
-
-    mat-dialog-actions {
-      padding: 16px 0 0 0;
-      border-top: 1px solid #e0e0e0;
-      margin-top: auto;
     }
 
     h2[mat-dialog-title] {
@@ -982,7 +972,4 @@ export class ParametersDialogComponent {
     return constraints.length > 0 ? ` (${constraints.join(', ')})` : '';
   }
 
-  onClose(): void {
-    this.dialogRef.close();
-  }
 }
