@@ -49,8 +49,535 @@ interface ListOfValue {
 
 @Component({
   selector: 'app-guider-parameters-dialog',
-  templateUrl: './parameters-dialog.component.html',
-  styleUrls: ['./parameters-dialog.component.css']
+  template: `
+    <h2 mat-dialog-title>Paramètres</h2>
+    <mat-dialog-content>
+      <!-- Tabs -->
+      <mat-tab-group animationDuration="0">
+        <!-- Parameters Tab -->
+        <mat-tab label="Paramètres" *ngIf="data.parametersEnabled">
+          <ng-template mat-tab-label>
+            <mat-icon class="tab-icon">tune</mat-icon>
+            <span>Paramètres</span>
+          </ng-template>
+
+          <div class="tab-content">
+            <ng-container *ngFor="let key of parametersKeysCache">
+              <!-- String with LOV -->
+              <mat-form-field
+                appearance="fill"
+                class="dialog-field"
+                *ngIf="isStringWithLov(key, 'parameters')">
+                <mat-label>{{ getElementLabel(key, 'parameters') }}</mat-label>
+                <mat-select
+                  [(ngModel)]="data.parametersElements[key].value"
+                  [name]="'parameters_' + key"
+                  (change)="data.onParametersChange(key, data.parametersElements[key].value)">
+                  <mat-option *ngFor="let option of getElementLovs(key, 'parameters')" [value]="option.value">
+                    {{ option.label }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+
+              <!-- String without LOV -->
+              <mat-form-field
+                appearance="fill"
+                class="dialog-field"
+                *ngIf="isStringWithoutLov(key, 'parameters')">
+                <mat-label>{{ getElementLabel(key, 'parameters') }}</mat-label>
+                <input
+                  matInput
+                  type="text"
+                  [(ngModel)]="data.parametersElements[key].value"
+                  [name]="'parameters_' + key"
+                  (change)="data.onParametersChange(key, data.parametersElements[key].value)">
+              </mat-form-field>
+
+              <!-- Numeric -->
+              <mat-form-field
+                appearance="fill"
+                class="dialog-field"
+                *ngIf="isNumeric(key, 'parameters')">
+                <mat-label>{{ getElementLabel(key, 'parameters') }}</mat-label>
+                <input
+                  matInput
+                  type="number"
+                  [(ngModel)]="data.parametersElements[key].value"
+                  [name]="'parameters_' + key"
+                  (change)="data.onParametersChange(key, data.parametersElements[key].value)">
+              </mat-form-field>
+
+              <!-- Boolean -->
+              <div class="toggle-field" *ngIf="isBool(key, 'parameters')">
+                <mat-slide-toggle
+                  [(ngModel)]="data.parametersElements[key].value"
+                  [name]="'parameters_' + key"
+                  (change)="data.onParametersChange(key, data.parametersElements[key].value)">
+                  {{ getElementLabel(key, 'parameters') }}
+                </mat-slide-toggle>
+              </div>
+            </ng-container>
+          </div>
+        </mat-tab>
+
+        <!-- Guide Parameters Tab -->
+        <mat-tab label="Guidage" *ngIf="data.guideParamsEnabled">
+          <ng-template mat-tab-label>
+            <mat-icon class="tab-icon">videogame_asset</mat-icon>
+            <span>Guidage</span>
+          </ng-template>
+
+          <div class="tab-content">
+            <ng-container *ngFor="let key of guideParamsKeysCache">
+              <!-- String with LOV -->
+              <mat-form-field
+                appearance="fill"
+                class="dialog-field"
+                *ngIf="isStringWithLov(key, 'guideParams')">
+                <mat-label>{{ getElementLabel(key, 'guideParams') }}</mat-label>
+                <mat-select
+                  [(ngModel)]="data.guideParamsElements[key].value"
+                  [name]="'guideParams_' + key"
+                  (change)="data.onGuideParamsChange(key, data.guideParamsElements[key].value)">
+                  <mat-option *ngFor="let option of getElementLovs(key, 'guideParams')" [value]="option.value">
+                    {{ option.label }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+
+              <!-- String without LOV -->
+              <mat-form-field
+                appearance="fill"
+                class="dialog-field"
+                *ngIf="isStringWithoutLov(key, 'guideParams')">
+                <mat-label>{{ getElementLabel(key, 'guideParams') }}</mat-label>
+                <input
+                  matInput
+                  type="text"
+                  [(ngModel)]="data.guideParamsElements[key].value"
+                  [name]="'guideParams_' + key"
+                  (change)="data.onGuideParamsChange(key, data.guideParamsElements[key].value)">
+              </mat-form-field>
+
+              <!-- Numeric -->
+              <mat-form-field
+                appearance="fill"
+                class="dialog-field"
+                *ngIf="isNumeric(key, 'guideParams')">
+                <mat-label>{{ getElementLabel(key, 'guideParams') }}</mat-label>
+                <input
+                  matInput
+                  type="number"
+                  [(ngModel)]="data.guideParamsElements[key].value"
+                  [name]="'guideParams_' + key"
+                  (change)="data.onGuideParamsChange(key, data.guideParamsElements[key].value)">
+              </mat-form-field>
+
+              <!-- Boolean -->
+              <div class="toggle-field" *ngIf="isBool(key, 'guideParams')">
+                <mat-slide-toggle
+                  [(ngModel)]="data.guideParamsElements[key].value"
+                  [name]="'guideParams_' + key"
+                  (change)="data.onGuideParamsChange(key, data.guideParamsElements[key].value)">
+                  {{ getElementLabel(key, 'guideParams') }}
+                </mat-slide-toggle>
+              </div>
+            </ng-container>
+          </div>
+        </mat-tab>
+
+        <!-- Calibration Parameters Tab -->
+        <mat-tab label="Calibration" *ngIf="data.calParamsEnabled">
+          <ng-template mat-tab-label>
+            <mat-icon class="tab-icon">straighten</mat-icon>
+            <span>Calibration</span>
+          </ng-template>
+
+          <div class="tab-content">
+            <ng-container *ngFor="let key of calParamsKeysCache">
+              <!-- String with LOV -->
+              <mat-form-field
+                appearance="fill"
+                class="dialog-field"
+                *ngIf="isStringWithLov(key, 'calParams')">
+                <mat-label>{{ getElementLabel(key, 'calParams') }}</mat-label>
+                <mat-select
+                  [(ngModel)]="data.calParamsElements[key].value"
+                  [name]="'calParams_' + key"
+                  (change)="data.onCalParamsChange(key, data.calParamsElements[key].value)">
+                  <mat-option *ngFor="let option of getElementLovs(key, 'calParams')" [value]="option.value">
+                    {{ option.label }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+
+              <!-- String without LOV -->
+              <mat-form-field
+                appearance="fill"
+                class="dialog-field"
+                *ngIf="isStringWithoutLov(key, 'calParams')">
+                <mat-label>{{ getElementLabel(key, 'calParams') }}</mat-label>
+                <input
+                  matInput
+                  type="text"
+                  [(ngModel)]="data.calParamsElements[key].value"
+                  [name]="'calParams_' + key"
+                  (change)="data.onCalParamsChange(key, data.calParamsElements[key].value)">
+              </mat-form-field>
+
+              <!-- Numeric -->
+              <mat-form-field
+                appearance="fill"
+                class="dialog-field"
+                *ngIf="isNumeric(key, 'calParams')">
+                <mat-label>{{ getElementLabel(key, 'calParams') }}</mat-label>
+                <input
+                  matInput
+                  type="number"
+                  [(ngModel)]="data.calParamsElements[key].value"
+                  [name]="'calParams_' + key"
+                  (change)="data.onCalParamsChange(key, data.calParamsElements[key].value)">
+              </mat-form-field>
+
+              <!-- Boolean -->
+              <div class="toggle-field" *ngIf="isBool(key, 'calParams')">
+                <mat-slide-toggle
+                  [(ngModel)]="data.calParamsElements[key].value"
+                  [name]="'calParams_' + key"
+                  (change)="data.onCalParamsChange(key, data.calParamsElements[key].value)">
+                  {{ getElementLabel(key, 'calParams') }}
+                </mat-slide-toggle>
+              </div>
+            </ng-container>
+          </div>
+        </mat-tab>
+
+        <!-- Devices Tab -->
+        <mat-tab label="Appareils" *ngIf="hasDevices()">
+          <ng-template mat-tab-label>
+            <mat-icon class="tab-icon">devices</mat-icon>
+            <span>Appareils</span>
+          </ng-template>
+
+          <div class="tab-content">
+            <ng-container *ngFor="let key of devicesKeysCache">
+              <!-- String with LOV -->
+              <mat-form-field
+                appearance="fill"
+                class="dialog-field"
+                *ngIf="isStringWithLov(key, 'devices')">
+                <mat-label>{{ getElementLabel(key, 'devices') }}</mat-label>
+                <mat-select
+                  [(ngModel)]="data.devicesElements[key].value"
+                  [name]="'devices_' + key"
+                  (change)="data.onDevicesChange(key, data.devicesElements[key].value)">
+                  <mat-option *ngFor="let option of getElementLovs(key, 'devices')" [value]="option.value">
+                    {{ option.label }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+
+              <!-- String without LOV -->
+              <mat-form-field
+                appearance="fill"
+                class="dialog-field"
+                *ngIf="isStringWithoutLov(key, 'devices')">
+                <mat-label>{{ getElementLabel(key, 'devices') }}</mat-label>
+                <input
+                  matInput
+                  type="text"
+                  [(ngModel)]="data.devicesElements[key].value"
+                  [name]="'devices_' + key"
+                  (change)="data.onDevicesChange(key, data.devicesElements[key].value)">
+              </mat-form-field>
+
+              <!-- Numeric -->
+              <mat-form-field
+                appearance="fill"
+                class="dialog-field"
+                *ngIf="isNumeric(key, 'devices')">
+                <mat-label>{{ getElementLabel(key, 'devices') }}</mat-label>
+                <input
+                  matInput
+                  type="number"
+                  [(ngModel)]="data.devicesElements[key].value"
+                  [name]="'devices_' + key"
+                  (change)="data.onDevicesChange(key, data.devicesElements[key].value)">
+              </mat-form-field>
+
+              <!-- Boolean -->
+              <div class="toggle-field" *ngIf="isBool(key, 'devices')">
+                <mat-slide-toggle
+                  [(ngModel)]="data.devicesElements[key].value"
+                  [name]="'devices_' + key"
+                  (change)="data.onDevicesChange(key, data.devicesElements[key].value)">
+                  {{ getElementLabel(key, 'devices') }}
+                </mat-slide-toggle>
+              </div>
+            </ng-container>
+          </div>
+        </mat-tab>
+
+        <!-- Optic Tab -->
+        <mat-tab label="Optique" *ngIf="hasOptic()">
+          <ng-template mat-tab-label>
+            <mat-icon class="tab-icon">lens</mat-icon>
+            <span>Optique</span>
+          </ng-template>
+
+          <div class="tab-content">
+            <ng-container *ngFor="let key of opticKeysCache">
+              <!-- String with LOV -->
+              <mat-form-field
+                appearance="fill"
+                class="dialog-field"
+                *ngIf="isStringWithLov(key, 'optic')">
+                <mat-label>{{ getElementLabel(key, 'optic') }}</mat-label>
+                <mat-select
+                  [(ngModel)]="data.opticElements[key].value"
+                  [name]="'optic_' + key"
+                  (change)="data.onOpticChange(key, data.opticElements[key].value)">
+                  <mat-option *ngFor="let option of getElementLovs(key, 'optic')" [value]="option.value">
+                    {{ option.label }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+
+              <!-- String without LOV -->
+              <mat-form-field
+                appearance="fill"
+                class="dialog-field"
+                *ngIf="isStringWithoutLov(key, 'optic')">
+                <mat-label>{{ getElementLabel(key, 'optic') }}</mat-label>
+                <input
+                  matInput
+                  type="text"
+                  [(ngModel)]="data.opticElements[key].value"
+                  [name]="'optic_' + key"
+                  (change)="data.onOpticChange(key, data.opticElements[key].value)">
+              </mat-form-field>
+
+              <!-- Numeric -->
+              <mat-form-field
+                appearance="fill"
+                class="dialog-field"
+                *ngIf="isNumeric(key, 'optic')">
+                <mat-label>{{ getElementLabel(key, 'optic') }}</mat-label>
+                <input
+                  matInput
+                  type="number"
+                  [(ngModel)]="data.opticElements[key].value"
+                  [name]="'optic_' + key"
+                  (change)="data.onOpticChange(key, data.opticElements[key].value)">
+              </mat-form-field>
+
+              <!-- Boolean -->
+              <div class="toggle-field" *ngIf="isBool(key, 'optic')">
+                <mat-slide-toggle
+                  [(ngModel)]="data.opticElements[key].value"
+                  [name]="'optic_' + key"
+                  (change)="data.onOpticChange(key, data.opticElements[key].value)">
+                  {{ getElementLabel(key, 'optic') }}
+                </mat-slide-toggle>
+              </div>
+            </ng-container>
+          </div>
+        </mat-tab>
+
+        <!-- Disabled Corrections Tab -->
+        <mat-tab label="Corrections désactivées" *ngIf="data.disCorrectionEnabled">
+          <ng-template mat-tab-label>
+            <mat-icon class="tab-icon">block</mat-icon>
+            <span>Corrections</span>
+          </ng-template>
+
+          <div class="tab-content">
+            <ng-container *ngFor="let key of disCorrectionKeysCache">
+              <!-- String with LOV -->
+              <mat-form-field
+                appearance="fill"
+                class="dialog-field"
+                *ngIf="isStringWithLov(key, 'disCorrection')">
+                <mat-label>{{ getElementLabel(key, 'disCorrection') }}</mat-label>
+                <mat-select
+                  [(ngModel)]="data.disCorrectionElements[key].value"
+                  [name]="'disCorrection_' + key"
+                  (change)="data.onDisCorrectionChange(key, data.disCorrectionElements[key].value)">
+                  <mat-option *ngFor="let option of getElementLovs(key, 'disCorrection')" [value]="option.value">
+                    {{ option.label }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+
+              <!-- String without LOV -->
+              <mat-form-field
+                appearance="fill"
+                class="dialog-field"
+                *ngIf="isStringWithoutLov(key, 'disCorrection')">
+                <mat-label>{{ getElementLabel(key, 'disCorrection') }}</mat-label>
+                <input
+                  matInput
+                  type="text"
+                  [(ngModel)]="data.disCorrectionElements[key].value"
+                  [name]="'disCorrection_' + key"
+                  (change)="data.onDisCorrectionChange(key, data.disCorrectionElements[key].value)">
+              </mat-form-field>
+
+              <!-- Numeric -->
+              <mat-form-field
+                appearance="fill"
+                class="dialog-field"
+                *ngIf="isNumeric(key, 'disCorrection')">
+                <mat-label>{{ getElementLabel(key, 'disCorrection') }}</mat-label>
+                <input
+                  matInput
+                  type="number"
+                  [(ngModel)]="data.disCorrectionElements[key].value"
+                  [name]="'disCorrection_' + key"
+                  (change)="data.onDisCorrectionChange(key, data.disCorrectionElements[key].value)">
+              </mat-form-field>
+
+              <!-- Boolean -->
+              <div class="toggle-field" *ngIf="isBool(key, 'disCorrection')">
+                <mat-slide-toggle
+                  [(ngModel)]="data.disCorrectionElements[key].value"
+                  [name]="'disCorrection_' + key"
+                  (change)="data.onDisCorrectionChange(key, data.disCorrectionElements[key].value)">
+                  {{ getElementLabel(key, 'disCorrection') }}
+                </mat-slide-toggle>
+              </div>
+            </ng-container>
+          </div>
+        </mat-tab>
+
+        <!-- Reversed Corrections Tab -->
+        <mat-tab label="Corrections inversées" *ngIf="data.revCorrectionEnabled">
+          <ng-template mat-tab-label>
+            <mat-icon class="tab-icon">swap_horiz</mat-icon>
+            <span>Inversées</span>
+          </ng-template>
+
+          <div class="tab-content">
+            <ng-container *ngFor="let key of revCorrectionKeysCache">
+              <!-- String with LOV -->
+              <mat-form-field
+                appearance="fill"
+                class="dialog-field"
+                *ngIf="isStringWithLov(key, 'revCorrection')">
+                <mat-label>{{ getElementLabel(key, 'revCorrection') }}</mat-label>
+                <mat-select
+                  [(ngModel)]="data.revCorrectionElements[key].value"
+                  [name]="'revCorrection_' + key"
+                  (change)="data.onRevCorrectionChange(key, data.revCorrectionElements[key].value)">
+                  <mat-option *ngFor="let option of getElementLovs(key, 'revCorrection')" [value]="option.value">
+                    {{ option.label }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+
+              <!-- String without LOV -->
+              <mat-form-field
+                appearance="fill"
+                class="dialog-field"
+                *ngIf="isStringWithoutLov(key, 'revCorrection')">
+                <mat-label>{{ getElementLabel(key, 'revCorrection') }}</mat-label>
+                <input
+                  matInput
+                  type="text"
+                  [(ngModel)]="data.revCorrectionElements[key].value"
+                  [name]="'revCorrection_' + key"
+                  (change)="data.onRevCorrectionChange(key, data.revCorrectionElements[key].value)">
+              </mat-form-field>
+
+              <!-- Numeric -->
+              <mat-form-field
+                appearance="fill"
+                class="dialog-field"
+                *ngIf="isNumeric(key, 'revCorrection')">
+                <mat-label>{{ getElementLabel(key, 'revCorrection') }}</mat-label>
+                <input
+                  matInput
+                  type="number"
+                  [(ngModel)]="data.revCorrectionElements[key].value"
+                  [name]="'revCorrection_' + key"
+                  (change)="data.onRevCorrectionChange(key, data.revCorrectionElements[key].value)">
+              </mat-form-field>
+
+              <!-- Boolean -->
+              <div class="toggle-field" *ngIf="isBool(key, 'revCorrection')">
+                <mat-slide-toggle
+                  [(ngModel)]="data.revCorrectionElements[key].value"
+                  [name]="'revCorrection_' + key"
+                  (change)="data.onRevCorrectionChange(key, data.revCorrectionElements[key].value)">
+                  {{ getElementLabel(key, 'revCorrection') }}
+                </mat-slide-toggle>
+              </div>
+            </ng-container>
+          </div>
+        </mat-tab>
+      </mat-tab-group>
+    </mat-dialog-content>
+
+    <mat-dialog-actions align="end">
+      <button mat-button (click)="onClose()">Fermer</button>
+    </mat-dialog-actions>
+  `,
+  styles: [`
+    mat-dialog-content {
+      padding: 0;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      width: 100%;
+    }
+
+    mat-tab-group {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    :host ::ng-deep .mat-tab-body-wrapper {
+      flex: 1;
+    }
+
+    .tab-content {
+      padding: 20px;
+      overflow-y: auto;
+    }
+
+    .tab-icon {
+      margin-right: 8px;
+    }
+
+    .dialog-field {
+      width: 100%;
+      margin-bottom: 20px;
+    }
+
+    .toggle-field {
+      margin: 8px 0;
+      padding: 8px 0;
+    }
+
+    mat-slide-toggle {
+      display: block;
+      margin-bottom: 15px;
+    }
+
+    mat-dialog-actions {
+      padding: 16px 0 0 0;
+      border-top: 1px solid #e0e0e0;
+      margin-top: auto;
+    }
+
+    h2[mat-dialog-title] {
+      margin: 0;
+      padding: 20px 20px 10px 20px;
+      background-color: #f5f5f5;
+    }
+  `]
 })
 export class ParametersDialogComponent {
   // Cache all computed values to prevent change detection loops
@@ -441,5 +968,9 @@ export class ParametersDialogComponent {
     }
 
     return constraints.length > 0 ? ` (${constraints.join(', ')})` : '';
+  }
+
+  onClose(): void {
+    this.dialogRef.close();
   }
 }
