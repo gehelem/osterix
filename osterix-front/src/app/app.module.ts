@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -23,6 +23,7 @@ import { DriftGraphComponent } from './pages/guider/drift-graph.component';
 import { SequenceRowDialogComponent } from './pages/sequence/sequence-row-dialog.component';
 import { SequenceParametersDialogComponent } from './pages/sequence/sequence-parameters-dialog.component';
 import { NavigatorParametersDialogComponent } from './pages/navigator/parameters-dialog.component';
+import { LoginDialogComponent } from './dialogs/login-dialog.component';
 
 // Angular Material imports
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -65,13 +66,15 @@ import { MessagesComponent } from './pages/messages/messages.component';
     GuiderComponent,
     AllskyComponent,
     HomeComponent,
-    MessagesComponent
+    MessagesComponent,
+    LoginDialogComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     FormsModule,
+    ReactiveFormsModule,
     MatToolbarModule,
     MatSidenavModule,
     MatListModule,

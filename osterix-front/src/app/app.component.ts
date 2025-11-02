@@ -1,6 +1,9 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { WebsocketService } from './services/websocket.service';
 import { ThemeService } from './services/theme.service';
+import { AuthService } from './services/auth.service';
+import { LoginDialogComponent } from './dialogs/login-dialog.component';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -20,7 +23,9 @@ export class AppComponent implements OnInit, OnDestroy {
 
   constructor(
     public wsService: WebsocketService,
-    public themeService: ThemeService
+    public themeService: ThemeService,
+    private authService: AuthService,
+    private dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
@@ -59,6 +64,26 @@ export class AppComponent implements OnInit, OnDestroy {
         this.errorCount = messages.filter(msg => msg.type === 'error').length;
       })
     );
+
+    // Subscribe to authentication status and show login dialog if needed
+    this.subscription.add(
+      this.authService.loginRequired$.subscribe(required => {
+        if (required) {
+          this.showLoginDialog();
+        }
+      })
+    );
+  }
+
+  /**
+   * Show login dialog
+   */
+  private showLoginDialog(): void {
+    this.dialog.open(LoginDialogComponent, {
+      width: '500px',
+      disableClose: true,
+      data: {}
+    });
   }
 
   /**
