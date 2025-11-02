@@ -437,6 +437,9 @@ export class NavigatorComponent implements OnInit, OnDestroy {
     this.dialog.open(NavigatorParametersDialogComponent, {
       width: '100vw',
       height: '100vh',
+      maxWidth: '100vw',
+      maxHeight: '100vh',
+      panelClass: 'fullscreen-dialog',
       data: {
         // Camera parameters from 'parms' property
         exposure: this.exposure,

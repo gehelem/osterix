@@ -231,6 +231,13 @@ interface ListOfValue {
       margin: 0;
       padding: 20px 20px 10px 20px;
       background-color: #f5f5f5;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .close-button {
+      margin-left: auto;
     }
 
     mat-dialog-content {

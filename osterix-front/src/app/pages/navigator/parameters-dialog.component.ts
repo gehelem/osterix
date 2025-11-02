@@ -38,7 +38,12 @@ interface ListOfValue {
 @Component({
   selector: 'app-navigator-parameters-dialog',
   template: `
-    <h2 mat-dialog-title>Paramètres</h2>
+    <h2 mat-dialog-title>
+      Paramètres
+      <button mat-icon-button mat-dialog-close class="close-button">
+        <mat-icon>close</mat-icon>
+      </button>
+    </h2>
     <mat-dialog-content>
       <!-- Tabs -->
       <mat-tab-group animationDuration="0">
@@ -242,19 +247,27 @@ interface ListOfValue {
         </mat-tab>
       </mat-tab-group>
     </mat-dialog-content>
-
-    <mat-dialog-actions align="end">
-      <button mat-button (click)="onClose()">Fermer</button>
-    </mat-dialog-actions>
   `,
   styles: [`
+    h2[mat-dialog-title] {
+      margin: 0;
+      padding: 20px 20px 10px 20px;
+      background-color: #f5f5f5;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .close-button {
+      margin-left: auto;
+    }
+
     mat-dialog-content {
-      padding: 0;
+      padding: 20px;
       overflow-y: auto;
       display: flex;
       flex-direction: column;
-      height: 100%;
-      width: 100%;
+      flex: 1;
     }
 
     mat-tab-group {
@@ -282,25 +295,13 @@ interface ListOfValue {
     }
 
     .toggle-field {
-      margin: 8px 0;
-      padding: 8px 0;
+      display: block;
+      margin: 15px 0;
     }
 
     mat-slide-toggle {
       display: block;
       margin-bottom: 15px;
-    }
-
-    mat-dialog-actions {
-      padding: 16px 0 0 0;
-      border-top: 1px solid #e0e0e0;
-      margin-top: auto;
-    }
-
-    h2[mat-dialog-title] {
-      margin: 0;
-      padding: 20px 20px 10px 20px;
-      background-color: #f5f5f5;
     }
   `]
 })
@@ -435,7 +436,4 @@ export class NavigatorParametersDialogComponent {
     return cache[key] || [];
   }
 
-  onClose(): void {
-    this.dialogRef.close();
-  }
 }

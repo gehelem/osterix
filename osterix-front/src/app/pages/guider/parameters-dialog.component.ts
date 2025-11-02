@@ -50,7 +50,12 @@ interface ListOfValue {
 @Component({
   selector: 'app-guider-parameters-dialog',
   template: `
-    <h2 mat-dialog-title>Paramètres</h2>
+    <h2 mat-dialog-title>
+      Paramètres
+      <button mat-icon-button mat-dialog-close class="close-button">
+        <mat-icon>close</mat-icon>
+      </button>
+    </h2>
     <mat-dialog-content>
       <!-- Tabs -->
       <mat-tab-group animationDuration="0">
@@ -576,6 +581,13 @@ interface ListOfValue {
       margin: 0;
       padding: 20px 20px 10px 20px;
       background-color: #f5f5f5;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .close-button {
+      margin-left: auto;
     }
   `]
 })
