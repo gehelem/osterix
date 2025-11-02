@@ -298,6 +298,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     // Grid structure: [DE, RA, RMS, SNR, pDE, pRA, time]
     const de = this.guidingData.map(row => row[0]); // Dérive DE
     const ra = this.guidingData.map(row => row[1]); // Dérive RA
+    const rms = this.guidingData.map(row => row[2]); // RMS
     const labels = this.guidingData.map((_, index) => index.toString());
 
     // Destroy existing chart if any
@@ -318,7 +319,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
             borderColor: '#4CAF50',
             backgroundColor: 'rgba(76, 175, 80, 0.1)',
             borderWidth: 2,
-            tension: 0.3,
+            tension: 0,
             pointRadius: 2,
             pointBackgroundColor: '#4CAF50',
             pointBorderColor: '#fff',
@@ -332,9 +333,23 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
             borderColor: '#2196F3',
             backgroundColor: 'rgba(33, 150, 243, 0.1)',
             borderWidth: 2,
-            tension: 0.3,
+            tension: 0,
             pointRadius: 2,
             pointBackgroundColor: '#2196F3',
+            pointBorderColor: '#fff',
+            pointBorderWidth: 1,
+            fill: false
+          },
+          // RMS - Yellow line
+          {
+            label: 'RMS',
+            data: rms,
+            borderColor: '#FFC107',
+            backgroundColor: 'rgba(255, 193, 7, 0.1)',
+            borderWidth: 2,
+            tension: 0,
+            pointRadius: 2,
+            pointBackgroundColor: '#FFC107',
             pointBorderColor: '#fff',
             pointBorderWidth: 1,
             fill: false
