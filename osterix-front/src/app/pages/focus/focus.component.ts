@@ -397,8 +397,8 @@ export class FocusComponent implements OnInit, OnDestroy, AfterViewInit {
     };
 
     this.dialog.open(ParametersDialogComponent, {
-      width: '1200px',
-      maxWidth: '95vw',
+      width: '100vw',
+      height: '100vh',
       data: dialogData
     });
   }

@@ -42,8 +42,249 @@ interface ListOfValue {
 
 @Component({
   selector: 'app-parameters-dialog',
-  templateUrl: './parameters-dialog.component.html',
-  styleUrls: ['./parameters-dialog.component.css']
+  template: `
+    <h2 mat-dialog-title>
+      Paramètres
+      <button mat-icon-button mat-dialog-close class="close-button">
+        <mat-icon>close</mat-icon>
+      </button>
+    </h2>
+    <mat-dialog-content>
+      <mat-tab-group animationDuration="0">
+        <!-- Parameters Tab -->
+        <mat-tab *ngIf="data.parametersEnabled" label="Paramètres">
+          <ng-template mat-tab-label>
+            <mat-icon class="tab-icon">tune</mat-icon>
+            <span>Paramètres</span>
+          </ng-template>
+          <div class="tab-content">
+            <form class="focus-form">
+              <mat-form-field appearance="fill">
+                <mat-label>Itérations</mat-label>
+                <input matInput type="number" [(ngModel)]="data.iterations" name="iterations"
+                       (ngModelChange)="data.onParameterChange('iterations', $event)">
+              </mat-form-field>
+
+              <mat-form-field appearance="fill">
+                <mat-label>Position de démarrage</mat-label>
+                <input matInput type="number" [(ngModel)]="data.startpos" name="startpos"
+                       (ngModelChange)="data.onParameterChange('startpos', $event)">
+              </mat-form-field>
+
+              <mat-form-field appearance="fill">
+                <mat-label>Intervalle de pas</mat-label>
+                <input matInput type="number" [(ngModel)]="data.steps" name="steps"
+                       (ngModelChange)="data.onParameterChange('steps', $event)">
+              </mat-form-field>
+
+              <mat-form-field appearance="fill">
+                <mat-label>Backlash</mat-label>
+                <input matInput type="number" [(ngModel)]="data.backlash" name="backlash"
+                       (ngModelChange)="data.onParameterChange('backlash', $event)">
+              </mat-form-field>
+
+              <div class="toggle-field">
+                <mat-slide-toggle [(ngModel)]="data.aroundinitial" name="aroundinitial"
+                                  (ngModelChange)="data.onParameterChange('aroundinitial', $event)">
+                  Autour de la position initiale
+                </mat-slide-toggle>
+              </div>
+
+              <mat-form-field appearance="fill">
+                <mat-label>Zoning</mat-label>
+                <mat-select [(ngModel)]="data.zoning" name="zoning"
+                            (ngModelChange)="data.onParameterChange('zoning', $event)">
+                  <mat-option *ngFor="let option of data.zoningOptions" [value]="option.value">
+                    {{ option.label }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </form>
+          </div>
+        </mat-tab>
+
+        <!-- Parms Tab (Camera parameters) -->
+        <mat-tab *ngIf="data.parmsEnabled" label="Caméra">
+          <ng-template mat-tab-label>
+            <mat-icon class="tab-icon">camera</mat-icon>
+            <span>Caméra</span>
+          </ng-template>
+          <div class="tab-content">
+            <form class="focus-form">
+              <mat-form-field appearance="fill">
+                <mat-label>Exposition (s)</mat-label>
+                <input matInput type="number" [(ngModel)]="data.exposure" name="exposure" step="0.1"
+                       (ngModelChange)="data.onParmsChange('exposure', $event)">
+              </mat-form-field>
+
+              <mat-form-field appearance="fill">
+                <mat-label>Gain</mat-label>
+                <input matInput type="number" [(ngModel)]="data.gain" name="gain"
+                       (ngModelChange)="data.onParmsChange('gain', $event)">
+              </mat-form-field>
+
+              <mat-form-field appearance="fill">
+                <mat-label>Offset</mat-label>
+                <input matInput type="number" [(ngModel)]="data.offset" name="offset"
+                       (ngModelChange)="data.onParmsChange('offset', $event)">
+              </mat-form-field>
+            </form>
+          </div>
+        </mat-tab>
+
+        <!-- Devices Tab -->
+        <mat-tab *ngIf="hasDevices()" label="Appareils">
+          <ng-template mat-tab-label>
+            <mat-icon class="tab-icon">devices</mat-icon>
+            <span>Appareils</span>
+          </ng-template>
+          <div class="tab-content">
+            <form class="focus-form">
+              <ng-container *ngFor="let key of getDevicesKeys()">
+                <mat-form-field appearance="fill" *ngIf="isStringWithLov(key, 'devices')">
+                  <mat-label>{{ getElementLabel(key, 'devices') }}</mat-label>
+                  <mat-select [(ngModel)]="data.devicesElements[key].value" [name]="'devices_' + key"
+                              (ngModelChange)="data.onDevicesChange(key, $event)"
+                              [disabled]="!data.devicesEnabled">
+                    <mat-option *ngFor="let option of getElementLovs(key, 'devices')" [value]="option.value">
+                      {{ option.label }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+
+                <mat-form-field appearance="fill" *ngIf="isStringWithoutLov(key, 'devices')">
+                  <mat-label>{{ getElementLabel(key, 'devices') }}</mat-label>
+                  <input matInput type="text" [(ngModel)]="data.devicesElements[key].value" [name]="'devices_' + key"
+                         (ngModelChange)="data.onDevicesChange(key, $event)"
+                         [disabled]="!data.devicesEnabled">
+                </mat-form-field>
+
+                <mat-form-field appearance="fill" *ngIf="isNumeric(key, 'devices')">
+                  <mat-label>{{ getElementLabel(key, 'devices') }}</mat-label>
+                  <input matInput type="number" [(ngModel)]="data.devicesElements[key].value" [name]="'devices_' + key"
+                         (ngModelChange)="data.onDevicesChange(key, $event)"
+                         [disabled]="!data.devicesEnabled">
+                </mat-form-field>
+
+                <div class="toggle-field" *ngIf="isBool(key, 'devices')">
+                  <mat-slide-toggle [(ngModel)]="data.devicesElements[key].value" [name]="'devices_' + key"
+                                    (ngModelChange)="data.onDevicesChange(key, $event)"
+                                    [disabled]="!data.devicesEnabled">
+                    {{ getElementLabel(key, 'devices') }}
+                  </mat-slide-toggle>
+                </div>
+              </ng-container>
+            </form>
+          </div>
+        </mat-tab>
+
+        <!-- Optic Tab -->
+        <mat-tab *ngIf="hasOptic()" label="Optique">
+          <ng-template mat-tab-label>
+            <mat-icon class="tab-icon">lens</mat-icon>
+            <span>Optique</span>
+          </ng-template>
+          <div class="tab-content">
+            <form class="focus-form">
+              <ng-container *ngFor="let key of getOpticKeys()">
+                <mat-form-field appearance="fill" *ngIf="isStringWithLov(key, 'optic')">
+                  <mat-label>{{ getElementLabel(key, 'optic') }}</mat-label>
+                  <mat-select [(ngModel)]="data.opticElements[key].value" [name]="'optic_' + key"
+                              (ngModelChange)="data.onOpticChange(key, $event)"
+                              [disabled]="!data.opticEnabled">
+                    <mat-option *ngFor="let option of getElementLovs(key, 'optic')" [value]="option.value">
+                      {{ option.label }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+
+                <mat-form-field appearance="fill" *ngIf="isStringWithoutLov(key, 'optic')">
+                  <mat-label>{{ getElementLabel(key, 'optic') }}</mat-label>
+                  <input matInput type="text" [(ngModel)]="data.opticElements[key].value" [name]="'optic_' + key"
+                         (ngModelChange)="data.onOpticChange(key, $event)"
+                         [disabled]="!data.opticEnabled">
+                </mat-form-field>
+
+                <mat-form-field appearance="fill" *ngIf="isNumeric(key, 'optic')">
+                  <mat-label>{{ getElementLabel(key, 'optic') }}</mat-label>
+                  <input matInput type="number" [(ngModel)]="data.opticElements[key].value" [name]="'optic_' + key"
+                         (ngModelChange)="data.onOpticChange(key, $event)"
+                         [disabled]="!data.opticEnabled">
+                </mat-form-field>
+
+                <div class="toggle-field" *ngIf="isBool(key, 'optic')">
+                  <mat-slide-toggle [(ngModel)]="data.opticElements[key].value" [name]="'optic_' + key"
+                                    (ngModelChange)="data.onOpticChange(key, $event)"
+                                    [disabled]="!data.opticEnabled">
+                    {{ getElementLabel(key, 'optic') }}
+                  </mat-slide-toggle>
+                </div>
+              </ng-container>
+            </form>
+          </div>
+        </mat-tab>
+      </mat-tab-group>
+    </mat-dialog-content>
+  `,
+  styles: [`
+    h2[mat-dialog-title] {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 0;
+      padding: 8px 16px;
+    }
+
+    .close-button {
+      margin-left: auto;
+    }
+
+    mat-dialog-content {
+      padding: 0;
+      height: 100%;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    mat-tab-group {
+      flex: 1;
+      overflow: hidden;
+    }
+
+    ::ng-deep .mat-mdc-tab-group .mat-mdc-tab-body-wrapper {
+      height: 100%;
+    }
+
+    ::ng-deep .mat-mdc-tab-body {
+      height: 100%;
+    }
+
+    .tab-content {
+      padding: 24px;
+      overflow-y: auto;
+      height: 100%;
+    }
+
+    .focus-form {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .focus-form mat-form-field {
+      width: 100%;
+    }
+
+    .toggle-field {
+      margin: 8px 0;
+      padding: 8px 0;
+    }
+
+    .tab-icon {
+      margin-right: 8px;
+    }
+  `]
 })
 export class ParametersDialogComponent {
   // Cache all computed values to prevent change detection loops
