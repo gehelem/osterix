@@ -43,7 +43,12 @@ export interface SequenceParametersDialogData {
 @Component({
   selector: 'app-sequence-parameters-dialog',
   template: `
-    <h2 mat-dialog-title>Paramètres</h2>
+    <h2 mat-dialog-title>
+      Paramètres
+      <button mat-icon-button mat-dialog-close class="close-button">
+        <mat-icon>close</mat-icon>
+      </button>
+    </h2>
     <mat-dialog-content>
       <!-- Tabs -->
       <mat-tab-group animationDuration="0">
@@ -223,12 +228,21 @@ export interface SequenceParametersDialogData {
         </mat-tab>
       </mat-tab-group>
     </mat-dialog-content>
-
-    <mat-dialog-actions align="end">
-      <button mat-button (click)="onClose()">Fermer</button>
-    </mat-dialog-actions>
   `,
   styles: [`
+    h2[mat-dialog-title] {
+      margin: 0;
+      padding: 20px 20px 10px 20px;
+      background-color: #f5f5f5;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .close-button {
+      margin-left: auto;
+    }
+
     mat-dialog-content {
       padding: 20px;
       overflow-y: auto;
@@ -264,18 +278,6 @@ export interface SequenceParametersDialogData {
       display: block;
       margin-bottom: 15px;
     }
-
-    mat-dialog-actions {
-      padding: 16px 0 0 0;
-      border-top: 1px solid #e0e0e0;
-      margin-top: auto;
-    }
-
-    h2[mat-dialog-title] {
-      margin: 0;
-      padding: 20px 20px 10px 20px;
-      background-color: #f5f5f5;
-    }
   `]
 })
 export class SequenceParametersDialogComponent {
@@ -309,7 +311,4 @@ export class SequenceParametersDialogComponent {
     }
   }
 
-  onClose(): void {
-    this.dialogRef.close();
-  }
 }
