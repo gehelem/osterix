@@ -51,14 +51,20 @@ export class SkyChartComponent implements OnInit, AfterViewInit, OnChanges, OnDe
 
   private celestialInitialized = false;
 
+  // Toggle state tracking
+  private starsVisible = true;
+  private constellationsVisible = true;
+  private dsosVisible = true;
+  private mwVisible = true;
+
   constructor() {}
 
   ngOnInit(): void {
-    // Library should already be loaded by angular.json scripts
+    // Library is loaded via angular.json scripts configuration
   }
 
   ngAfterViewInit(): void {
-    // Initialize celestial map when view is ready
+    // Initialize d3-celestial after view has been rendered
     setTimeout(() => {
       this.initializeCelestial();
     }, 500);
@@ -72,17 +78,6 @@ export class SkyChartComponent implements OnInit, AfterViewInit, OnChanges, OnDe
 
   ngOnDestroy(): void {
     // Cleanup if needed
-  }
-
-  /**
-   * Load d3-celestial library and dependencies
-   */
-  private loadD3CelestialLibrary(): void {
-    // Check if d3 and Celestial are already available
-    if (typeof window !== 'undefined') {
-      // D3 v4 or v5 should be available from node_modules
-      // Celestial.js should also be available
-    }
   }
 
   /**
@@ -229,20 +224,31 @@ export class SkyChartComponent implements OnInit, AfterViewInit, OnChanges, OnDe
     const Celestial = (window as any).Celestial;
     if (!Celestial) return;
     try {
-      Celestial.redraw();
+      this.starsVisible = !this.starsVisible;
+      Celestial.apply({
+        stars: {
+          show: this.starsVisible
+        }
+      });
     } catch (e) {
       console.error('Failed to toggle stars:', e);
     }
   }
 
   /**
-   * Toggle constellation display
+   * Toggle constellation display (lines and names)
    */
   toggleConstellations(): void {
     const Celestial = (window as any).Celestial;
     if (!Celestial) return;
     try {
-      Celestial.redraw();
+      this.constellationsVisible = !this.constellationsVisible;
+      Celestial.apply({
+        constellations: {
+          lines: this.constellationsVisible,
+          names: this.constellationsVisible
+        }
+      });
     } catch (e) {
       console.error('Failed to toggle constellations:', e);
     }
@@ -255,7 +261,12 @@ export class SkyChartComponent implements OnInit, AfterViewInit, OnChanges, OnDe
     const Celestial = (window as any).Celestial;
     if (!Celestial) return;
     try {
-      Celestial.redraw();
+      this.dsosVisible = !this.dsosVisible;
+      Celestial.apply({
+        dsos: {
+          show: this.dsosVisible
+        }
+      });
     } catch (e) {
       console.error('Failed to toggle DSOs:', e);
     }
@@ -268,7 +279,12 @@ export class SkyChartComponent implements OnInit, AfterViewInit, OnChanges, OnDe
     const Celestial = (window as any).Celestial;
     if (!Celestial) return;
     try {
-      Celestial.redraw();
+      this.mwVisible = !this.mwVisible;
+      Celestial.apply({
+        mw: {
+          show: this.mwVisible
+        }
+      });
     } catch (e) {
       console.error('Failed to toggle Milky Way:', e);
     }
