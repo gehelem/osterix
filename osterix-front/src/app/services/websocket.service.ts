@@ -25,6 +25,8 @@ export class WebsocketService {
 
   private ws: WebSocket | null = null;
   private wsUrl = 'ws://localhost:9624';
+  private websocketProtocol: string = 'ws://'; // 'ws://' or 'wss://'
+  private websocketPath: string = ''; // '' for ws://host:9624 or '/ws/' for wss://host/ws/
 
   // Application state using BehaviorSubject for reactive updates
   private stateSubject = new BehaviorSubject<OSTState>({
@@ -50,8 +52,21 @@ export class WebsocketService {
   public messageHistory$: Observable<HistoryMessage[]> = this.messageHistorySubject.asObservable();
 
   constructor(@Inject(DOCUMENT) public mydocument: Document ,private notificationService: NotificationService) {
-    this.wsUrl='ws://'+this.mydocument.location.hostname+':9624';
-    console.log('WebsocketService initialized');
+    // Détecte si le serveur web utilise HTTPS et bascule WebSocket vers wss:// si nécessaire
+    if (this.mydocument.location.protocol === 'https:') {
+      this.websocketProtocol = 'wss://';
+      this.websocketPath = '/ws/'; // Via reverse proxy sur port 443
+    }
+
+    // Construire l'URL WebSocket en fonction du protocole
+    if (this.websocketProtocol === 'wss://') {
+      // En SSL: wss://www.ostserver.fr/ws/
+      this.wsUrl = this.websocketProtocol + this.mydocument.location.hostname + this.websocketPath;
+    } else {
+      // Sans SSL: ws://hostname:9624
+      this.wsUrl = this.websocketProtocol + this.mydocument.location.hostname + ':9624';
+    }
+    console.log('WebsocketService initialized with URL:', this.wsUrl);
   }
 
   /**

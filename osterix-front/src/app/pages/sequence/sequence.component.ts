@@ -1,6 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { WebsocketService } from '../../services/websocket.service';
+import { UrlBuilderService } from '../../services/url-builder.service';
 import { Module, Property, Element, ImageElement } from '../../models/ost.models';
 import { Subscription } from 'rxjs';
 import { SequenceRowDialogComponent, SequenceRowData, SequenceRowDialogData } from './sequence-row-dialog.component';
@@ -85,6 +86,7 @@ export class SequenceComponent implements OnInit, OnDestroy {
 
   constructor(
     public wsService: WebsocketService,
+    private urlBuilder: UrlBuilderService,
     private dialog: MatDialog
   ) {}
 
@@ -226,13 +228,9 @@ export class SequenceComponent implements OnInit, OnDestroy {
     if (properties['image'] && properties['image'].elements['image']) {
       const imageElement = properties['image'].elements['image'] as ImageElement;
       if (imageElement.type === 'img' && imageElement.urljpeg) {
-        // Build complete URL with protocol, host, port and /ostmedia/ folder
-        const protocol = window.location.protocol; // 'http:' or 'https:'
-        const hostname = window.location.hostname; // e.g., 'localhost'
-        const port = 80; // Web server port
         // Add timestamp to force browser to reload the image (avoid cache)
         const timestamp = new Date().getTime();
-        this.imageUrl = `${protocol}//${hostname}:${port}/ostmedia/${imageElement.urljpeg}?t=${timestamp}`;
+        this.imageUrl = this.urlBuilder.buildMediaUrl(imageElement.urljpeg, timestamp);
         console.log('Image URL loaded:', this.imageUrl);
       }
     }

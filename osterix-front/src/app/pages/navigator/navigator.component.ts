@@ -1,6 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { WebsocketService } from '../../services/websocket.service';
+import { UrlBuilderService } from '../../services/url-builder.service';
 import { Module, Property, Element, ImageElement } from '../../models/ost.models';
 import { Subscription } from 'rxjs';
 import { HistogramDialogComponent } from '../focus/histogram-dialog.component';
@@ -86,6 +87,7 @@ export class NavigatorComponent implements OnInit, OnDestroy {
 
   constructor(
     public wsService: WebsocketService,
+    private urlBuilder: UrlBuilderService,
     private dialog: MatDialog
   ) {}
 
@@ -225,11 +227,8 @@ export class NavigatorComponent implements OnInit, OnDestroy {
     if (properties['image'] && properties['image'].elements['image']) {
       const imageElement = properties['image'].elements['image'] as ImageElement;
       if (imageElement.type === 'img' && imageElement.urljpeg) {
-        const protocol = window.location.protocol;
-        const hostname = window.location.hostname;
-        const port = 80;
         const timestamp = new Date().getTime();
-        this.imageUrl = `${protocol}//${hostname}:${port}/ostmedia/${imageElement.urljpeg}?t=${timestamp}`;
+        this.imageUrl = this.urlBuilder.buildMediaUrl(imageElement.urljpeg, timestamp);
         console.log('Image URL loaded:', this.imageUrl);
       }
     }

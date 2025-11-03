@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 import { WebsocketService } from '../../services/websocket.service';
+import { UrlBuilderService } from '../../services/url-builder.service';
 import { Module, Property, Element, ImageElement } from '../../models/ost.models';
 import { ParametersDialogComponent, ParametersDialogData } from './parameters-dialog.component';
 import { GuiderHistogramDialogComponent } from './histogram-dialog.component';
@@ -74,6 +75,7 @@ export class GuiderComponent implements OnInit, OnDestroy {
 
   constructor(
     private websocketService: WebsocketService,
+    private urlBuilder: UrlBuilderService,
     private dialog: MatDialog
   ) { }
 
@@ -105,13 +107,9 @@ export class GuiderComponent implements OnInit, OnDestroy {
       console.log('Image element:', imageElement);
       if (imageElement && imageElement.type === 'img' && imageElement.urljpeg) {
         this.imageElement = imageElement;
-        // Build complete URL with protocol, host, port and /ostmedia/ folder
-        const protocol = window.location.protocol; // 'http:' or 'https:'
-        const hostname = window.location.hostname; // e.g., 'localhost'
-        const port = 80; // Web server port
         // Add timestamp to force browser to reload the image (avoid cache)
         const timestamp = new Date().getTime();
-        this.imageUrl = `${protocol}//${hostname}:${port}/ostmedia/${imageElement.urljpeg}?t=${timestamp}`;
+        this.imageUrl = this.urlBuilder.buildMediaUrl(imageElement.urljpeg, timestamp);
         console.log('Guider image URL loaded:', this.imageUrl);
         console.log('urljpeg value:', imageElement.urljpeg);
       } else {
