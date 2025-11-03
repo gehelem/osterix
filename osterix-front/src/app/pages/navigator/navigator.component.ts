@@ -53,6 +53,9 @@ export class NavigatorComponent implements OnInit, OnDestroy {
   selectionDEC: number = 0;
   selectionNS: string = '';
 
+  // Sky Chart properties
+  fieldOfView: number = 10; // Default field of view in degrees
+
   // Devices and optic properties
   devicesElements: { [key: string]: Element } = {};
   opticElements: { [key: string]: Element } = {};

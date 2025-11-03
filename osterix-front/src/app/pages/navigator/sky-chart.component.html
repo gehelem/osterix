@@ -1,0 +1,37 @@
+<mat-card class="sky-chart-card">
+  <mat-card-content>
+    <div class="sky-chart-wrapper">
+      <!-- Sky Chart Container for d3-celestial -->
+      <div id="sky-chart-container" class="sky-chart-container" #skyChartContainer></div>
+
+      <!-- Controls Overlay -->
+      <div class="sky-chart-controls">
+        <div class="control-group">
+          <button mat-icon-button (click)="zoomIn()" matTooltip="Zoom in">
+            <mat-icon>zoom_in</mat-icon>
+          </button>
+          <button mat-icon-button (click)="resetZoom()" matTooltip="Reset zoom">
+            <mat-icon>zoom_out_map</mat-icon>
+          </button>
+          <button mat-icon-button (click)="zoomOut()" matTooltip="Zoom out">
+            <mat-icon>zoom_out</mat-icon>
+          </button>
+          <mat-divider [vertical]="true" style="margin: 0 4px; height: 24px;"></mat-divider>
+          <button mat-icon-button (click)="toggleConstellations()" matTooltip="Toggle constellations">
+            <mat-icon>star_border</mat-icon>
+          </button>
+          <button mat-icon-button (click)="toggleDSOs()" matTooltip="Toggle deep sky objects">
+            <mat-icon>language</mat-icon>
+          </button>
+          <button mat-icon-button (click)="toggleMilkyWay()" matTooltip="Toggle Milky Way">
+            <mat-icon>cloud</mat-icon>
+          </button>
+        </div>
+
+        <div class="fov-display">
+          <span>Champ: {{ fieldOfView | number:'1.1-1' }}°</span>
+        </div>
+      </div>
+    </div>
+  </mat-card-content>
+</mat-card>

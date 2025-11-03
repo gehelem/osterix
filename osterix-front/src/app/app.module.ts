@@ -23,6 +23,7 @@ import { DriftGraphComponent } from './pages/guider/drift-graph.component';
 import { SequenceRowDialogComponent } from './pages/sequence/sequence-row-dialog.component';
 import { SequenceParametersDialogComponent } from './pages/sequence/sequence-parameters-dialog.component';
 import { NavigatorParametersDialogComponent } from './pages/navigator/parameters-dialog.component';
+import { SkyChartComponent } from './pages/navigator/sky-chart.component';
 import { LoginDialogComponent } from './dialogs/login-dialog.component';
 
 // Angular Material imports
@@ -44,6 +45,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatDividerModule } from '@angular/material/divider';
 import { MessagesComponent } from './pages/messages/messages.component';
 
 @NgModule({
@@ -67,7 +69,8 @@ import { MessagesComponent } from './pages/messages/messages.component';
     AllskyComponent,
     HomeComponent,
     MessagesComponent,
-    LoginDialogComponent
+    LoginDialogComponent,
+    SkyChartComponent
   ],
   imports: [
     BrowserModule,
@@ -92,7 +95,8 @@ import { MessagesComponent } from './pages/messages/messages.component';
     MatTooltipModule,
     MatSlideToggleModule,
     MatProgressBarModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    MatDividerModule
   ],
   providers: [
     { provide: LocationStrategy, useClass: HashLocationStrategy }

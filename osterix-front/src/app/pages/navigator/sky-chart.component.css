@@ -1,0 +1,69 @@
+.sky-chart-card {
+  background: linear-gradient(135deg, #0a0e27 0%, #0f1235 100%);
+  color: #ffffff;
+}
+
+.sky-chart-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.sky-chart-container {
+  width: 100%;
+  height: 400px;
+  background: #000000;
+  border: 1px solid #2a3f5f;
+  border-radius: 4px;
+  position: relative;
+  overflow: hidden;
+}
+
+.sky-chart-controls {
+  position: absolute;
+  top: 8px;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 8px;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.control-group {
+  display: flex;
+  gap: 0;
+  align-items: center;
+  pointer-events: auto;
+}
+
+button {
+  color: #aabbcc;
+  transition: color 0.3s ease;
+  pointer-events: auto;
+}
+
+button:hover {
+  color: #ffffff;
+}
+
+.fov-display {
+  font-size: 12px;
+  color: #aabbcc;
+  padding: 0 12px;
+}
+
+/* d3-celestial specific styles */
+::ng-deep canvas {
+  display: block;
+  border-radius: 4px;
+}
+
+::ng-deep .celestial-map {
+  background: #0a0e27;
+}
+
+::ng-deep text {
+  font-family: monospace;
+}

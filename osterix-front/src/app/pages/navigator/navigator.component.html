@@ -25,7 +25,14 @@
       </mat-card-content>
     </mat-card>
 
-    <!-- Card 2: Actions & Status -->
+    <!-- Card 2: Sky Chart -->
+    <app-sky-chart
+      [targetRA]="targetRA"
+      [targetDEC]="targetDEC"
+      [fieldOfView]="fieldOfView">
+    </app-sky-chart>
+
+    <!-- Card 3: Actions & Status -->
     <mat-card>
       <mat-card-content>
         <div class="actions-container">
@@ -84,7 +91,7 @@
       </mat-card-content>
     </mat-card>
 
-    <!-- Card 3: Search Results Grid -->
+    <!-- Card 4: Search Results Grid -->
     <mat-card class="results-card">
       <mat-card-content>
         <!-- Results Table -->
