@@ -22,8 +22,39 @@
   flex-direction: column;
 }
 
-.sky-chart-container {
+.magnitude-select-overlay {
+  position: absolute;
+  bottom: 8px;
+  left: 8px;
+  z-index: 10;
+  width: 100px;
+  pointer-events: auto;
+}
+
+.magnitude-select-field {
   width: 100%;
+}
+
+::ng-deep .magnitude-select-field .mat-form-field-wrapper {
+  padding-bottom: 0 !important;
+}
+
+::ng-deep .magnitude-select-field .mat-form-field-infix {
+  padding: 8px 0 !important;
+}
+
+::ng-deep .magnitude-select-field .mat-form-field-label {
+  font-size: 11px;
+  transform: translateY(-1.5em) scale(0.85) !important;
+}
+
+::ng-deep .magnitude-select-field .mat-select-trigger {
+  color: #aabbcc;
+  font-size: 12px;
+}
+
+.sky-chart-container {
+  flex: 1;
   height: 100%;
   background: #000000;
   border: 1px solid #2a3f5f;

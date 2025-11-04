@@ -61,6 +61,9 @@ export class SkyChartComponent implements OnInit, AfterViewInit, OnChanges, OnDe
   private initialFOV: number = 0;
   private lastReportedZoom: number = 1;
 
+  // Magnitude limit for stars and DSOs
+  selectedMagnitudeValue: string = '15';
+
   constructor() {}
 
   ngOnInit(): void {
@@ -119,7 +122,7 @@ export class SkyChartComponent implements OnInit, AfterViewInit, OnChanges, OnDe
       culture: 'iau',
       stars: {
         show: true,
-        limit: 6,
+        limit: 15,
         colors: true,
         style: { fill: '#ffffff', opacity: 1 },
         names: true,
@@ -128,11 +131,11 @@ export class SkyChartComponent implements OnInit, AfterViewInit, OnChanges, OnDe
         namelimit: 2.5,
         size: 7,
         exponent: -0.28,
-        data: 'stars.6.json'
+        data: 'stars.14.json'
       },
       dsos: {
         show: true,
-        limit: 6,
+        limit: 15,
         colors: true,
         style: { fill: '#cccccc', stroke: '#cccccc', width: 2, opacity: 1 },
         names: true,
@@ -141,7 +144,7 @@ export class SkyChartComponent implements OnInit, AfterViewInit, OnChanges, OnDe
         namestyle: { fill: '#cccccc', font: '11px Helvetica, Arial, serif', align: 'left', baseline: 'top' },
         size: null,
         exponent: 1.4,
-        data: 'dsos.bright.json',
+        data: 'dsos.14.json',
         symbols: {
           gg: { shape: 'circle', fill: '#ff0000' },
           g: { shape: 'ellipse', fill: '#ff0000' },
@@ -260,6 +263,29 @@ export class SkyChartComponent implements OnInit, AfterViewInit, OnChanges, OnDe
         // Silently fail if Celestial is not ready
       }
     }, 100);
+  }
+
+  /**
+   * Update magnitude limit for stars and DSOs
+   */
+  onMagnitudeLimitChange(): void {
+    const Celestial = (window as any).Celestial;
+    if (!Celestial) return;
+
+    const magnitudeLimit = parseInt(this.selectedMagnitudeValue, 10) || 15;
+
+    try {
+      Celestial.apply({
+        stars: {
+          limit: magnitudeLimit
+        },
+        dsos: {
+          limit: magnitudeLimit
+        }
+      });
+    } catch (e) {
+      console.error('Failed to update magnitude limit:', e);
+    }
   }
 
   /**

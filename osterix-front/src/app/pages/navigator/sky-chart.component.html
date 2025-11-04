@@ -4,6 +4,19 @@
       <!-- Sky Chart Container for d3-celestial -->
       <div id="sky-chart-container" class="sky-chart-container" #skyChartContainer></div>
 
+      <!-- Magnitude Limit Select (overlay, left side) -->
+      <div class="magnitude-select-overlay">
+        <mat-form-field class="magnitude-select-field" appearance="fill">
+          <mat-label>Mag</mat-label>
+          <mat-select [(ngModel)]="selectedMagnitudeValue" (selectionChange)="onMagnitudeLimitChange()">
+            <mat-option value="5">5</mat-option>
+            <mat-option value="10">10</mat-option>
+            <mat-option value="15" selected>15</mat-option>
+            <mat-option value="20">20</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
       <!-- Controls Overlay -->
       <div class="sky-chart-controls">
         <div class="control-group">
