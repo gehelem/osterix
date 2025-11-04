@@ -57,6 +57,10 @@ export class SkyChartComponent implements OnInit, AfterViewInit, OnChanges, OnDe
   private dsosVisible = true;
   private mwVisible = true;
 
+  // Track initial FOV for zoom calculations
+  private initialFOV: number = 0;
+  private lastReportedZoom: number = 1;
+
   constructor() {}
 
   ngOnInit(): void {
@@ -67,6 +71,8 @@ export class SkyChartComponent implements OnInit, AfterViewInit, OnChanges, OnDe
     // Initialize d3-celestial after view has been rendered
     setTimeout(() => {
       this.initializeCelestial();
+      // Start updating FOV based on zoom level
+      this.startFOVUpdate();
     }, 500);
   }
 
@@ -182,6 +188,9 @@ export class SkyChartComponent implements OnInit, AfterViewInit, OnChanges, OnDe
     try {
       Celestial.display(config);
       this.celestialInitialized = true;
+      // Store initial FOV for zoom calculations - use the input value as reference
+      this.initialFOV = this.fieldOfView;
+      this.lastReportedZoom = 1;
     } catch (e) {
       console.error('Failed to initialize Celestial:', e);
     }
@@ -215,6 +224,42 @@ export class SkyChartComponent implements OnInit, AfterViewInit, OnChanges, OnDe
     // Mapping: FOV 180 = 0, FOV 1 = ~13
     const zoomLevel = Math.log(180 / this.fieldOfView) / Math.log(1.5);
     return Math.max(0, Math.min(20, zoomLevel));
+  }
+
+  /**
+   * Start updating FOV based on actual zoom level from d3-celestial
+   */
+  private startFOVUpdate(): void {
+    const updateInterval = setInterval(() => {
+      if (!this.celestialInitialized) {
+        clearInterval(updateInterval);
+        return;
+      }
+
+      const Celestial = (window as any).Celestial;
+      if (!Celestial || this.initialFOV <= 0) return;
+
+      try {
+        // Get current zoom ratio from d3-celestial
+        // zoomBy() with no args returns: current_projection_scale / base_scale
+        // This is the zoom multiplier where 1.0 = no zoom
+        const currentZoom = Celestial.zoomBy();
+
+        if (currentZoom && currentZoom > 0) {
+          // Calculate FOV: FOV = initialFOV / zoomRatio
+          // When zoom doubles, FOV halves (inverse relationship)
+          const fov = this.initialFOV / currentZoom;
+
+          // Only update if significantly changed to avoid flickering
+          if (Math.abs(fov - this.fieldOfView) > 0.5) {
+            this.fieldOfView = Math.max(1, Math.min(180, fov));
+            this.lastReportedZoom = currentZoom;
+          }
+        }
+      } catch (e) {
+        // Silently fail if Celestial is not ready
+      }
+    }, 100);
   }
 
   /**
