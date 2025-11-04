@@ -105,6 +105,7 @@ export class SkyChartComponent implements OnInit, AfterViewInit, OnChanges, OnDe
       center: [this._targetRA, this._targetDEC, 0],
       follow: 'center',
       zoomlevel: this.calculateZoomLevel(),
+      zoomextend: 180,
       adaptable: true,
       interactive: true,
       form: false,
