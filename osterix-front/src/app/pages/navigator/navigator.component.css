@@ -16,9 +16,37 @@
   min-height: 350px;
 }
 
+/* Image card - smaller */
+.cards-grid > mat-card:nth-child(1) {
+  min-height: 175px;
+  grid-row: 1;
+  grid-column: 1;
+}
+
+/* Sky chart - large and full width */
+app-sky-chart {
+  grid-column: 1 / -1;
+  grid-row: 2;
+  display: flex;
+  flex-direction: column;
+}
+
+app-sky-chart mat-card {
+  min-height: 700px;
+  flex: 1;
+}
+
+/* Actions card - smaller */
+.cards-grid > mat-card:nth-child(3) {
+  min-height: 175px;
+  grid-row: 1;
+  grid-column: 2;
+}
+
 /* Make the results card span full width */
 .results-card {
   grid-column: 1 / -1;
+  grid-row: 3;
 }
 
 .cards-grid > mat-card mat-card-content {

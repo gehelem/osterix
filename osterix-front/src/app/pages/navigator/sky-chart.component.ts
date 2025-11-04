@@ -95,12 +95,11 @@ export class SkyChartComponent implements OnInit, AfterViewInit, OnChanges, OnDe
 
     // D3-celestial configuration
     const config = {
-      width: 400,
-      height: 400,
+      width: 0,
       container: 'sky-chart-container',
       datapath: 'assets/celestial-data/',
       projection: 'orthographic',
-      projectionRatio: null,
+      projectionRatio: 2,
       transform: 'equatorial',
       center: [this._targetRA, this._targetDEC, 0],
       follow: 'center',
