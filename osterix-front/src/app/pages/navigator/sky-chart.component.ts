@@ -108,7 +108,7 @@ export class SkyChartComponent implements OnInit, AfterViewInit, OnChanges, OnDe
       adaptable: true,
       interactive: true,
       form: false,
-      controls: true,
+      controls: false,
       lang: '',
       culture: 'iau',
       stars: {
@@ -208,13 +208,13 @@ export class SkyChartComponent implements OnInit, AfterViewInit, OnChanges, OnDe
 
   /**
    * Calculate zoom level based on field of view
-   * FOV 180 = zoom 0, FOV 10 = zoom ~4
+   * FOV 180 = zoom 0, FOV 1 = zoom ~13
    */
   private calculateZoomLevel(): number {
     // d3-celestial uses zoom levels where higher = more zoomed in
-    // Rough mapping: FOV 180 = 0, FOV 1 = 10
+    // Mapping: FOV 180 = 0, FOV 1 = ~13
     const zoomLevel = Math.log(180 / this.fieldOfView) / Math.log(1.5);
-    return Math.max(0, Math.min(10, zoomLevel));
+    return Math.max(0, Math.min(20, zoomLevel));
   }
 
   /**
