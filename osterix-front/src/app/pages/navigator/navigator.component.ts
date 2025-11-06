@@ -83,6 +83,11 @@ export class NavigatorComponent implements OnInit, OnDestroy {
   tolerance: number = 30.0;
   centeringEnabled: boolean = true;
 
+  // GPS Location
+  gpsAltitude: number | null = null;
+  gpsLatitude: number | null = null;
+  gpsLongitude: number | null = null;
+
   // Image URL from backend
   imageUrl: string | null = null;
 
@@ -234,6 +239,20 @@ export class NavigatorComponent implements OnInit, OnDestroy {
       }
       if (centering.elements['tolerance']) {
         this.tolerance = centering.elements['tolerance'].value;
+      }
+    }
+
+    // Extract GPS location
+    if (properties['gpslocation']) {
+      const gpsLocation = properties['gpslocation'];
+      if (gpsLocation.elements['alt']) {
+        this.gpsAltitude = gpsLocation.elements['alt'].value;
+      }
+      if (gpsLocation.elements['lat']) {
+        this.gpsLatitude = gpsLocation.elements['lat'].value;
+      }
+      if (gpsLocation.elements['lon']) {
+        this.gpsLongitude = gpsLocation.elements['lon'].value;
       }
     }
 

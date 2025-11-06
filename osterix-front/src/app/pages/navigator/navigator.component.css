@@ -130,6 +130,21 @@
   color: #333;
 }
 
+.gps-status {
+  display: flex;
+  gap: 16px;
+  font-size: 11px;
+  margin-top: 8px;
+  user-select: none;
+  pointer-events: none;
+}
+
+.gps-value {
+  color: #555;
+  font-family: 'Courier New', monospace;
+  white-space: nowrap;
+}
+
 /* Search section */
 .search-section {
   display: flex;

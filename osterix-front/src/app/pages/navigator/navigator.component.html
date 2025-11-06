@@ -33,6 +33,11 @@
             <div class="status-header">
               <p><strong>Statut:</strong> {{ currentStatus }}</p>
             </div>
+            <div class="gps-status">
+              <span class="gps-value">Lat: {{ gpsLatitude !== null ? (gpsLatitude | number:'1.4-4') : '-' }}</span>
+              <span class="gps-value">Lon: {{ gpsLongitude !== null ? (gpsLongitude | number:'1.4-4') : '-' }}</span>
+              <span class="gps-value">Alt: {{ gpsAltitude !== null ? (gpsAltitude | number:'1.1-1') : '-' }} m</span>
+            </div>
           </div>
 
           <div class="target-section">
