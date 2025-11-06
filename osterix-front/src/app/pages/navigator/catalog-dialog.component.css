@@ -9,23 +9,20 @@
 
 .dialog-header {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   padding: 16px 24px;
   background: linear-gradient(135deg, #1a237e 0%, #283593 100%);
   color: #ffffff;
   border-bottom: 1px solid #3949ab;
   flex-shrink: 0;
-}
-
-.dialog-header h2 {
-  margin: 0;
-  font-size: 20px;
-  font-weight: 500;
+  position: relative;
 }
 
 .close-button {
   color: #b0bec5;
+  position: absolute;
+  right: 8px;
 }
 
 .close-button:hover {
@@ -41,31 +38,62 @@
   background: #f5f5f5;
 }
 
-.placeholder {
+.table-container {
   flex: 1;
+  overflow: auto;
+  border-radius: 0;
+  border: none;
   display: flex;
   flex-direction: column;
+}
+
+.results-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.results-table th {
+  background-color: #f5f5f5;
+  padding: 12px 10px;
+  text-align: left;
+  font-weight: 600;
+  color: #333;
+  border-bottom: 2px solid #ddd;
+  white-space: nowrap;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+.results-table td {
+  padding: 10px;
+  border-bottom: 1px solid #eee;
+}
+
+.results-table tr:hover {
+  background-color: #fafafa;
+}
+
+.results-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.results-table button[mat-icon-button] {
+  margin: 0 2px;
+  transform: scale(0.85);
+}
+
+.no-results {
+  display: flex;
   justify-content: center;
   align-items: center;
-  color: #999;
-  text-align: center;
   padding: 40px 20px;
-}
-
-.placeholder-icon {
-  font-size: 80px;
-  width: 80px;
-  height: 80px;
-  color: #ccc;
-  margin-bottom: 20px;
-}
-
-.placeholder p {
-  margin: 8px 0;
-}
-
-.placeholder .subtitle {
-  font-size: 14px;
-  color: #bbb;
+  color: #999;
   font-style: italic;
+  flex: 1;
+}
+
+.no-results p {
+  margin: 0;
 }

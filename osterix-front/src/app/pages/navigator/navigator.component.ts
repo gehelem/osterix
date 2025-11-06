@@ -531,7 +531,11 @@ export class NavigatorComponent implements OnInit, OnDestroy {
       height: '100vh',
       maxWidth: '100vw',
       maxHeight: '100vh',
-      panelClass: 'fullscreen-dialog'
+      panelClass: 'fullscreen-dialog',
+      data: {
+        searchResults: this.searchResults,
+        displayedColumns: this.displayedColumns
+      }
     });
   }
 
