@@ -137,6 +137,19 @@ export class WebsocketService {
    */
   private send(message: ClientMessage): void {
     if (this.ws && this.ws.readyState === WebSocket.OPEN) {
+      // Log Navigator RA/DEC updates
+      if ((message as any).mod === 'Navigator' && (message as any).dta && (message as any).dta.actions) {
+        const actions = (message as any).dta.actions;
+        if (actions.elements) {
+          console.log(`[📤 Sending Navigator actions]`, JSON.stringify(actions, null, 2));
+          if (actions.elements['targetra'] !== undefined) {
+            console.log(`  └─ RA: ${actions.elements['targetra']}`);
+          }
+          if (actions.elements['targetde'] !== undefined) {
+            console.log(`  └─ DEC: ${actions.elements['targetde']}`);
+          }
+        }
+      }
       this.ws.send(JSON.stringify(message));
       console.log('📤 Sent message:', message.evt);
     } else {
@@ -472,6 +485,19 @@ export class WebsocketService {
         if (moduleUpdate.properties) {
           Object.keys(moduleUpdate.properties).forEach(propName => {
             const propUpdate = moduleUpdate.properties[propName];
+
+            // Log Navigator actions property updates
+            if (moduleName === 'Navigator' && propName === 'actions') {
+              console.log(`[🎯 Navigator actions update]`, JSON.stringify(propUpdate, null, 2));
+              if (propUpdate.elements) {
+                if (propUpdate.elements['targetra'] !== undefined) {
+                  console.log(`  └─ RA: ${propUpdate.elements['targetra'].value}`);
+                }
+                if (propUpdate.elements['targetde'] !== undefined) {
+                  console.log(`  └─ DEC: ${propUpdate.elements['targetde'].value}`);
+                }
+              }
+            }
 
             if (!updatedProperties[propName]) {
               // Property doesn't exist, add it

@@ -45,8 +45,16 @@ export class NavigatorComponent implements OnInit, OnDestroy {
   targetRA: number = 0;
   targetDEC: number = 0;
   targetNameLastSent: string = '';
-  targetRALastSent: number = 0;
-  targetDECLastSent: number = 0;
+
+  // RA in HMS format
+  targetRAHours: number = 0;
+  targetRAMinutes: number = 0;
+  targetRASeconds: number = 0;
+
+  // DEC in DMS format
+  targetDECDegrees: number = 0;
+  targetDECMinutes: number = 0;
+  targetDECSeconds: number = 0;
 
   // Current selection in JNOW
   selectionJD: string = '';
@@ -142,6 +150,7 @@ export class NavigatorComponent implements OnInit, OnDestroy {
     }
 
     // Extract target parameters
+    let targetChanged = false;
     if (properties['actions']) {
       const actions = properties['actions'];
       if (actions.elements['targetname']) {
@@ -153,17 +162,17 @@ export class NavigatorComponent implements OnInit, OnDestroy {
       }
       if (actions.elements['targetra']) {
         const newValue = actions.elements['targetra'].value;
-        // Only update if different from what we sent
-        if (newValue !== this.targetRALastSent) {
-          this.targetRA = newValue;
-        }
+        this.targetRA = newValue;
+        targetChanged = true;
       }
       if (actions.elements['targetde']) {
         const newValue = actions.elements['targetde'].value;
-        // Only update if different from what we sent
-        if (newValue !== this.targetDECLastSent) {
-          this.targetDEC = newValue;
-        }
+        this.targetDEC = newValue;
+        targetChanged = true;
+      }
+      // Update HMS/DMS display if target coordinates changed
+      if (targetChanged) {
+        this.updateHMSDisplay();
       }
     }
 
@@ -324,10 +333,11 @@ export class NavigatorComponent implements OnInit, OnDestroy {
     this.targetRA = result.ra;
     this.targetDEC = result.dec;
 
+    // Update HMS/DMS display
+    this.updateHMSDisplay();
+
     // Track what we're sending
     this.targetNameLastSent = this.targetName;
-    this.targetRALastSent = this.targetRA;
-    this.targetDECLastSent = this.targetDEC;
 
     // Update the target properties in the backend
     this.onTargetChange();
@@ -345,10 +355,6 @@ export class NavigatorComponent implements OnInit, OnDestroy {
     // Set new timeout to send after user stops typing (500ms)
     this.targetChangeTimeout = setTimeout(() => {
       console.log(`Updated target: ${this.targetName} (${this.targetRA}, ${this.targetDEC})`);
-      // Track what we're sending
-      this.targetNameLastSent = this.targetName;
-      this.targetRALastSent = this.targetRA;
-      this.targetDECLastSent = this.targetDEC;
       // Send property update to backend
       this.wsService.setProperty('Navigator', 'actions', {
         targetname: this.targetName,
@@ -551,5 +557,93 @@ export class NavigatorComponent implements OnInit, OnDestroy {
    */
   formatCoordinates(ra: number, dec: number): string {
     return `${ra.toFixed(2)}° / ${dec.toFixed(2)}°`;
+  }
+
+  /**
+   * Convert decimal RA to HMS format
+   */
+  decimalToHMS(decimal: number): { hours: number; minutes: number; seconds: number } {
+    // RA is already in decimal hours (0-24), just convert to HMS
+    // Clamp to valid range first
+    const clamped = ((decimal % 24) + 24) % 24; // Handle wrapping at 24 hours
+    const hours = Math.floor(clamped);
+    const minutes = Math.floor((clamped - hours) * 60);
+    const seconds = (((clamped - hours) * 60) - minutes) * 60;
+    return {
+      hours: Math.max(0, Math.min(23, hours)),
+      minutes: Math.max(0, Math.min(59, minutes)),
+      seconds: Math.round(Math.max(0, Math.min(59.99, seconds)) * 100) / 100
+    };
+  }
+
+  /**
+   * Convert HMS to decimal RA (in hours)
+   */
+  hmsToDecimal(hours: number, minutes: number, seconds: number): number {
+    return hours + minutes / 60 + seconds / 3600; // Return decimal hours
+  }
+
+  /**
+   * Convert decimal DEC to DMS format
+   */
+  decimalToDMS(decimal: number): { degrees: number; minutes: number; seconds: number } {
+    const sign = decimal < 0 ? -1 : 1;
+    const absDecimal = Math.abs(decimal);
+    const degrees = Math.floor(absDecimal);
+    const minutes = Math.floor((absDecimal - degrees) * 60);
+    const seconds = ((absDecimal - degrees) * 60 - minutes) * 60;
+    return {
+      degrees: sign * degrees,
+      minutes,
+      seconds: Math.round(seconds * 100) / 100
+    };
+  }
+
+  /**
+   * Convert DMS to decimal DEC
+   */
+  dmsToDecimal(degrees: number, minutes: number, seconds: number): number {
+    const sign = degrees < 0 ? -1 : 1;
+    const absDegrees = Math.abs(degrees);
+    return sign * (absDegrees + minutes / 60 + seconds / 3600);
+  }
+
+  /**
+   * Update HMS/DMS display from decimal values
+   */
+  updateHMSDisplay(): void {
+    const hms = this.decimalToHMS(this.targetRA);
+    this.targetRAHours = hms.hours;
+    this.targetRAMinutes = hms.minutes;
+    this.targetRASeconds = hms.seconds;
+
+    const dms = this.decimalToDMS(this.targetDEC);
+    this.targetDECDegrees = dms.degrees;
+    this.targetDECMinutes = dms.minutes;
+    this.targetDECSeconds = dms.seconds;
+  }
+
+  /**
+   * Update decimal values from HMS/DMS inputs
+   */
+  updateFromHMS(): void {
+    // Validate and clamp RA hours (0-23)
+    this.targetRAHours = Math.max(0, Math.min(23, Math.floor(this.targetRAHours)));
+    // Clamp minutes (0-59)
+    this.targetRAMinutes = Math.max(0, Math.min(59, Math.floor(this.targetRAMinutes)));
+    // Clamp seconds (0-59.99)
+    this.targetRASeconds = Math.max(0, Math.min(59.99, this.targetRASeconds));
+
+    // Validate and clamp DEC degrees (-90 to 90)
+    this.targetDECDegrees = Math.max(-90, Math.min(90, Math.floor(this.targetDECDegrees)));
+    // Clamp minutes (0-59)
+    this.targetDECMinutes = Math.max(0, Math.min(59, Math.floor(this.targetDECMinutes)));
+    // Clamp seconds (0-59.99)
+    this.targetDECSeconds = Math.max(0, Math.min(59.99, this.targetDECSeconds));
+
+    this.targetRA = this.hmsToDecimal(this.targetRAHours, this.targetRAMinutes, this.targetRASeconds);
+    this.targetDEC = this.dmsToDecimal(this.targetDECDegrees, this.targetDECMinutes, this.targetDECSeconds);
+
+    this.onTargetChange();
   }
 }

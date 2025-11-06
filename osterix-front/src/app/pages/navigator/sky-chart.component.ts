@@ -194,6 +194,9 @@ export class SkyChartComponent implements OnInit, AfterViewInit, OnChanges, OnDe
       // Store initial FOV for zoom calculations - use the input value as reference
       this.initialFOV = this.fieldOfView;
       this.lastReportedZoom = 1;
+
+      // Ensure the celestial map is centered on the target
+      this.updateCelestialCenter();
     } catch (e) {
       console.error('Failed to initialize Celestial:', e);
     }

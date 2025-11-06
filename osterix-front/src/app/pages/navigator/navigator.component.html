@@ -43,15 +43,43 @@
                 <input matInput [(ngModel)]="targetName" (input)="onTargetChange()">
               </mat-form-field>
 
-              <mat-form-field appearance="fill" class="target-field">
-                <mat-label>AD</mat-label>
-                <input matInput type="number" [(ngModel)]="targetRA" (input)="onTargetChange()" step="0.01">
-              </mat-form-field>
+              <!-- RA in HMS format -->
+              <div class="coordinates-group">
+                <label>AD (Heures/Minutes/Secondes)</label>
+                <div class="hms-inputs">
+                  <mat-form-field appearance="fill" class="hms-field">
+                    <mat-label>H</mat-label>
+                    <input matInput type="number" [(ngModel)]="targetRAHours" (input)="updateFromHMS()" step="1" min="0" max="23">
+                  </mat-form-field>
+                  <mat-form-field appearance="fill" class="hms-field">
+                    <mat-label>M</mat-label>
+                    <input matInput type="number" [(ngModel)]="targetRAMinutes" (input)="updateFromHMS()" step="1" min="0" max="59">
+                  </mat-form-field>
+                  <mat-form-field appearance="fill" class="hms-field">
+                    <mat-label>S</mat-label>
+                    <input matInput type="number" [(ngModel)]="targetRASeconds" (input)="updateFromHMS()" step="0.01" min="0" max="59.99">
+                  </mat-form-field>
+                </div>
+              </div>
 
-              <mat-form-field appearance="fill" class="target-field">
-                <mat-label>DEC</mat-label>
-                <input matInput type="number" [(ngModel)]="targetDEC" (input)="onTargetChange()" step="0.01">
-              </mat-form-field>
+              <!-- DEC in DMS format -->
+              <div class="coordinates-group">
+                <label>DEC (Degrés/Minutes/Secondes)</label>
+                <div class="dms-inputs">
+                  <mat-form-field appearance="fill" class="dms-field">
+                    <mat-label>°</mat-label>
+                    <input matInput type="number" [(ngModel)]="targetDECDegrees" (input)="updateFromHMS()" step="1" min="-90" max="90">
+                  </mat-form-field>
+                  <mat-form-field appearance="fill" class="dms-field">
+                    <mat-label>M</mat-label>
+                    <input matInput type="number" [(ngModel)]="targetDECMinutes" (input)="updateFromHMS()" step="1" min="0" max="59">
+                  </mat-form-field>
+                  <mat-form-field appearance="fill" class="dms-field">
+                    <mat-label>S</mat-label>
+                    <input matInput type="number" [(ngModel)]="targetDECSeconds" (input)="updateFromHMS()" step="0.01" min="0" max="59.99">
+                  </mat-form-field>
+                </div>
+              </div>
             </div>
           </div>
 

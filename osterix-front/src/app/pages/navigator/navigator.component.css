@@ -176,6 +176,33 @@
   width: 100%;
 }
 
+/* Coordinates group styling */
+.coordinates-group {
+  margin-bottom: 12px;
+}
+
+.coordinates-group label {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  color: #666;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.hms-inputs,
+.dms-inputs {
+  display: flex;
+  gap: 8px;
+}
+
+.hms-field,
+.dms-field {
+  flex: 1;
+  min-width: 60px;
+}
+
 /* Actions container */
 .actions-container {
   display: flex;
