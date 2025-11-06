@@ -178,11 +178,11 @@ export class SkyChartComponent implements OnInit, AfterViewInit, OnChanges, OnDe
         style: { fill: '#ffffff', opacity: 0.15 }
       },
       lines: {
-        graticule: { show: false },
-        equatorial: { show: false },
-        ecliptic: { show: false },
-        galactic: { show: false },
-        supergalactic: { show: false }
+        graticule: { show: false, stroke: '#ffffff', width: 0.5, opacity: 0.6 },
+        equatorial: { show: false, stroke: '#ffffff', width: 1.3, opacity: 0.7 },
+        ecliptic: { show: false, stroke: '#ffffff', width: 1.3, opacity: 0.7 },
+        galactic: { show: false, stroke: '#ffffff', width: 1.3, opacity: 0.7 },
+        supergalactic: { show: false, stroke: '#ffffff', width: 1.3, opacity: 0.7 }
       }
     };
 

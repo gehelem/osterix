@@ -19,7 +19,9 @@ export class SkyChartDialogComponent implements AfterViewInit, OnDestroy {
   constellationsVisible: boolean = true;
   dsosVisible: boolean = true;
   milkyWayVisible: boolean = true;
-  gridsVisible: boolean = false;
+  equatorialGridVisible: boolean = false;
+  graticuleGridVisible: boolean = false;
+  eclipticGridVisible: boolean = false;
   horizonMarkerVisible: boolean = false;
   selectedMagnitude: string = '15';
 
@@ -42,6 +44,8 @@ export class SkyChartDialogComponent implements AfterViewInit, OnDestroy {
     if (this.skyChart) {
       setTimeout(() => {
         this.skyChart?.setInitialZoom(this.fieldOfView);
+        // Apply all saved settings including grid colors
+        this.updateCelestial();
       }, 1500);
     }
   }
@@ -71,7 +75,9 @@ export class SkyChartDialogComponent implements AfterViewInit, OnDestroy {
         this.constellationsVisible = settings.constellationsVisible ?? this.constellationsVisible;
         this.dsosVisible = settings.dsosVisible ?? this.dsosVisible;
         this.milkyWayVisible = settings.milkyWayVisible ?? this.milkyWayVisible;
-        this.gridsVisible = settings.gridsVisible ?? this.gridsVisible;
+        this.equatorialGridVisible = settings.equatorialGridVisible ?? this.equatorialGridVisible;
+        this.graticuleGridVisible = settings.graticuleGridVisible ?? this.graticuleGridVisible;
+        this.eclipticGridVisible = settings.eclipticGridVisible ?? this.eclipticGridVisible;
         this.horizonMarkerVisible = settings.horizonMarkerVisible ?? this.horizonMarkerVisible;
         this.selectedMagnitude = settings.selectedMagnitude ?? this.selectedMagnitude;
         this.fieldOfView = settings.fieldOfView ?? this.fieldOfView;
@@ -91,7 +97,9 @@ export class SkyChartDialogComponent implements AfterViewInit, OnDestroy {
         constellationsVisible: this.constellationsVisible,
         dsosVisible: this.dsosVisible,
         milkyWayVisible: this.milkyWayVisible,
-        gridsVisible: this.gridsVisible,
+        equatorialGridVisible: this.equatorialGridVisible,
+        graticuleGridVisible: this.graticuleGridVisible,
+        eclipticGridVisible: this.eclipticGridVisible,
         horizonMarkerVisible: this.horizonMarkerVisible,
         selectedMagnitude: this.selectedMagnitude,
         fieldOfView: this.fieldOfView
@@ -122,8 +130,18 @@ export class SkyChartDialogComponent implements AfterViewInit, OnDestroy {
     this.updateCelestial();
   }
 
-  toggleGrids(): void {
-    this.gridsVisible = !this.gridsVisible;
+  toggleEquatorialGrid(): void {
+    this.equatorialGridVisible = !this.equatorialGridVisible;
+    this.updateCelestial();
+  }
+
+  toggleGraticuleGrid(): void {
+    this.graticuleGridVisible = !this.graticuleGridVisible;
+    this.updateCelestial();
+  }
+
+  toggleEclipticGrid(): void {
+    this.eclipticGridVisible = !this.eclipticGridVisible;
     this.updateCelestial();
   }
 
@@ -194,10 +212,10 @@ export class SkyChartDialogComponent implements AfterViewInit, OnDestroy {
           show: this.milkyWayVisible
         },
         lines: {
-          graticule: { show: this.gridsVisible },
-          equatorial: { show: this.gridsVisible },
-          ecliptic: { show: this.gridsVisible },
-          galactic: { show: this.gridsVisible }
+          graticule: { show: this.graticuleGridVisible, stroke: '#ffffff', width: 0.5, opacity: 0.6 },
+          equatorial: { show: this.equatorialGridVisible, stroke: '#ffffff', width: 1.3, opacity: 0.7 },
+          ecliptic: { show: this.eclipticGridVisible, stroke: '#ffffff', width: 1.3, opacity: 0.7 },
+          galactic: { show: false, stroke: '#ffffff', width: 1.3, opacity: 0.7 }
         },
         horizon: {
           show: this.horizonMarkerVisible

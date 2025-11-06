@@ -31,9 +31,19 @@
           Voie Lactée
         </button>
 
-        <button mat-stroked-button (click)="toggleGrids()" class="control-button" [class.active]="gridsVisible">
-          <mat-icon>{{ gridsVisible ? 'check_box' : 'check_box_outline_blank' }}</mat-icon>
-          Grilles
+        <button mat-stroked-button (click)="toggleEquatorialGrid()" class="control-button" [class.active]="equatorialGridVisible">
+          <mat-icon>{{ equatorialGridVisible ? 'check_box' : 'check_box_outline_blank' }}</mat-icon>
+          Équatorial
+        </button>
+
+        <button mat-stroked-button (click)="toggleGraticuleGrid()" class="control-button" [class.active]="graticuleGridVisible">
+          <mat-icon>{{ graticuleGridVisible ? 'check_box' : 'check_box_outline_blank' }}</mat-icon>
+          Graticule
+        </button>
+
+        <button mat-stroked-button (click)="toggleEclipticGrid()" class="control-button" [class.active]="eclipticGridVisible">
+          <mat-icon>{{ eclipticGridVisible ? 'check_box' : 'check_box_outline_blank' }}</mat-icon>
+          Écliptique
         </button>
 
         <button mat-stroked-button (click)="toggleHorizonMarker()" class="control-button" [class.active]="horizonMarkerVisible">
