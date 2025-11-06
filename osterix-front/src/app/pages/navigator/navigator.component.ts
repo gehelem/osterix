@@ -7,6 +7,8 @@ import { Subscription } from 'rxjs';
 import { HistogramDialogComponent } from '../focus/histogram-dialog.component';
 import { StatisticsDialogComponent } from '../focus/statistics-dialog.component';
 import { NavigatorParametersDialogComponent } from './parameters-dialog.component';
+import { SkyChartDialogComponent } from './sky-chart-dialog.component';
+import { CatalogDialogComponent } from './catalog-dialog.component';
 
 interface SearchResult {
   catalog: string;
@@ -499,6 +501,37 @@ export class NavigatorComponent implements OnInit, OnDestroy {
           });
         }
       }
+    });
+  }
+
+  /**
+   * Show sky chart dialog
+   */
+  showSkyChart(): void {
+    this.dialog.open(SkyChartDialogComponent, {
+      width: '100vw',
+      height: '100vh',
+      maxWidth: '100vw',
+      maxHeight: '100vh',
+      panelClass: 'fullscreen-dialog',
+      data: {
+        targetRA: this.targetRA,
+        targetDEC: this.targetDEC,
+        fieldOfView: 10
+      }
+    });
+  }
+
+  /**
+   * Show catalog dialog
+   */
+  showCatalog(): void {
+    this.dialog.open(CatalogDialogComponent, {
+      width: '100vw',
+      height: '100vh',
+      maxWidth: '100vw',
+      maxHeight: '100vh',
+      panelClass: 'fullscreen-dialog'
     });
   }
 

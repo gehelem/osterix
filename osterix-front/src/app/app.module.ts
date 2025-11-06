@@ -24,6 +24,8 @@ import { SequenceRowDialogComponent } from './pages/sequence/sequence-row-dialog
 import { SequenceParametersDialogComponent } from './pages/sequence/sequence-parameters-dialog.component';
 import { NavigatorParametersDialogComponent } from './pages/navigator/parameters-dialog.component';
 import { SkyChartComponent } from './pages/navigator/sky-chart.component';
+import { SkyChartDialogComponent } from './pages/navigator/sky-chart-dialog.component';
+import { CatalogDialogComponent } from './pages/navigator/catalog-dialog.component';
 import { LoginDialogComponent } from './dialogs/login-dialog.component';
 
 // Angular Material imports
@@ -70,7 +72,9 @@ import { MessagesComponent } from './pages/messages/messages.component';
     HomeComponent,
     MessagesComponent,
     LoginDialogComponent,
-    SkyChartComponent
+    SkyChartComponent,
+    SkyChartDialogComponent,
+    CatalogDialogComponent
   ],
   imports: [
     BrowserModule,

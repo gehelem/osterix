@@ -44,25 +44,25 @@
                 Chercher
               </button>
             </div>
+          </div>
 
-            <div class="target-section">
-              <h4>Cible</h4>
-              <div class="target-inputs">
-                <mat-form-field appearance="fill" class="target-field">
-                  <mat-label>Nom</mat-label>
-                  <input matInput [(ngModel)]="targetName" (input)="onTargetChange()">
-                </mat-form-field>
+          <div class="target-section">
+            <h4>Cible</h4>
+            <div class="target-inputs">
+              <mat-form-field appearance="fill" class="target-field">
+                <mat-label>Nom</mat-label>
+                <input matInput [(ngModel)]="targetName" (input)="onTargetChange()">
+              </mat-form-field>
 
-                <mat-form-field appearance="fill" class="target-field">
-                  <mat-label>AD</mat-label>
-                  <input matInput type="number" [(ngModel)]="targetRA" (input)="onTargetChange()" step="0.01">
-                </mat-form-field>
+              <mat-form-field appearance="fill" class="target-field">
+                <mat-label>AD</mat-label>
+                <input matInput type="number" [(ngModel)]="targetRA" (input)="onTargetChange()" step="0.01">
+              </mat-form-field>
 
-                <mat-form-field appearance="fill" class="target-field">
-                  <mat-label>DEC</mat-label>
-                  <input matInput type="number" [(ngModel)]="targetDEC" (input)="onTargetChange()" step="0.01">
-                </mat-form-field>
-              </div>
+              <mat-form-field appearance="fill" class="target-field">
+                <mat-label>DEC</mat-label>
+                <input matInput type="number" [(ngModel)]="targetDEC" (input)="onTargetChange()" step="0.01">
+              </mat-form-field>
             </div>
           </div>
 
@@ -74,6 +74,14 @@
             <button mat-raised-button color="warn" (click)="abortNavigation()" [disabled]="!isRunning">
               <mat-icon>stop</mat-icon>
               Arrêter
+            </button>
+            <button mat-raised-button (click)="showSkyChart()">
+              <mat-icon>map</mat-icon>
+              Carte du ciel
+            </button>
+            <button mat-raised-button (click)="showCatalog()">
+              <mat-icon>library_books</mat-icon>
+              Catalogue
             </button>
             <button mat-raised-button (click)="showParameters()">
               <mat-icon>tune</mat-icon>

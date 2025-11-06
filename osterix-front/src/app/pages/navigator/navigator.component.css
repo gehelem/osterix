@@ -134,7 +134,7 @@
 .search-section {
   display: flex;
   gap: 12px;
-  margin-bottom: 16px;
+  margin-bottom: 0;
 }
 
 .search-field {
@@ -152,17 +152,18 @@
 
 /* Target section */
 .target-section {
+  padding: 16px;
   background-color: rgba(76, 175, 80, 0.1);
   border-left: 4px solid #4caf50;
-  padding: 12px;
   border-radius: 4px;
-  margin-top: 12px;
+  margin-bottom: 20px;
 }
 
 .target-section h4 {
-  margin: 0 0 12px 0;
+  margin: 0 0 16px 0;
   color: #333;
   font-size: 14px;
+  font-weight: 600;
 }
 
 .target-inputs {

@@ -1,0 +1,16 @@
+<div class="sky-chart-dialog-container">
+  <div class="dialog-header">
+    <h2>Carte du ciel</h2>
+    <button mat-icon-button (click)="closeDialog()" class="close-button">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <div class="dialog-content">
+    <app-sky-chart
+      [targetRA]="targetRA"
+      [targetDEC]="targetDEC"
+      [fieldOfView]="fieldOfView">
+    </app-sky-chart>
+  </div>
+</div>
