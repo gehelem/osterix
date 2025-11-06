@@ -514,7 +514,7 @@ export class NavigatorComponent implements OnInit, OnDestroy {
    * Show sky chart dialog
    */
   showSkyChart(): void {
-    this.dialog.open(SkyChartDialogComponent, {
+    const dialogRef = this.dialog.open(SkyChartDialogComponent, {
       width: '100vw',
       height: '100vh',
       maxWidth: '100vw',
@@ -524,6 +524,13 @@ export class NavigatorComponent implements OnInit, OnDestroy {
         targetRA: this.targetRA,
         targetDEC: this.targetDEC,
         fieldOfView: 10
+      }
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result && result.action === 'selectTarget') {
+        // Update target coordinates directly from sky chart selection
+        this.updateTarget(result.ra, result.dec);
       }
     });
   }
@@ -621,6 +628,17 @@ export class NavigatorComponent implements OnInit, OnDestroy {
     this.targetDECDegrees = dms.degrees;
     this.targetDECMinutes = dms.minutes;
     this.targetDECSeconds = dms.seconds;
+  }
+
+  /**
+   * Update target coordinates from sky chart selection
+   */
+  updateTarget(ra: number, dec: number): void {
+    this.targetName = 'UserDefined';
+    this.targetRA = ra;
+    this.targetDEC = dec;
+    this.updateHMSDisplay();
+    this.onTargetChange();
   }
 
   /**

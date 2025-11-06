@@ -7,10 +7,76 @@
   </div>
 
   <div class="dialog-content">
-    <app-sky-chart
-      [targetRA]="targetRA"
-      [targetDEC]="targetDEC"
-      [fieldOfView]="fieldOfView">
-    </app-sky-chart>
+    <div class="controls-panel">
+      <div class="control-group">
+        <label class="control-label">Affichage</label>
+
+        <button mat-stroked-button (click)="toggleStars()" class="control-button" [class.active]="starsVisible">
+          <mat-icon>{{ starsVisible ? 'check_box' : 'check_box_outline_blank' }}</mat-icon>
+          Étoiles
+        </button>
+
+        <button mat-stroked-button (click)="toggleConstellations()" class="control-button" [class.active]="constellationsVisible">
+          <mat-icon>{{ constellationsVisible ? 'check_box' : 'check_box_outline_blank' }}</mat-icon>
+          Constellations
+        </button>
+
+        <button mat-stroked-button (click)="toggleDSOs()" class="control-button" [class.active]="dsosVisible">
+          <mat-icon>{{ dsosVisible ? 'check_box' : 'check_box_outline_blank' }}</mat-icon>
+          Objets profonds
+        </button>
+
+        <button mat-stroked-button (click)="toggleMilkyWay()" class="control-button" [class.active]="milkyWayVisible">
+          <mat-icon>{{ milkyWayVisible ? 'check_box' : 'check_box_outline_blank' }}</mat-icon>
+          Voie Lactée
+        </button>
+
+        <button mat-stroked-button (click)="toggleGrids()" class="control-button" [class.active]="gridsVisible">
+          <mat-icon>{{ gridsVisible ? 'check_box' : 'check_box_outline_blank' }}</mat-icon>
+          Grilles
+        </button>
+
+        <button mat-stroked-button (click)="toggleHorizonMarker()" class="control-button" [class.active]="horizonMarkerVisible">
+          <mat-icon>{{ horizonMarkerVisible ? 'check_box' : 'check_box_outline_blank' }}</mat-icon>
+          Horizon
+        </button>
+      </div>
+
+      <mat-divider></mat-divider>
+
+      <div class="control-group">
+        <label class="control-label">Magnitude</label>
+
+        <mat-form-field appearance="fill" class="magnitude-field">
+          <mat-label>Limite</mat-label>
+          <mat-select [(ngModel)]="selectedMagnitude" (selectionChange)="onMagnitudeChange()">
+            <mat-option value="5">5</mat-option>
+            <mat-option value="10">10</mat-option>
+            <mat-option value="15">15</mat-option>
+            <mat-option value="20">20</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <mat-divider></mat-divider>
+
+      <div class="control-group">
+        <button mat-raised-button color="primary" (click)="resetView()" class="reset-button">
+          <mat-icon>center_focus_strong</mat-icon>
+          Centrer
+        </button>
+        <button mat-raised-button color="accent" (click)="selectTarget()" class="reset-button">
+          <mat-icon>done</mat-icon>
+          Sélection cible
+        </button>
+      </div>
+    </div>
+
+    <div class="chart-panel">
+      <app-sky-chart
+        [targetRA]="targetRA"
+        [targetDEC]="targetDEC">
+      </app-sky-chart>
+    </div>
   </div>
 </div>
