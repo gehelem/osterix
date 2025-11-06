@@ -22,7 +22,7 @@ export class CatalogDialogComponent implements OnInit, OnDestroy {
   ) {
     // Get data from parent component
     this.searchResults = data?.searchResults || [];
-    this.displayedColumns = data?.displayedColumns || ['catalog', 'code', 'name', 'ra', 'dec', 'mag', 'diam', 'alias', 'actions'];
+    this.displayedColumns = data?.displayedColumns || ['catalog', 'code', 'name', 'ra', 'dec', 'mag', 'diam', 'alias'];
   }
 
   ngOnInit(): void {
@@ -89,7 +89,20 @@ export class CatalogDialogComponent implements OnInit, OnDestroy {
     this.dialogRef.close();
   }
 
-  selectTarget(row: any, index: number): void {
+  /**
+   * Select a row and send target properties to backend
+   */
+  selectRow(row: any): void {
+    console.log(`Sélection de la cible: ${row.name} (${row.code})`);
+
+    // Send property update with target coordinates
+    this.wsService.setProperty('Navigator', 'actions', {
+      targetname: row.name || row.code,
+      targetra: row.ra,
+      targetde: row.dec
+    });
+
+    // Close the dialog
     this.dialogRef.close(row);
   }
 

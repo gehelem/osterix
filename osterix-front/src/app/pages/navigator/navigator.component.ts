@@ -36,7 +36,7 @@ export class NavigatorComponent implements OnInit, OnDestroy {
   searchNameLastSent: string = ''; // Track last sent value to avoid circular updates
 
   // Search results grid
-  displayedColumns: string[] = ['catalog', 'code', 'name', 'ra', 'dec', 'mag', 'diam', 'alias', 'actions'];
+  displayedColumns: string[] = ['catalog', 'code', 'name', 'ra', 'dec', 'mag', 'diam', 'alias'];
   searchResults: SearchResult[] = [];
 
   // Selected target
