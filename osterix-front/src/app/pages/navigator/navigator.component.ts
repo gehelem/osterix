@@ -542,7 +542,9 @@ export class NavigatorComponent implements OnInit, OnDestroy {
       data: {
         targetRA: this.targetRA,
         targetDEC: this.targetDEC,
-        fieldOfView: 10
+        fieldOfView: 10,
+        gpsLatitude: this.gpsLatitude,
+        gpsLongitude: this.gpsLongitude
       }
     });
 

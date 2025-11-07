@@ -183,6 +183,13 @@ export class SkyChartComponent implements OnInit, AfterViewInit, OnChanges, OnDe
         ecliptic: { show: false, stroke: '#ffffff', width: 1.3, opacity: 0.7 },
         galactic: { show: false, stroke: '#ffffff', width: 1.3, opacity: 0.7 },
         supergalactic: { show: false, stroke: '#ffffff', width: 1.3, opacity: 0.7 }
+      },
+      horizon: {
+        show: false,
+        stroke: '#ffffff',
+        width: 2.0,
+        fill: '#000000',
+        opacity: 0.3
       }
     };
 

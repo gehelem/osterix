@@ -13,6 +13,8 @@ export class SkyChartDialogComponent implements AfterViewInit, OnDestroy {
   targetRA: number;
   targetDEC: number;
   fieldOfView: number = 10;
+  gpsLatitude: number | null;
+  gpsLongitude: number | null;
 
   // Control states
   starsVisible: boolean = true;
@@ -34,6 +36,8 @@ export class SkyChartDialogComponent implements AfterViewInit, OnDestroy {
     this.targetRA = data?.targetRA || 0;
     this.targetDEC = data?.targetDEC || 0;
     this.fieldOfView = data?.fieldOfView || 10;
+    this.gpsLatitude = data?.gpsLatitude || null;
+    this.gpsLongitude = data?.gpsLongitude || null;
 
     // Load saved settings from localStorage
     this.loadSettings();
@@ -46,6 +50,13 @@ export class SkyChartDialogComponent implements AfterViewInit, OnDestroy {
         this.skyChart?.setInitialZoom(this.fieldOfView);
         // Apply all saved settings including grid colors
         this.updateCelestial();
+        // Set GPS location if available
+        if (this.gpsLatitude !== null && this.gpsLongitude !== null) {
+          const Celestial = (window as any).Celestial;
+          if (Celestial) {
+            Celestial.location([this.gpsLatitude, this.gpsLongitude]);
+          }
+        }
       }, 1500);
     }
   }
@@ -218,7 +229,11 @@ export class SkyChartDialogComponent implements AfterViewInit, OnDestroy {
           galactic: { show: false, stroke: '#ffffff', width: 1.3, opacity: 0.7 }
         },
         horizon: {
-          show: this.horizonMarkerVisible
+          show: this.horizonMarkerVisible,
+          stroke: '#ffffff',
+          width: 2.0,
+          fill: '#000000',
+          opacity: 0.3
         }
       });
     } catch (e) {
