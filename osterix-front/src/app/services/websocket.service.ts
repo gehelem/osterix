@@ -18,6 +18,7 @@ import {
   HistoryMessage
 } from '../models/ost.models';
 import { NotificationService } from './notification.service';
+import { ServerConfigService } from './server-config.service';
 
 @Injectable({
   providedIn: 'root'
@@ -54,7 +55,11 @@ export class WebsocketService {
   private messageHistorySubject = new BehaviorSubject<HistoryMessage[]>([]);
   public messageHistory$: Observable<HistoryMessage[]> = this.messageHistorySubject.asObservable();
 
-  constructor(@Inject(DOCUMENT) public mydocument: Document ,private notificationService: NotificationService) {
+  constructor(
+    @Inject(DOCUMENT) public mydocument: Document,
+    private notificationService: NotificationService,
+    private serverConfigService: ServerConfigService
+  ) {
     this.isNativePlatform = Capacitor.isNativePlatform();
     this.initializeWebSocketUrl();
     console.log('WebsocketService initialized with URL:', this.wsUrl);
@@ -64,37 +69,28 @@ export class WebsocketService {
    * Initialize WebSocket URL based on platform and protocol
    */
   private initializeWebSocketUrl(): void {
-    // For mobile platforms, default to localhost (will need to be configured)
-    if (this.isNativePlatform) {
-      this.websocketProtocol = 'wss://'; // Default to secure for Android
-      // URL will be set by setServerHost() or use default localhost
-      this.wsUrl = `${this.websocketProtocol}localhost:9624`;
-      return;
-    }
-
-    // Détecte si le serveur web utilise HTTPS et bascule WebSocket vers wss:// si nécessaire
-    if (this.mydocument.location.protocol === 'https:') {
-      this.websocketProtocol = 'wss://';
-      this.websocketPath = '/ws/'; // Via reverse proxy sur port 443
-    }
-
-    // Construire l'URL WebSocket en fonction du protocole
-    if (this.websocketProtocol === 'wss://') {
-      // En SSL: wss://www.ostserver.fr/ws/
-      this.wsUrl = this.websocketProtocol + this.mydocument.location.hostname + this.websocketPath;
-    } else {
-      // Sans SSL: ws://hostname:9624
-      this.wsUrl = this.websocketProtocol + this.mydocument.location.hostname + ':9624';
-    }
+    // Use ServerConfigService to build the URL for both mobile and web platforms
+    this.wsUrl = this.serverConfigService.buildWebSocketUrl();
+    const config = this.serverConfigService.getConfig();
+    this.websocketProtocol = config.secure ? 'wss://' : 'ws://';
+    console.log('WebSocket URL initialized from ServerConfigService:', this.wsUrl);
   }
 
   /**
    * Set custom server host (for mobile app discovery)
    */
-  public setServerHost(host: string, port: number = 9624, useSecure: boolean = true): void {
+  public setServerHost(host: string, port: number = 9624, useSecure: boolean = false): void {
     this.customServerHost = host;
-    this.websocketProtocol = useSecure ? 'wss://' : 'ws://';
-    this.wsUrl = `${this.websocketProtocol}${host}:${port}`;
+
+    // Save to config (which will be used by buildWebSocketUrl)
+    this.serverConfigService.saveConfig({
+      host,
+      port,
+      secure: useSecure
+    });
+
+    // Rebuild the URL based on the new config
+    this.wsUrl = this.serverConfigService.buildWebSocketUrl();
     console.log('WebSocket server host set to:', this.wsUrl);
   }
 
@@ -173,6 +169,19 @@ export class WebsocketService {
       this.ws.close();
       this.ws = null;
     }
+  }
+
+  /**
+   * Reconnect to WebSocket with new configuration
+   * Used when server configuration changes
+   */
+  public reconnect(): void {
+    console.log('Reconnecting with new server configuration...');
+    this.disconnect();
+    this.initializeWebSocketUrl();
+    setTimeout(() => {
+      this.connect();
+    }, 500);
   }
 
   /**

@@ -8,8 +8,8 @@
   <meta name="theme-color" content="#1976d2">
   <meta name="description" content="Headless Observatory Control System">
 
-  <!-- Capacitor specific meta tags for security -->
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: https: wss: 'unsafe-inline' 'unsafe-eval'; media-src 'self' data:; img-src 'self' data: content: blob: https:;">
+  <!-- Content Security Policy: Allow WebSocket and HTTP connections to localhost/development servers -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: https: wss: 'unsafe-inline' 'unsafe-eval'; connect-src 'self' http: https: ws: wss:; media-src 'self' data:; img-src 'self' data: content: blob: https: http:;">
 
   <!-- Prevent zoom on iOS double-tap -->
   <meta name="apple-mobile-web-app-capable" content="yes">

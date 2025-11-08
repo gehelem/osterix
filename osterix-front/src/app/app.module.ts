@@ -27,6 +27,7 @@ import { SkyChartComponent } from './pages/navigator/sky-chart.component';
 import { SkyChartDialogComponent } from './pages/navigator/sky-chart-dialog.component';
 import { CatalogDialogComponent } from './pages/navigator/catalog-dialog.component';
 import { LoginDialogComponent } from './dialogs/login-dialog.component';
+import { ServerConfigDialogComponent } from './dialogs/server-config-dialog.component';
 import { PlannerComponent } from './pages/planner/planner.component';
 import { PlannerParametersDialogComponent } from './pages/planner/planner-parameters-dialog.component';
 import { PlannerRowDialogComponent } from './pages/planner/planner-row-dialog.component';
@@ -75,6 +76,7 @@ import { MessagesComponent } from './pages/messages/messages.component';
     HomeComponent,
     MessagesComponent,
     LoginDialogComponent,
+    ServerConfigDialogComponent,
     SkyChartComponent,
     SkyChartDialogComponent,
     CatalogDialogComponent,
