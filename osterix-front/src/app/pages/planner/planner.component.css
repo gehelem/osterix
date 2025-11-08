@@ -75,22 +75,6 @@
   width: 100%;
 }
 
-.quick-add-section {
-  display: grid;
-  grid-template-columns: 2fr 1fr 1fr auto;
-  gap: 12px;
-  margin-bottom: 20px;
-  align-items: flex-end;
-}
-
-.quick-field {
-  width: 100%;
-}
-
-.quick-add-section button {
-  height: 56px;
-}
-
 .table-container {
   overflow: auto;
   border-radius: 4px;

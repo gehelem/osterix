@@ -185,14 +185,23 @@ interface ListOfValue {
     </mat-dialog-content>
   `,
   styles: [`
+    :host {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      background-color: var(--content-bg, #f5f5f5);
+    }
+
     h2[mat-dialog-title] {
       margin: 0;
-      padding: 20px 20px 10px 20px;
+      padding: 16px 20px;
       background-color: var(--table-header-bg, #f5f5f5);
       color: var(--table-header-text, #333);
       display: flex;
       justify-content: space-between;
       align-items: center;
+      border-bottom: 1px solid var(--panel-border, #ddd);
+      flex-shrink: 0;
     }
 
     .close-button {
@@ -204,8 +213,7 @@ interface ListOfValue {
       overflow-y: auto;
       display: flex;
       flex-direction: column;
-      height: 100%;
-      width: 100%;
+      flex: 1;
       background-color: var(--content-bg, #f5f5f5);
       color: var(--primary-text, #333);
     }
@@ -218,6 +226,20 @@ interface ListOfValue {
 
     :host ::ng-deep .mat-tab-body-wrapper {
       flex: 1;
+      overflow-y: auto;
+    }
+
+    :host ::ng-deep .mat-tab-header {
+      background-color: var(--panel-bg, #ffffff);
+      border-bottom: 1px solid var(--panel-border, #ddd);
+    }
+
+    :host ::ng-deep .mat-tab-label {
+      color: var(--primary-text, #333);
+    }
+
+    :host ::ng-deep .mat-tab-label-active {
+      color: var(--active-color, #1976d2);
     }
 
     .tab-content {
@@ -242,6 +264,14 @@ interface ListOfValue {
     mat-slide-toggle {
       display: block;
       margin-bottom: 15px;
+    }
+
+    mat-form-field {
+      width: 100%;
+    }
+
+    mat-select {
+      width: 100%;
     }
   `]
 })

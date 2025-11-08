@@ -3,9 +3,6 @@
   <div class="cards-grid">
     <!-- Control card -->
     <mat-card class="control-card">
-      <mat-card-header>
-        <mat-card-title>Contrôle</mat-card-title>
-      </mat-card-header>
       <mat-card-content>
         <!-- Progress section -->
         <div class="progress-section">
@@ -36,30 +33,7 @@
 
     <!-- Planning card (full width) -->
     <mat-card class="planning-card">
-      <mat-card-header>
-        <mat-card-title>Plan d'observation</mat-card-title>
-      </mat-card-header>
       <mat-card-content>
-        <!-- Quick add row -->
-        <div class="quick-add-section">
-          <mat-form-field appearance="fill" class="quick-field">
-            <mat-label>Objet</mat-label>
-            <input matInput [(ngModel)]="objectName" placeholder="Nom de l'objet">
-          </mat-form-field>
-          <mat-form-field appearance="fill" class="quick-field">
-            <mat-label>AD</mat-label>
-            <input matInput type="number" [(ngModel)]="objectRA" placeholder="RA">
-          </mat-form-field>
-          <mat-form-field appearance="fill" class="quick-field">
-            <mat-label>DEC</mat-label>
-            <input matInput type="number" [(ngModel)]="objectDEC" placeholder="DEC">
-          </mat-form-field>
-          <button mat-raised-button color="primary" (click)="addRow()">
-            <mat-icon>add</mat-icon>
-            Ajouter
-          </button>
-        </div>
-
         <!-- Planning table -->
         <div class="table-container">
           <table class="planning-table">
@@ -70,7 +44,11 @@
                 <th>DEC</th>
                 <th>Profil</th>
                 <th>Progression</th>
-                <th>Actions</th>
+                <th>
+                  <button mat-icon-button matTooltip="Ajouter une ligne" (click)="addRow()">
+                    <mat-icon>add</mat-icon>
+                  </button>
+                </th>
               </tr>
             </thead>
             <tbody>
@@ -89,10 +67,16 @@
                   </div>
                 </td>
                 <td class="actions-cell">
-                  <button mat-icon-button matTooltip="Éditer" (click)="editRow(i)">
+                  <button mat-icon-button color="primary" matTooltip="Éditer" (click)="editRow(i)">
                     <mat-icon>edit</mat-icon>
                   </button>
-                  <button mat-icon-button matTooltip="Supprimer" (click)="deleteRow(i)">
+                  <button mat-icon-button matTooltip="Déplacer vers le haut" (click)="moveRowUp(i)" [disabled]="i === 0">
+                    <mat-icon>arrow_upward</mat-icon>
+                  </button>
+                  <button mat-icon-button matTooltip="Déplacer vers le bas" (click)="moveRowDown(i)" [disabled]="i === planningRows.length - 1">
+                    <mat-icon>arrow_downward</mat-icon>
+                  </button>
+                  <button mat-icon-button color="warn" matTooltip="Supprimer" (click)="deleteRow(i)">
                     <mat-icon>delete</mat-icon>
                   </button>
                 </td>

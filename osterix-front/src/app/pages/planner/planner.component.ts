@@ -4,6 +4,7 @@ import { WebsocketService } from '../../services/websocket.service';
 import { Module, Property, Element } from '../../models/ost.models';
 import { Subscription } from 'rxjs';
 import { PlannerParametersDialogComponent, PlannerParametersDialogData } from './planner-parameters-dialog.component';
+import { PlannerRowDialogComponent, PlannerRowDialogData, PlannerRowData } from './planner-row-dialog.component';
 
 interface PlanningRow {
   dec: number;
@@ -155,7 +156,11 @@ export class PlannerComponent implements OnInit, OnDestroy {
     };
 
     this.dialog.open(PlannerParametersDialogComponent, {
-      width: '600px',
+      width: '100vw',
+      height: '100vh',
+      maxWidth: '100vw',
+      maxHeight: '100vh',
+      panelClass: 'fullscreen-dialog',
       data: dialogData
     });
   }
@@ -186,40 +191,115 @@ export class PlannerComponent implements OnInit, OnDestroy {
   deleteRow(index: number): void {
     if (index >= 0 && index < this.planningRows.length) {
       this.planningRows.splice(index, 1);
+      this.wsService.deleteGridLine('Planner', 'planning', index);
     }
   }
 
   /**
-   * Edit a planning row
+   * Edit a planning row via dialog
    */
   editRow(index: number): void {
-    if (index >= 0 && index < this.planningRows.length) {
-      const row = this.planningRows[index];
-      console.log('Edit row:', row);
-      // TODO: Open edit dialog
+    if (index < 0 || index >= this.planningRows.length) return;
+
+    const row = this.planningRows[index];
+    const editableRow: PlannerRowData = {
+      object: row.object,
+      ra: row.ra,
+      dec: row.dec,
+      profile: row.profile
+    };
+
+    const dialogData: PlannerRowDialogData = {
+      title: `Éditer la ligne de planification: ${row.object}`,
+      row: editableRow,
+      profiles: { 'default': 'default' },
+      isNewRow: false
+    };
+
+    this.dialog.open(PlannerRowDialogComponent, {
+      width: '500px',
+      data: dialogData
+    }).afterClosed().subscribe(result => {
+      if (result) {
+        console.log('Updating planning row', result);
+        // Send Flupdate event to server
+        this.wsService.updateGridLine('Planner', 'planning', index, {
+          object: result.object,
+          ra: result.ra,
+          dec: result.dec,
+          profile: result.profile
+        });
+        // Update local state
+        this.planningRows[index].object = result.object;
+        this.planningRows[index].ra = result.ra;
+        this.planningRows[index].dec = result.dec;
+        this.planningRows[index].profile = result.profile;
+      }
+    });
+  }
+
+  /**
+   * Move a planning row up
+   */
+  moveRowUp(index: number): void {
+    if (index > 0 && index < this.planningRows.length) {
+      const temp = this.planningRows[index];
+      this.planningRows[index] = this.planningRows[index - 1];
+      this.planningRows[index - 1] = temp;
+      this.wsService.moveGridLineUp('Planner', 'planning', index);
     }
   }
 
   /**
-   * Add a new planning row
+   * Move a planning row down
+   */
+  moveRowDown(index: number): void {
+    if (index >= 0 && index < this.planningRows.length - 1) {
+      const temp = this.planningRows[index];
+      this.planningRows[index] = this.planningRows[index + 1];
+      this.planningRows[index + 1] = temp;
+      this.wsService.moveGridLineDown('Planner', 'planning', index);
+    }
+  }
+
+  /**
+   * Add a new planning row via dialog
    */
   addRow(): void {
-    if (this.objectName && this.objectRA && this.objectDEC) {
-      const newRow: PlanningRow = {
-        object: this.objectName,
-        ra: this.objectRA,
-        dec: this.objectDEC,
-        profile: this.currentProfile,
-        progress: { dynlabel: 'Idle', value: 0 }
-      };
-      this.planningRows.push(newRow);
-      this.wsService.createGridLine('Planner', 'planning', {
-        object: newRow.object,
-        ra: newRow.ra,
-        dec: newRow.dec,
-        profile: newRow.profile
-      });
-    }
+    const newRow: PlannerRowData = {
+      object: this.objectName || '',
+      ra: this.objectRA || 0,
+      dec: this.objectDEC || 0,
+      profile: this.currentProfile || 'default'
+    };
+
+    const dialogData: PlannerRowDialogData = {
+      title: 'Ajouter une nouvelle ligne de planification',
+      row: newRow,
+      profiles: { 'default': 'default' },
+      isNewRow: true
+    };
+
+    this.dialog.open(PlannerRowDialogComponent, {
+      width: '500px',
+      data: dialogData
+    }).afterClosed().subscribe(result => {
+      if (result) {
+        console.log('Creating new planning row', result);
+        // Send Flcreate event to server
+        this.wsService.createGridLine('Planner', 'planning', {
+          object: result.object,
+          ra: result.ra,
+          dec: result.dec,
+          profile: result.profile
+        });
+        // Update local state
+        this.objectName = result.object;
+        this.objectRA = result.ra;
+        this.objectDEC = result.dec;
+        this.currentProfile = result.profile;
+      }
+    });
   }
 
   // Event handlers
