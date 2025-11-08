@@ -27,6 +27,7 @@ body {
   --error-bg: #ffebee;
   --error-color: #f44336;
   --error-text: #c62828;
+  --warning-color: #ff9800;
 }
 
 /* Dark theme styles */
@@ -55,6 +56,7 @@ body.dark-theme {
   --error-bg: #5e1b1a;
   --error-color: #ef5350;
   --error-text: #ffcdd2;
+  --warning-color: #f57c00;
 }
 
 /* Dark theme for Material components */
