@@ -370,6 +370,21 @@ export class WebsocketService {
   }
 
   /**
+   * Send pre icon event (Fpreicon)
+   */
+  sendPreIcon(module: string, property: string, elements: { [key: string]: any }): void {
+    this.send({
+      evt: 'Fpreicon',
+      mod: module,
+      dta: {
+        [property]: {
+          elements
+        }
+      }
+    } as any);
+  }
+
+  /**
    * Send post icon event (Fposticon)
    */
   sendPostIcon(module: string, property: string, elements: { [key: string]: any }): void {

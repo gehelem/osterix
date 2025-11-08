@@ -1,8 +1,10 @@
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, OnInit, OnDestroy } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Element } from '../../models/ost.models';
 import { WebsocketService } from '../../services/websocket.service';
 import { SaveProfileDialogComponent } from './save-profile-dialog.component';
+import { SelectProfileDialogComponent } from './select-profile-dialog.component';
+import { Subscription } from 'rxjs';
 
 export interface SequenceParametersDialogData {
   // Object target properties
@@ -48,6 +50,9 @@ export interface SequenceParametersDialogData {
     <h2 mat-dialog-title>
       Paramètres
       <div class="header-actions">
+        <button mat-icon-button title="Load" (click)="loadProfile()">
+          <mat-icon>folder_open</mat-icon>
+        </button>
         <button mat-icon-button title="Save" (click)="saveProfile()">
           <mat-icon>save</mat-icon>
         </button>
@@ -300,9 +305,12 @@ export interface SequenceParametersDialogData {
     }
   `]
 })
-export class SequenceParametersDialogComponent {
+export class SequenceParametersDialogComponent implements OnInit, OnDestroy {
   devicesKeysCache: string[] = [];
   opticKeysCache: string[] = [];
+  private stateSubscription: Subscription | null = null;
+  private waitingForProfileList = false;
+  private profileListTimeout: any = null;
 
   constructor(
     public dialogRef: MatDialogRef<SequenceParametersDialogComponent>,
@@ -311,6 +319,72 @@ export class SequenceParametersDialogComponent {
     private dialog: MatDialog
   ) {
     this.initializeCache();
+  }
+
+  ngOnInit(): void {
+    // Listen for state changes to handle loadprofile responses
+    this.stateSubscription = this.websocketService.state$.subscribe(state => {
+      // Only process if we're waiting for a profile list
+      if (!this.waitingForProfileList) {
+        return;
+      }
+
+      const sequencerModule = state.modules['Sequencer'];
+      if (sequencerModule && sequencerModule.properties && sequencerModule.properties['loadprofile']) {
+        const loadprofileProperty = sequencerModule.properties['loadprofile'];
+        const nameElement = loadprofileProperty.elements?.['name'];
+
+        // Check if we received a listOfValues (which means it's a response to Fpreicon)
+        if (nameElement && (nameElement as any).listOfValues && Object.keys((nameElement as any).listOfValues).length > 0) {
+          console.log('Received profile list:', (nameElement as any).listOfValues);
+
+          // Clear the timeout since we got a response
+          if (this.profileListTimeout) {
+            clearTimeout(this.profileListTimeout);
+            this.profileListTimeout = null;
+          }
+
+          // Mark that we're no longer waiting
+          this.waitingForProfileList = false;
+
+          // Show dialog with profile selection
+          this.showProfileSelectionDialog((nameElement as any).listOfValues);
+        }
+      }
+    });
+  }
+
+  ngOnDestroy(): void {
+    if (this.stateSubscription) {
+      this.stateSubscription.unsubscribe();
+    }
+    if (this.profileListTimeout) {
+      clearTimeout(this.profileListTimeout);
+    }
+  }
+
+  private showProfileSelectionDialog(profiles: { [key: string]: string }): void {
+    const profileNames = Object.keys(profiles);
+    console.log('Showing profile selection with profiles:', profileNames);
+
+    this.dialog.open(SelectProfileDialogComponent, {
+      width: '500px',
+      data: { profiles: profiles }
+    }).afterClosed().subscribe((result) => {
+      if (result && result.profileName) {
+        // Set the profile name to load
+        this.websocketService.setProperty('Sequencer', 'loadprofile', {
+          name: result.profileName
+        });
+        console.log('Load profile set to:', result.profileName);
+
+        // Then trigger the load
+        setTimeout(() => {
+          this.websocketService.sendPostIcon('Sequencer', 'loadprofile', { name: {} });
+          console.log('Load profile trigger sent');
+        }, 10);
+      }
+    });
   }
 
   private initializeCache(): void {
@@ -331,6 +405,22 @@ export class SequenceParametersDialogComponent {
         return orderA.localeCompare(orderB);
       });
     }
+  }
+
+  loadProfile(): void {
+    // Mark that we're waiting for a profile list response
+    this.waitingForProfileList = true;
+
+    // Set a timeout - if no response in 5 seconds, abandon
+    this.profileListTimeout = setTimeout(() => {
+      console.log('Timeout waiting for profile list');
+      this.waitingForProfileList = false;
+      this.profileListTimeout = null;
+    }, 5000);
+
+    // Send the request
+    this.websocketService.sendPreIcon('Sequencer', 'loadprofile', { name: {} });
+    console.log('Load profile request sent - waiting for list of profiles');
   }
 
   saveProfile(): void {
