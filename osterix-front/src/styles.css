@@ -170,3 +170,9 @@ body.dark-theme .snackbar-warning {
 body.dark-theme .snackbar-error {
   background-color: #d32f2f !important;
 }
+
+/* Dark theme for dialogs */
+body.dark-theme mat-dialog-container {
+  background-color: #424242 !important;
+  color: rgba(255, 255, 255, 0.87) !important;
+}

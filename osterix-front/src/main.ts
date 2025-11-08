@@ -13,5 +13,18 @@ if (environment.production) {
   enableProdMode();
 }
 
-platformBrowserDynamic().bootstrapModule(AppModule)
-  .catch(err => console.error(err));
+// Initialize Capacitor before Angular bootstrap
+import { Capacitor } from '@capacitor/core';
+
+// Ensure Capacitor is initialized for native features
+if (Capacitor.getPlatform() !== 'web') {
+  // On native platforms, wait for device ready
+  document.addEventListener('deviceready', () => {
+    platformBrowserDynamic().bootstrapModule(AppModule)
+      .catch(err => console.error(err));
+  });
+} else {
+  // On web, bootstrap immediately
+  platformBrowserDynamic().bootstrapModule(AppModule)
+    .catch(err => console.error(err));
+}

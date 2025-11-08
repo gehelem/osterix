@@ -1,14 +1,20 @@
 apply plugin: 'com.android.application'
 
 android {
-    namespace "com.example.app"
+    namespace "com.osterix.app"
     compileSdk rootProject.ext.compileSdkVersion
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_16
+        targetCompatibility JavaVersion.VERSION_16
+    }
+
     defaultConfig {
-        applicationId "com.example.app"
+        applicationId "com.osterix.app"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
-        versionName "1.0"
+        versionName "1.0.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         aaptOptions {
              // Files and dirs to omit from the packaged assets dir, modified to accommodate modern web apps.
@@ -43,6 +49,10 @@ dependencies {
 }
 
 apply from: 'capacitor.build.gradle'
+
+// IMPORTANT: Force Java 16 compatibility for Capacitor 7.4.3
+// This overrides any Java 21 settings that may be in capacitor.build.gradle
+apply from: 'java-version-override.gradle'
 
 try {
     def servicesJSON = file('google-services.json')

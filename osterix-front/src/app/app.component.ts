@@ -1,10 +1,13 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router, NavigationEnd } from '@angular/router';
+import { Capacitor } from '@capacitor/core';
 import { WebsocketService } from './services/websocket.service';
 import { ThemeService } from './services/theme.service';
 import { AuthService } from './services/auth.service';
+import { ServerConfigService } from './services/server-config.service';
 import { LoginDialogComponent } from './dialogs/login-dialog.component';
+import { ServerConfigDialogComponent } from './dialogs/server-config-dialog.component';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 
@@ -28,13 +31,15 @@ export class AppComponent implements OnInit, OnDestroy {
     public wsService: WebsocketService,
     public themeService: ThemeService,
     private authService: AuthService,
+    private serverConfigService: ServerConfigService,
     private dialog: MatDialog,
     private router: Router
   ) {}
 
   ngOnInit(): void {
-    // Connect to WebSocket on app startup
-    this.wsService.connect();
+    // First, show server configuration dialog to allow user to set the server URL
+    // Then connect to WebSocket once configured
+    this.showInitialServerConfigDialog();
 
     // Track current route
     this.subscription.add(
@@ -89,6 +94,46 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   /**
+   * Show server configuration dialog on app startup
+   * This must be completed before connecting to WebSocket
+   */
+  private showInitialServerConfigDialog(): void {
+    // Check if server config has been configured before
+    const config = this.serverConfigService.getConfig();
+
+    // If using default localhost config and on mobile, prompt user to configure
+    // Otherwise, proceed with connection
+    if (config.host === 'localhost' && this.isOnMobile()) {
+      // Open dialog with disableClose to force configuration
+      this.dialog.open(ServerConfigDialogComponent, {
+        width: '600px',
+        maxWidth: '90vw',
+        disableClose: true,
+        data: { isInitial: true }
+      }).afterClosed().subscribe(() => {
+        // After dialog is closed, connect to WebSocket
+        this.wsService.connect();
+      });
+    } else {
+      // Already configured or on web - proceed with connection
+      this.wsService.connect();
+    }
+  }
+
+  /**
+   * Check if running on mobile platform
+   */
+  private isOnMobile(): boolean {
+    // First check if running as a native app with Capacitor
+    if (Capacitor.isNativePlatform()) {
+      return true;
+    }
+
+    // Fallback: check user agent for mobile browsers
+    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+  }
+
+  /**
    * Show login dialog
    */
   private showLoginDialog(): void {
@@ -107,13 +152,14 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Open parameters dialog for current module
+   * Open parameters dialog for current module or server configuration
    */
   openModuleSettings(): void {
-    // Routes that don't have parameters dialogs
-    const noSettingsRoutes = ['home', 'messages'];
+    // Show server configuration on home or messages page
+    const serverConfigRoutes = ['home', 'messages', ''];
 
-    if (noSettingsRoutes.includes(this.currentRoute)) {
+    if (serverConfigRoutes.includes(this.currentRoute)) {
+      this.openServerConfigDialog();
       return;
     }
 
@@ -124,6 +170,18 @@ export class AppComponent implements OnInit, OnDestroy {
       detail: { route: this.currentRoute }
     });
     window.dispatchEvent(event);
+  }
+
+  /**
+   * Open server configuration dialog
+   */
+  openServerConfigDialog(): void {
+    this.dialog.open(ServerConfigDialogComponent, {
+      width: '600px',
+      maxWidth: '90vw',
+      disableClose: false,
+      data: {}
+    });
   }
 
   ngOnDestroy(): void {
