@@ -1,10 +1,12 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { Router, NavigationEnd } from '@angular/router';
 import { WebsocketService } from './services/websocket.service';
 import { ThemeService } from './services/theme.service';
 import { AuthService } from './services/auth.service';
 import { LoginDialogComponent } from './dialogs/login-dialog.component';
 import { Subscription } from 'rxjs';
+import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-root',
@@ -18,6 +20,7 @@ export class AppComponent implements OnInit, OnDestroy {
   isDarkMode = false;
   warningCount = 0;
   errorCount = 0;
+  currentRoute = '';
 
   private subscription = new Subscription();
 
@@ -25,12 +28,22 @@ export class AppComponent implements OnInit, OnDestroy {
     public wsService: WebsocketService,
     public themeService: ThemeService,
     private authService: AuthService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
     // Connect to WebSocket on app startup
     this.wsService.connect();
+
+    // Track current route
+    this.subscription.add(
+      this.router.events
+        .pipe(filter(event => event instanceof NavigationEnd))
+        .subscribe((event: any) => {
+          this.currentRoute = event.url.split('/')[1] || 'home';
+        })
+    );
 
     // Subscribe to connection status
     this.subscription.add(
@@ -91,6 +104,26 @@ export class AppComponent implements OnInit, OnDestroy {
    */
   toggleTheme(): void {
     this.themeService.toggleDarkMode();
+  }
+
+  /**
+   * Open parameters dialog for current module
+   */
+  openModuleSettings(): void {
+    // Routes that don't have parameters dialogs
+    const noSettingsRoutes = ['home', 'messages'];
+
+    if (noSettingsRoutes.includes(this.currentRoute)) {
+      return;
+    }
+
+    // Get the component reference for the current route and call its openParametersDialog method
+    // This is a bit tricky since we're in the root component
+    // We'll use a service-based approach instead
+    const event = new CustomEvent('openModuleSettings', {
+      detail: { route: this.currentRoute }
+    });
+    window.dispatchEvent(event);
   }
 
   ngOnDestroy(): void {

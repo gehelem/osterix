@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy, ViewChild, ElementRef, AfterViewInit } fr
 import { MatDialog } from '@angular/material/dialog';
 import { WebsocketService } from '../../services/websocket.service';
 import { UrlBuilderService } from '../../services/url-builder.service';
+import { SettingsService } from '../../services/settings.service';
 import { Module, Property, Element, ImageElement } from '../../models/ost.models';
 import { Subscription } from 'rxjs';
 import { HistogramDialogComponent } from './histogram-dialog.component';
@@ -77,7 +78,8 @@ export class FocusComponent implements OnInit, OnDestroy, AfterViewInit {
   constructor(
     public wsService: WebsocketService,
     private urlBuilder: UrlBuilderService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private settingsService: SettingsService
   ) { }
 
   ngOnInit(): void {
@@ -89,6 +91,13 @@ export class FocusComponent implements OnInit, OnDestroy, AfterViewInit {
           console.log('Focus module loaded:', this.focusModule);
           this.updateFromModule();
         }
+      })
+    );
+
+    // Subscribe to settings request from header
+    this.subscription.add(
+      this.settingsService.settingsRequested$.subscribe(() => {
+        this.openParametersDialog();
       })
     );
   }

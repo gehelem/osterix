@@ -3,6 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 import { WebsocketService } from '../../services/websocket.service';
 import { UrlBuilderService } from '../../services/url-builder.service';
+import { SettingsService } from '../../services/settings.service';
 import { Module, Property, Element, ImageElement } from '../../models/ost.models';
 import { ParametersDialogComponent, ParametersDialogData } from './parameters-dialog.component';
 import { GuiderHistogramDialogComponent } from './histogram-dialog.component';
@@ -76,7 +77,8 @@ export class GuiderComponent implements OnInit, OnDestroy {
   constructor(
     private websocketService: WebsocketService,
     private urlBuilder: UrlBuilderService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private settingsService: SettingsService
   ) { }
 
   ngOnInit(): void {
@@ -87,6 +89,11 @@ export class GuiderComponent implements OnInit, OnDestroy {
       if (this.guiderModule) {
         this.updateFromModule();
       }
+    });
+
+    // Subscribe to settings request from header
+    this.settingsService.settingsRequested$.subscribe(() => {
+      this.openParametersDialog();
     });
   }
 

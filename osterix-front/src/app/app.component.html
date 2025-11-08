@@ -13,7 +13,7 @@
     <button mat-icon-button (click)="toggleTheme()" [title]="isDarkMode ? 'Mode clair' : 'Mode sombre'">
       <mat-icon>{{ isDarkMode ? 'light_mode' : 'dark_mode' }}</mat-icon>
     </button>
-    <button mat-icon-button>
+    <button mat-icon-button (click)="openModuleSettings()" title="Paramètres du module">
       <mat-icon>settings</mat-icon>
     </button>
   </mat-toolbar-row>

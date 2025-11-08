@@ -1,6 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { WebsocketService } from '../../services/websocket.service';
+import { SettingsService } from '../../services/settings.service';
 import { Module, Property, Element } from '../../models/ost.models';
 import { Subscription } from 'rxjs';
 import { PlannerParametersDialogComponent, PlannerParametersDialogData } from './planner-parameters-dialog.component';
@@ -56,7 +57,8 @@ export class PlannerComponent implements OnInit, OnDestroy {
 
   constructor(
     public wsService: WebsocketService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private settingsService: SettingsService
   ) {}
 
   ngOnInit(): void {
@@ -68,6 +70,13 @@ export class PlannerComponent implements OnInit, OnDestroy {
           console.log('Planner module loaded:', this.plannerModule);
           this.updateFromModule();
         }
+      })
+    );
+
+    // Subscribe to settings request from header
+    this.subscription.add(
+      this.settingsService.settingsRequested$.subscribe(() => {
+        this.openParametersDialog();
       })
     );
   }
