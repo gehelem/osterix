@@ -5,7 +5,7 @@ import { WebsocketService } from '../../services/websocket.service';
 import { UrlBuilderService } from '../../services/url-builder.service';
 import { SettingsService } from '../../services/settings.service';
 import { Module, Property, Element, ImageElement } from '../../models/ost.models';
-import { ParametersDialogComponent, ParametersDialogData } from './parameters-dialog.component';
+import { GuiderParametersDialogComponent, GuiderParametersDialogData } from './parameters-dialog.component';
 import { GuiderHistogramDialogComponent } from './histogram-dialog.component';
 import { GuiderStatisticsDialogComponent } from './statistics-dialog.component';
 import { GuidingData } from './guiding-graph.component';
@@ -19,6 +19,7 @@ import { DriftData } from './drift-graph.component';
 export class GuiderComponent implements OnInit, OnDestroy {
   guiderModule: Module | null = null;
   private moduleSubscription?: Subscription;
+  private settingsSubscription?: Subscription;
 
   // Image
   imageUrl: string = '';
@@ -92,7 +93,7 @@ export class GuiderComponent implements OnInit, OnDestroy {
     });
 
     // Subscribe to settings request from header
-    this.settingsService.settingsRequested$.subscribe(() => {
+    this.settingsSubscription = this.settingsService.settingsRequested$.subscribe(() => {
       this.openParametersDialog();
     });
   }
@@ -100,6 +101,9 @@ export class GuiderComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     if (this.moduleSubscription) {
       this.moduleSubscription.unsubscribe();
+    }
+    if (this.settingsSubscription) {
+      this.settingsSubscription.unsubscribe();
     }
   }
 
@@ -278,7 +282,7 @@ export class GuiderComponent implements OnInit, OnDestroy {
 
   // Parameters dialog
   openParametersDialog(): void {
-    const dialogData: ParametersDialogData = {
+    const dialogData: GuiderParametersDialogData = {
       parametersEnabled: this.parametersEnabled,
       parametersElements: this.parametersElements,
       devicesEnabled: this.devicesEnabled,
@@ -303,7 +307,7 @@ export class GuiderComponent implements OnInit, OnDestroy {
       onRevCorrectionChange: (name: string, value: any) => this.onRevCorrectionChange(name, value)
     };
 
-    this.dialog.open(ParametersDialogComponent, {
+    this.dialog.open(GuiderParametersDialogComponent, {
       width: '100vw',
       height: '100vh',
       maxWidth: '100vw',

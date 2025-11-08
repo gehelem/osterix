@@ -311,6 +311,7 @@ export class SequenceParametersDialogComponent implements OnInit, OnDestroy {
   private stateSubscription: Subscription | null = null;
   private waitingForProfileList = false;
   private profileListTimeout: any = null;
+  private pendingTimeouts: any[] = [];
 
   constructor(
     public dialogRef: MatDialogRef<SequenceParametersDialogComponent>,
@@ -361,6 +362,9 @@ export class SequenceParametersDialogComponent implements OnInit, OnDestroy {
     if (this.profileListTimeout) {
       clearTimeout(this.profileListTimeout);
     }
+    // Clear all pending timeouts
+    this.pendingTimeouts.forEach(timeout => clearTimeout(timeout));
+    this.pendingTimeouts = [];
   }
 
   private showProfileSelectionDialog(profiles: { [key: string]: string }): void {
@@ -379,10 +383,11 @@ export class SequenceParametersDialogComponent implements OnInit, OnDestroy {
         console.log('Load profile set to:', result.profileName);
 
         // Then trigger the load
-        setTimeout(() => {
+        const timeout = setTimeout(() => {
           this.websocketService.sendPostIcon('Sequencer', 'loadprofile', { name: {} });
           console.log('Load profile trigger sent');
         }, 100);
+        this.pendingTimeouts.push(timeout);
       }
     });
   }
@@ -441,16 +446,18 @@ export class SequenceParametersDialogComponent implements OnInit, OnDestroy {
         console.log('Save As - Set name message sent:', result.profileName);
 
         // Then send the save message
-        setTimeout(() => {
+        const timeout1 = setTimeout(() => {
           this.websocketService.sendPostIcon('Sequencer', 'saveprofile', { name: {} });
           console.log('Save As - Save message sent');
 
           // Then refresh the profile list
-          setTimeout(() => {
+          const timeout2 = setTimeout(() => {
             this.websocketService.sendPreIcon('Sequencer', 'loadprofile', { name: {} });
             console.log('Save As - Profile list refresh requested');
           }, 100);
+          this.pendingTimeouts.push(timeout2);
         }, 100);
+        this.pendingTimeouts.push(timeout1);
       }
     });
   }

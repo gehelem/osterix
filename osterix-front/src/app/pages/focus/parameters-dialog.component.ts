@@ -6,7 +6,7 @@ import { SaveProfileDialogComponent } from '../sequence/save-profile-dialog.comp
 import { SelectProfileDialogComponent } from '../sequence/select-profile-dialog.component';
 import { Subscription } from 'rxjs';
 
-export interface ParametersDialogData {
+export interface FocusParametersDialogData {
   // Parameters from 'parameters' property
   iterations: number;
   startpos: number;
@@ -45,7 +45,7 @@ interface ListOfValue {
 }
 
 @Component({
-  selector: 'app-parameters-dialog',
+  selector: 'app-focus-parameters-dialog',
   template: `
     <h2 mat-dialog-title>
       Paramètres
@@ -308,7 +308,7 @@ interface ListOfValue {
     }
   `]
 })
-export class ParametersDialogComponent implements OnInit, OnDestroy {
+export class FocusParametersDialogComponent implements OnInit, OnDestroy {
   // Cache all computed values to prevent change detection loops
   devicesKeysCache: string[] = [];
   opticKeysCache: string[] = [];
@@ -318,10 +318,11 @@ export class ParametersDialogComponent implements OnInit, OnDestroy {
   private stateSubscription: Subscription | null = null;
   private waitingForProfileList = false;
   private profileListTimeout: any = null;
+  private pendingTimeouts: any[] = [];
 
   constructor(
-    public dialogRef: MatDialogRef<ParametersDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: ParametersDialogData,
+    public dialogRef: MatDialogRef<FocusParametersDialogComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: FocusParametersDialogData,
     private websocketService: WebsocketService,
     private dialog: MatDialog
   ) {
@@ -369,6 +370,9 @@ export class ParametersDialogComponent implements OnInit, OnDestroy {
     if (this.profileListTimeout) {
       clearTimeout(this.profileListTimeout);
     }
+    // Clear all pending timeouts
+    this.pendingTimeouts.forEach(timeout => clearTimeout(timeout));
+    this.pendingTimeouts = [];
   }
 
   private initializeCaches(): void {
@@ -521,16 +525,18 @@ export class ParametersDialogComponent implements OnInit, OnDestroy {
         console.log('Save As - Set name message sent:', result.profileName);
 
         // Then send the save message
-        setTimeout(() => {
+        const timeout1 = setTimeout(() => {
           this.websocketService.sendPostIcon('Focus', 'saveprofile', { name: {} });
           console.log('Save As - Save message sent');
 
           // Then refresh the profile list
-          setTimeout(() => {
+          const timeout2 = setTimeout(() => {
             this.websocketService.sendPreIcon('Focus', 'loadprofile', { name: {} });
             console.log('Save As - Profile list refresh requested');
           }, 100);
+          this.pendingTimeouts.push(timeout2);
         }, 100);
+        this.pendingTimeouts.push(timeout1);
       }
     });
   }
@@ -551,10 +557,11 @@ export class ParametersDialogComponent implements OnInit, OnDestroy {
         console.log('Load profile set to:', result.profileName);
 
         // Then trigger the load
-        setTimeout(() => {
+        const timeout = setTimeout(() => {
           this.websocketService.sendPostIcon('Focus', 'loadprofile', { name: {} });
           console.log('Load profile trigger sent');
         }, 100);
+        this.pendingTimeouts.push(timeout);
       }
     });
   }

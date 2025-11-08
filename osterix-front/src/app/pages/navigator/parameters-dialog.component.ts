@@ -6,7 +6,7 @@ import { SaveProfileDialogComponent } from '../sequence/save-profile-dialog.comp
 import { SelectProfileDialogComponent } from '../sequence/select-profile-dialog.component';
 import { Subscription } from 'rxjs';
 
-export interface ParametersDialogData {
+export interface NavigatorParametersDialogData {
   // Camera parameters from 'parms' property
   exposure: number;
   gain: number;
@@ -340,10 +340,11 @@ export class NavigatorParametersDialogComponent implements OnInit, OnDestroy {
   private stateSubscription: Subscription | null = null;
   private waitingForProfileList = false;
   private profileListTimeout: any = null;
+  private pendingTimeouts: any[] = [];
 
   constructor(
     public dialogRef: MatDialogRef<NavigatorParametersDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: ParametersDialogData,
+    @Inject(MAT_DIALOG_DATA) public data: NavigatorParametersDialogData,
     private websocketService: WebsocketService,
     private dialog: MatDialog
   ) {
@@ -391,6 +392,9 @@ export class NavigatorParametersDialogComponent implements OnInit, OnDestroy {
     if (this.profileListTimeout) {
       clearTimeout(this.profileListTimeout);
     }
+    // Clear all pending timeouts
+    this.pendingTimeouts.forEach(timeout => clearTimeout(timeout));
+    this.pendingTimeouts = [];
   }
 
   loadProfile(): void {
@@ -427,16 +431,18 @@ export class NavigatorParametersDialogComponent implements OnInit, OnDestroy {
         console.log('Save As - Set name message sent:', result.profileName);
 
         // Then send the save message
-        setTimeout(() => {
+        const timeout1 = setTimeout(() => {
           this.websocketService.sendPostIcon('Navigator', 'saveprofile', { name: {} });
           console.log('Save As - Save message sent');
 
           // Then refresh the profile list
-          setTimeout(() => {
+          const timeout2 = setTimeout(() => {
             this.websocketService.sendPreIcon('Navigator', 'loadprofile', { name: {} });
             console.log('Save As - Profile list refresh requested');
           }, 100);
+          this.pendingTimeouts.push(timeout2);
         }, 100);
+        this.pendingTimeouts.push(timeout1);
       }
     });
   }

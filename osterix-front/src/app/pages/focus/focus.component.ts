@@ -7,7 +7,7 @@ import { Module, Property, Element, ImageElement } from '../../models/ost.models
 import { Subscription } from 'rxjs';
 import { HistogramDialogComponent } from './histogram-dialog.component';
 import { StatisticsDialogComponent } from './statistics-dialog.component';
-import { ParametersDialogComponent, ParametersDialogData } from './parameters-dialog.component';
+import { FocusParametersDialogComponent, FocusParametersDialogData } from './parameters-dialog.component';
 import { Chart, ChartConfiguration } from 'chart.js';
 
 interface FocusHistoryItem {
@@ -379,7 +379,7 @@ export class FocusComponent implements OnInit, OnDestroy, AfterViewInit {
    * Open parameters dialog
    */
   openParametersDialog(): void {
-    const dialogData: ParametersDialogData = {
+    const dialogData: FocusParametersDialogData = {
       iterations: this.iterations,
       startpos: this.startpos,
       steps: this.steps,
@@ -403,7 +403,7 @@ export class FocusComponent implements OnInit, OnDestroy, AfterViewInit {
       onOpticChange: (name: string, value: any) => this.onOpticChange(name, value)
     };
 
-    this.dialog.open(ParametersDialogComponent, {
+    this.dialog.open(FocusParametersDialogComponent, {
       width: '100vw',
       height: '100vh',
       maxWidth: '100vw',
