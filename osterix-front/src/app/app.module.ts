@@ -33,6 +33,7 @@ import { ServerConfigDialogComponent } from './dialogs/server-config-dialog.comp
 import { PlannerComponent } from './pages/planner/planner.component';
 import { PlannerParametersDialogComponent } from './pages/planner/planner-parameters-dialog.component';
 import { PlannerRowDialogComponent } from './pages/planner/planner-row-dialog.component';
+import { HomeParametersDialogComponent } from './pages/home/home-parameters-dialog.component';
 
 // Angular Material imports
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -86,7 +87,8 @@ import { MessagesComponent } from './pages/messages/messages.component';
     CatalogDialogComponent,
     PlannerComponent,
     PlannerParametersDialogComponent,
-    PlannerRowDialogComponent
+    PlannerRowDialogComponent,
+    HomeParametersDialogComponent
   ],
   imports: [
     BrowserModule,

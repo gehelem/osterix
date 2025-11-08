@@ -8,6 +8,7 @@ import { AuthService } from './services/auth.service';
 import { ServerConfigService } from './services/server-config.service';
 import { LoginDialogComponent } from './dialogs/login-dialog.component';
 import { ServerConfigDialogComponent } from './dialogs/server-config-dialog.component';
+import { HomeParametersDialogComponent } from './pages/home/home-parameters-dialog.component';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 
@@ -176,10 +177,12 @@ export class AppComponent implements OnInit, OnDestroy {
    * Open server configuration dialog
    */
   openServerConfigDialog(): void {
-    this.dialog.open(ServerConfigDialogComponent, {
-      width: '600px',
-      maxWidth: '90vw',
-      disableClose: false,
+    this.dialog.open(HomeParametersDialogComponent, {
+      width: '100vw',
+      height: '100vh',
+      maxWidth: '100vw',
+      maxHeight: '100vh',
+      panelClass: 'fullscreen-dialog',
       data: {}
     });
   }
