@@ -27,7 +27,7 @@ mat-card {
 .message-count {
   margin-bottom: 10px;
   font-weight: 500;
-  color: #666;
+  color: var(--label-color, #666);
 }
 
 .messages-table-container {
@@ -42,7 +42,9 @@ mat-card {
 
 .messages-table th {
   font-weight: 600;
-  background-color: #f5f5f5;
+  background-color: var(--table-header-bg, #f5f5f5);
+  color: var(--table-header-text, #333);
+  border-bottom: 2px solid var(--table-border, #ddd);
 }
 
 .type-badge {
@@ -77,7 +79,7 @@ mat-card {
 .empty-state {
   text-align: center;
   padding: 60px 20px;
-  color: #999;
+  color: var(--placeholder-text, #999);
 }
 
 .empty-state mat-icon {
@@ -92,30 +94,3 @@ mat-card {
   margin: 0;
 }
 
-/* Dark theme adjustments */
-body.dark-theme .messages-table th {
-  background-color: #424242;
-}
-
-body.dark-theme .type-info {
-  background-color: rgba(25, 118, 210, 0.2);
-  color: #64b5f6;
-}
-
-body.dark-theme .type-warning {
-  background-color: rgba(245, 124, 0, 0.2);
-  color: #ffb74d;
-}
-
-body.dark-theme .type-error {
-  background-color: rgba(211, 47, 47, 0.2);
-  color: #e57373;
-}
-
-body.dark-theme .message-count {
-  color: rgba(255, 255, 255, 0.7);
-}
-
-body.dark-theme .empty-state {
-  color: rgba(255, 255, 255, 0.5);
-}
