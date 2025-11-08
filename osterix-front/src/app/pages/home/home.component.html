@@ -96,6 +96,19 @@
 
     <mat-grid-tile>
       <mat-card class="module-card">
+        <div class="card-header-custom clickable-header" routerLink="/planner">
+          <mat-icon color="primary">calendar_today</mat-icon>
+          <span class="card-title">Planificateur</span>
+        </div>
+        <mat-card-content>
+          <p><strong>Objets planifiés:</strong> {{ plannerObjectCount }}</p>
+          <p class="description">Gestion du plan d'observation</p>
+        </mat-card-content>
+      </mat-card>
+    </mat-grid-tile>
+
+    <mat-grid-tile>
+      <mat-card class="module-card">
         <div class="card-header-custom clickable-header" routerLink="/allsky">
           <mat-icon color="primary">panorama</mat-icon>
           <span class="card-title">Allsky</span>

@@ -50,11 +50,11 @@
           </div>
 
           <div class="action-buttons">
-            <button mat-raised-button color="primary" (click)="startSequence()" [disabled]="isRunning">
+            <button mat-raised-button color="primary" (click)="startSequence()">
               <mat-icon>play_arrow</mat-icon>
               Démarrer
             </button>
-            <button mat-raised-button color="warn" (click)="stopSequence()" [disabled]="!isRunning">
+            <button mat-raised-button color="warn" (click)="stopSequence()">
               <mat-icon>stop</mat-icon>
               Arrêter
             </button>

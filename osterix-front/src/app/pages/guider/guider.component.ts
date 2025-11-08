@@ -241,7 +241,7 @@ export class GuiderComponent implements OnInit, OnDestroy {
     this.calibrateEnabled = property.enabled && !!property.elements['calibrate'];
     this.guideEnabled = property.enabled && !!property.elements['guide'];
     this.abortGuiderEnabled = property.enabled && !!property.elements['abortguider'];
-    this.clearCalibrationEnabled = property.enabled && !!property.elements['clearcalibration'];
+    this.clearCalibrationEnabled = property.enabled && !!property.elements['resetcalibration'];
   }
 
   // Action handlers
@@ -266,7 +266,7 @@ export class GuiderComponent implements OnInit, OnDestroy {
   }
 
   onClearCalibration(): void {
-    this.websocketService.setProperty('Guider', 'actions', { clearcalibration: true });
+    this.websocketService.setProperty('Guider', 'actions', { resetcalibration: true });
   }
 
   // Parameters dialog

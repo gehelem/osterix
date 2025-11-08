@@ -51,9 +51,6 @@ export class PlannerComponent implements OnInit, OnDestroy {
   isRunning: boolean = false;
   currentStatus: string = 'Idle';
 
-  // Action buttons states
-  startEnabled: boolean = true;
-  stopEnabled: boolean = false;
 
   private subscription = new Subscription();
 
@@ -87,11 +84,6 @@ export class PlannerComponent implements OnInit, OnDestroy {
 
     const props = this.plannerModule.properties;
 
-    // Update actions
-    if (props['actions']?.elements) {
-      this.startEnabled = props['actions'].elements['start']?.value === false;
-      this.stopEnabled = props['actions'].elements['stop']?.value === false;
-    }
 
     // Update planning grid
     if (props['planning']) {

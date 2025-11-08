@@ -30,6 +30,9 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   rmsTotal: number | null = null;
   guidingData: any[] = [];
 
+  plannerModule: Module | null = null;
+  plannerObjectCount: number = 0;
+
   private subscription = new Subscription();
 
   constructor(public wsService: WebsocketService) { }
@@ -40,7 +43,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     this.sequenceGlobalProgress = 0;
     this.sequenceExposureProgress = 0;
 
-    // Subscribe to state changes to get Focus, Sequence and Guider module data
+    // Subscribe to state changes to get Focus, Sequence, Guider and Planner module data
     this.subscription.add(
       this.wsService.state$.subscribe(state => {
         if (state.modules['Focus']) {
@@ -54,6 +57,10 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
         if (state.modules['Guider']) {
           this.guiderModule = state.modules['Guider'];
           this.updateFromGuiderModule();
+        }
+        if (state.modules['Planner']) {
+          this.plannerModule = state.modules['Planner'];
+          this.updateFromPlannerModule();
         }
       })
     );
@@ -397,6 +404,19 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     const ctx = this.guiderChartRef.nativeElement.getContext('2d');
     if (ctx) {
       this.guiderChart = new Chart(ctx, config);
+    }
+  }
+
+  private updateFromPlannerModule(): void {
+    if (!this.plannerModule) return;
+
+    const properties = this.plannerModule.properties;
+
+    // Count objects in planning grid
+    if (properties['planning'] && properties['planning'].grid) {
+      this.plannerObjectCount = properties['planning'].grid.length;
+    } else {
+      this.plannerObjectCount = 0;
     }
   }
 

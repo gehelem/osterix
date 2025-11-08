@@ -574,6 +574,15 @@ export class NavigatorComponent implements OnInit, OnDestroy {
   }
 
   /**
+   * Add current target to planner
+   */
+  addToPlanner(): void {
+    this.wsService.setProperty('Navigator', 'actions', {
+      addtoplanner: true
+    });
+  }
+
+  /**
    * Check if module is loaded
    */
   get isModuleLoaded(): boolean {

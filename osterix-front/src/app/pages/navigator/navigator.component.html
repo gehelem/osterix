@@ -93,9 +93,13 @@
               <mat-icon>gps_fixed</mat-icon>
               Centrer
             </button>
-            <button mat-raised-button color="warn" (click)="abortNavigation()" [disabled]="!isRunning">
+            <button mat-raised-button color="warn" (click)="abortNavigation()">
               <mat-icon>stop</mat-icon>
               Arrêter
+            </button>
+            <button mat-raised-button color="accent" (click)="addToPlanner()">
+              <mat-icon>calendar_today</mat-icon>
+              Planifier
             </button>
             <button mat-raised-button (click)="showSkyChart()">
               <mat-icon>map</mat-icon>
