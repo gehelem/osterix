@@ -35,7 +35,25 @@
         </provider>
     </application>
 
-    <!-- Permissions -->
+    <!-- Permissions for Capacitor and OST Erix app -->
 
+    <!-- Core permissions -->
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+    <!-- Camera permissions (for image capture) -->
+    <uses-permission android:name="android.permission.CAMERA" />
+
+    <!-- Location permissions (for GPS coordinates in astronomy) -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
+    <!-- Storage permissions (for saving images/logs) -->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+    <!-- System feature requirements -->
+    <uses-feature android:name="android.hardware.camera" android:required="false" />
+    <uses-feature android:name="android.hardware.camera.autofocus" android:required="false" />
+    <uses-feature android:name="android.hardware.location.gps" android:required="false" />
 </manifest>

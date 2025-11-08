@@ -1,6 +1,7 @@
 import { Injectable,Inject } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
+import { Capacitor } from '@capacitor/core';
 import {
   OSTState,
   Module,
@@ -27,6 +28,8 @@ export class WebsocketService {
   private wsUrl = 'ws://localhost:9624';
   private websocketProtocol: string = 'ws://'; // 'ws://' or 'wss://'
   private websocketPath: string = ''; // '' for ws://host:9624 or '/ws/' for wss://host/ws/
+  private customServerHost: string | null = null; // For mobile override
+  private isNativePlatform: boolean;
 
   // Application state using BehaviorSubject for reactive updates
   private stateSubject = new BehaviorSubject<OSTState>({
@@ -52,6 +55,23 @@ export class WebsocketService {
   public messageHistory$: Observable<HistoryMessage[]> = this.messageHistorySubject.asObservable();
 
   constructor(@Inject(DOCUMENT) public mydocument: Document ,private notificationService: NotificationService) {
+    this.isNativePlatform = Capacitor.isNativePlatform();
+    this.initializeWebSocketUrl();
+    console.log('WebsocketService initialized with URL:', this.wsUrl);
+  }
+
+  /**
+   * Initialize WebSocket URL based on platform and protocol
+   */
+  private initializeWebSocketUrl(): void {
+    // For mobile platforms, default to localhost (will need to be configured)
+    if (this.isNativePlatform) {
+      this.websocketProtocol = 'wss://'; // Default to secure for Android
+      // URL will be set by setServerHost() or use default localhost
+      this.wsUrl = `${this.websocketProtocol}localhost:9624`;
+      return;
+    }
+
     // Détecte si le serveur web utilise HTTPS et bascule WebSocket vers wss:// si nécessaire
     if (this.mydocument.location.protocol === 'https:') {
       this.websocketProtocol = 'wss://';
@@ -66,7 +86,30 @@ export class WebsocketService {
       // Sans SSL: ws://hostname:9624
       this.wsUrl = this.websocketProtocol + this.mydocument.location.hostname + ':9624';
     }
-    console.log('WebsocketService initialized with URL:', this.wsUrl);
+  }
+
+  /**
+   * Set custom server host (for mobile app discovery)
+   */
+  public setServerHost(host: string, port: number = 9624, useSecure: boolean = true): void {
+    this.customServerHost = host;
+    this.websocketProtocol = useSecure ? 'wss://' : 'ws://';
+    this.wsUrl = `${this.websocketProtocol}${host}:${port}`;
+    console.log('WebSocket server host set to:', this.wsUrl);
+  }
+
+  /**
+   * Get current WebSocket URL
+   */
+  public getWebSocketUrl(): string {
+    return this.wsUrl;
+  }
+
+  /**
+   * Get custom server host if set
+   */
+  public getCustomServerHost(): string | null {
+    return this.customServerHost;
   }
 
   /**

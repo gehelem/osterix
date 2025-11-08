@@ -109,8 +109,12 @@ import { MessagesComponent } from './pages/messages/messages.component';
     MatDividerModule
   ],
   providers: [
-    { provide: LocationStrategy, useClass: HashLocationStrategy }
+    { provide: LocationStrategy, useClass: HashLocationStrategy },
+    // Capacitor service will be auto-provided by providedIn: 'root'
+    // WebSocket and Notification services are also auto-provided
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+  // Module initialization will trigger Capacitor service initialization
+}

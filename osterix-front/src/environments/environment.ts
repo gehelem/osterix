@@ -2,8 +2,17 @@
 // `ng build` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
 
+import { Capacitor } from '@capacitor/core';
+
 export const environment = {
-  production: false
+  production: false,
+  isNative: Capacitor.isNativePlatform(),
+  platform: Capacitor.getPlatform(),
+  // Default server configuration for development
+  // On mobile, this should be overridden by user input
+  serverHost: 'localhost',
+  serverPort: 9624,
+  useSecureConnection: !Capacitor.isNativePlatform() // Use secure for web, allow insecure for local dev on mobile
 };
 
 /*
