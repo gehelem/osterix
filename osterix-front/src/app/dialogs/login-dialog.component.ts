@@ -48,17 +48,20 @@ import { Subscription } from 'rxjs';
     h2[mat-dialog-title] {
       margin: 0;
       padding: 20px 20px 10px 20px;
-      background-color: #f5f5f5;
+      background-color: var(--table-header-bg, #f5f5f5);
+      color: var(--table-header-text, #333);
     }
 
     mat-dialog-content {
       padding: 24px;
       min-width: 400px;
+      background-color: var(--content-bg, #f5f5f5);
+      color: var(--primary-text, #333);
     }
 
     .intro-text {
       margin-bottom: 24px;
-      color: #666;
+      color: var(--secondary-text, #666);
     }
 
     form {
@@ -76,10 +79,10 @@ import { Subscription } from 'rxjs';
       align-items: center;
       gap: 8px;
       padding: 12px;
-      background-color: #ffebee;
-      border-left: 4px solid #f44336;
+      background-color: var(--error-bg, #ffebee);
+      border-left: 4px solid var(--error-color, #f44336);
       border-radius: 4px;
-      color: #c62828;
+      color: var(--error-text, #c62828);
       font-size: 14px;
     }
 

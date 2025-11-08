@@ -24,6 +24,9 @@ body {
   --table-row-border: #eee;
   --table-row-hover: #fafafa;
   --placeholder-text: #999;
+  --error-bg: #ffebee;
+  --error-color: #f44336;
+  --error-text: #c62828;
 }
 
 /* Dark theme styles */
@@ -49,6 +52,9 @@ body.dark-theme {
   --table-row-border: #424242;
   --table-row-hover: #383838;
   --placeholder-text: #757575;
+  --error-bg: #5e1b1a;
+  --error-color: #ef5350;
+  --error-text: #ffcdd2;
 }
 
 /* Dark theme for Material components */

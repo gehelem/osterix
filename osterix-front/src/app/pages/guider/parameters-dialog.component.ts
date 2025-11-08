@@ -570,7 +570,8 @@ interface ListOfValue {
     h2[mat-dialog-title] {
       margin: 0;
       padding: 20px 20px 10px 20px;
-      background-color: #f5f5f5;
+      background-color: var(--table-header-bg, #f5f5f5);
+      color: var(--table-header-text, #333);
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -578,6 +579,11 @@ interface ListOfValue {
 
     .close-button {
       margin-left: auto;
+    }
+
+    mat-dialog-content {
+      background-color: var(--content-bg, #f5f5f5);
+      color: var(--primary-text, #333);
     }
   `]
 })
