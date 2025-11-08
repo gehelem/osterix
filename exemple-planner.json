@@ -1,0 +1,1093 @@
+{
+    "evt": "moduledump",
+    "modules": {
+        "Planner": {
+            "errors": {},
+            "globallovs": {
+                "DRIVER_INTERFACE-AUX_INTERFACE": {
+                    "label": "DRIVER_INTERFACE-AUX_INTERFACE",
+                    "type": "string",
+                    "values": {
+                        "Light Panel Simulator": "Light Panel Simulator"
+                    }
+                },
+                "DRIVER_INTERFACE-CCD_INTERFACE": {
+                    "label": "DRIVER_INTERFACE-CCD_INTERFACE",
+                    "type": "string",
+                    "values": {
+                        "CCD Simulator": "CCD Simulator",
+                        "Guide Simulator": "Guide Simulator"
+                    }
+                },
+                "DRIVER_INTERFACE-FILTER_INTERFACE": {
+                    "label": "DRIVER_INTERFACE-FILTER_INTERFACE",
+                    "type": "string",
+                    "values": {
+                        "CCD Simulator": "CCD Simulator",
+                        "Filter Simulator": "Filter Simulator"
+                    }
+                },
+                "DRIVER_INTERFACE-FOCUSER_INTERFACE": {
+                    "label": "DRIVER_INTERFACE-FOCUSER_INTERFACE",
+                    "type": "string",
+                    "values": {
+                        "Focuser Simulator": "Focuser Simulator"
+                    }
+                },
+                "DRIVER_INTERFACE-GENERAL_INTERFACE": {
+                    "label": "DRIVER_INTERFACE-GENERAL_INTERFACE",
+                    "type": "string",
+                    "values": {
+                        "CCD Simulator": "CCD Simulator",
+                        "Dome Simulator": "Dome Simulator",
+                        "Filter Simulator": "Filter Simulator",
+                        "Focuser Simulator": "Focuser Simulator",
+                        "GPS Simulator": "GPS Simulator",
+                        "Guide Simulator": "Guide Simulator",
+                        "Light Panel Simulator": "Light Panel Simulator",
+                        "Receiver Simulator": "Receiver Simulator",
+                        "Rotator Simulator": "Rotator Simulator",
+                        "SQM Simulator": "SQM Simulator",
+                        "Telescope Simulator": "Telescope Simulator",
+                        "Weather Simulator": "Weather Simulator"
+                    }
+                },
+                "DRIVER_INTERFACE-GPS_INTERFACE": {
+                    "label": "DRIVER_INTERFACE-GPS_INTERFACE",
+                    "type": "string",
+                    "values": {
+                        "GPS Simulator": "GPS Simulator"
+                    }
+                },
+                "DRIVER_INTERFACE-GUIDER_INTERFACE": {
+                    "label": "DRIVER_INTERFACE-GUIDER_INTERFACE",
+                    "type": "string",
+                    "values": {
+                        "CCD Simulator": "CCD Simulator",
+                        "Guide Simulator": "Guide Simulator",
+                        "Telescope Simulator": "Telescope Simulator"
+                    }
+                },
+                "DRIVER_INTERFACE-TELESCOPE_INTERFACE": {
+                    "label": "DRIVER_INTERFACE-TELESCOPE_INTERFACE",
+                    "type": "string",
+                    "values": {
+                        "Telescope Simulator": "Telescope Simulator"
+                    }
+                },
+                "DRIVER_INTERFACE-WEATHER_INTERFACE": {
+                    "label": "DRIVER_INTERFACE-WEATHER_INTERFACE",
+                    "type": "string",
+                    "values": {
+                        "Weather Simulator": "Weather Simulator"
+                    }
+                },
+                "loadedModules": {
+                    "label": "Loaded modules",
+                    "type": "string",
+                    "values": {
+                        "Focus": "Focus",
+                        "Guider": "Guider",
+                        "Navigator": "Navigator",
+                        "Planner": "Planner",
+                        "Sequencer": "Sequencer"
+                    }
+                }
+            },
+            "help": "No help content available",
+            "infos": {
+                "description": "Planner module",
+                "label": "Planner",
+                "name": "Planner"
+            },
+            "messages": {
+                "0": {
+                    "datetime": "2025-11-08T14:23:51.416",
+                    "message": "Planner module initialized"
+                },
+                "1": {
+                    "datetime": "2025-11-08T14:23:51.421",
+                    "message": "default profile sucessfully loaded"
+                },
+                "2": {
+                    "datetime": "2025-11-08T14:23:51.422",
+                    "message": "Available profiles refreshed"
+                },
+                "3": {
+                    "datetime": "2025-11-08T14:23:53.347",
+                    "message": "Indi server connected"
+                },
+                "4": {
+                    "datetime": "2025-11-08T15:48:06.857",
+                    "message": "Navigator went to target zet01 UMa, starting sequence with profile default"
+                },
+                "5": {
+                    "datetime": "2025-11-08T15:48:13.447",
+                    "message": "Planning complete"
+                }
+            },
+            "properties": {
+                "actions": {
+                    "badge": false,
+                    "elements": {
+                        "start": {
+                            "autoupdate": false,
+                            "badge": false,
+                            "directedit": false,
+                            "hint": "",
+                            "label": "Démarrer",
+                            "order": "010",
+                            "type": "bool",
+                            "value": false
+                        },
+                        "stop": {
+                            "autoupdate": false,
+                            "badge": false,
+                            "directedit": false,
+                            "hint": "",
+                            "label": "Stop",
+                            "order": "020",
+                            "type": "bool",
+                            "value": false
+                        }
+                    },
+                    "enabled": true,
+                    "freevalue": "",
+                    "gridheaders": [
+                        "start",
+                        "stop"
+                    ],
+                    "hasGraph": false,
+                    "hasGrid": false,
+                    "hasprofile": false,
+                    "label": "Actions",
+                    "level1": "Contrôle",
+                    "level2": "",
+                    "order": "000Control111",
+                    "permission": 2,
+                    "posticon1": "",
+                    "posticon2": "",
+                    "preicon1": "",
+                    "preicon2": "",
+                    "rule": 1,
+                    "showElts": true,
+                    "status": 0
+                },
+                "baseGit": {
+                    "badge": false,
+                    "elements": {
+                        "date": {
+                            "autoupdate": false,
+                            "badge": false,
+                            "directedit": false,
+                            "hint": "",
+                            "label": "Date",
+                            "order": "01",
+                            "type": "string",
+                            "value": "Thu Nov 6 09:25:27 2025"
+                        },
+                        "hash": {
+                            "autoupdate": false,
+                            "badge": false,
+                            "directedit": false,
+                            "hint": "",
+                            "label": "Hash",
+                            "order": "00",
+                            "type": "string",
+                            "value": "c374ea19b69f4a51cc0d504dadefa0abad4c1370"
+                        },
+                        "message": {
+                            "autoupdate": false,
+                            "badge": false,
+                            "directedit": false,
+                            "hint": "",
+                            "label": "Message de commit",
+                            "order": "02",
+                            "type": "string",
+                            "value": "Merge remote-tracking branch 'GitLabOrigin/main'"
+                        }
+                    },
+                    "enabled": true,
+                    "freevalue": "",
+                    "gridheaders": [
+                        "date",
+                        "hash",
+                        "message"
+                    ],
+                    "hasGraph": false,
+                    "hasGrid": false,
+                    "hasprofile": false,
+                    "label": "Git module de base",
+                    "level1": "Module",
+                    "level2": "Info",
+                    "order": "00",
+                    "permission": 0,
+                    "posticon1": "",
+                    "posticon2": "",
+                    "preicon1": "",
+                    "preicon2": "",
+                    "rule": 2,
+                    "showElts": true,
+                    "status": 0
+                },
+                "devices": {
+                    "badge": false,
+                    "elements": {
+                        "gps": {
+                            "autoupdate": true,
+                            "badge": false,
+                            "directedit": true,
+                            "globallov": "DRIVER_INTERFACE-GPS_INTERFACE",
+                            "hint": "",
+                            "label": "GPS",
+                            "order": "GPS",
+                            "type": "string",
+                            "value": "GPS Simulator"
+                        }
+                    },
+                    "enabled": true,
+                    "freevalue": "",
+                    "gridheaders": [
+                        "gps"
+                    ],
+                    "hasGraph": false,
+                    "hasGrid": false,
+                    "hasprofile": true,
+                    "label": "Appareils",
+                    "level1": "Paramètres",
+                    "level2": "",
+                    "order": "222Parms222",
+                    "permission": 2,
+                    "posticon1": "",
+                    "posticon2": "",
+                    "preicon1": "",
+                    "preicon2": "",
+                    "rule": 2,
+                    "showElts": true,
+                    "status": 0
+                },
+                "devicesactions": {
+                    "badge": false,
+                    "elements": {
+                        "condevs": {
+                            "autoupdate": false,
+                            "badge": false,
+                            "directedit": false,
+                            "hint": "",
+                            "label": "Connecter",
+                            "order": "01",
+                            "type": "bool",
+                            "value": false
+                        },
+                        "discondevs": {
+                            "autoupdate": false,
+                            "badge": false,
+                            "directedit": false,
+                            "hint": "",
+                            "label": "Déconnecter",
+                            "order": "02",
+                            "type": "bool",
+                            "value": false
+                        },
+                        "loadconfs": {
+                            "autoupdate": false,
+                            "badge": false,
+                            "directedit": false,
+                            "hint": "",
+                            "label": "Charger la configuration des appareils",
+                            "order": "03",
+                            "type": "bool",
+                            "value": false
+                        }
+                    },
+                    "enabled": true,
+                    "freevalue": "",
+                    "gridheaders": [
+                        "condevs",
+                        "discondevs",
+                        "loadconfs"
+                    ],
+                    "hasGraph": false,
+                    "hasGrid": false,
+                    "hasprofile": false,
+                    "label": "Actions sur les appareils",
+                    "level1": "Module",
+                    "level2": "Indi",
+                    "order": "04",
+                    "permission": 2,
+                    "posticon1": "",
+                    "posticon2": "",
+                    "preicon1": "",
+                    "preicon2": "",
+                    "rule": 2,
+                    "showElts": true,
+                    "status": 0
+                },
+                "indiGit": {
+                    "badge": false,
+                    "elements": {
+                        "date": {
+                            "autoupdate": false,
+                            "badge": false,
+                            "directedit": false,
+                            "hint": "",
+                            "label": "Date",
+                            "order": "01",
+                            "type": "string",
+                            "value": "Thu Nov 6 09:25:27 2025"
+                        },
+                        "hash": {
+                            "autoupdate": false,
+                            "badge": false,
+                            "directedit": false,
+                            "hint": "",
+                            "label": "Hash",
+                            "order": "00",
+                            "type": "string",
+                            "value": "c374ea19b69f4a51cc0d504dadefa0abad4c1370"
+                        },
+                        "message": {
+                            "autoupdate": false,
+                            "badge": false,
+                            "directedit": false,
+                            "hint": "",
+                            "label": "Message de commit",
+                            "order": "02",
+                            "type": "string",
+                            "value": "Merge remote-tracking branch 'GitLabOrigin/main'"
+                        }
+                    },
+                    "enabled": true,
+                    "freevalue": "",
+                    "gridheaders": [
+                        "date",
+                        "hash",
+                        "message"
+                    ],
+                    "hasGraph": false,
+                    "hasGrid": false,
+                    "hasprofile": false,
+                    "label": "Git module Indi",
+                    "level1": "Module",
+                    "level2": "Info",
+                    "order": "00",
+                    "permission": 0,
+                    "posticon1": "",
+                    "posticon2": "",
+                    "preicon1": "",
+                    "preicon2": "",
+                    "rule": 2,
+                    "showElts": true,
+                    "status": 0
+                },
+                "loadprofile": {
+                    "badge": false,
+                    "elements": {
+                        "name": {
+                            "autoupdate": true,
+                            "badge": false,
+                            "directedit": true,
+                            "hint": "",
+                            "label": "",
+                            "listOfValues": {
+                                "default": "default"
+                            },
+                            "order": "00",
+                            "posticon": "redo",
+                            "preicon": "autorenew",
+                            "type": "string",
+                            "value": "default"
+                        }
+                    },
+                    "enabled": true,
+                    "freevalue": "",
+                    "gridheaders": [
+                        "name"
+                    ],
+                    "hasGraph": false,
+                    "hasGrid": false,
+                    "hasprofile": false,
+                    "label": "Charger un profil",
+                    "level1": "Module",
+                    "level2": "Profils",
+                    "order": "00",
+                    "permission": 2,
+                    "posticon1": "",
+                    "posticon2": "",
+                    "preicon1": "",
+                    "preicon2": "",
+                    "rule": 1,
+                    "showElts": true,
+                    "status": 0
+                },
+                "moduleInfo": {
+                    "badge": false,
+                    "elements": {
+                        "baseVersion": {
+                            "autoupdate": false,
+                            "badge": false,
+                            "directedit": false,
+                            "format": "",
+                            "hint": "",
+                            "label": "baseVersion",
+                            "max": 0,
+                            "min": 0,
+                            "order": "03",
+                            "slider": 0,
+                            "step": 0,
+                            "type": "int",
+                            "value": 1
+                        },
+                        "moduleDescription": {
+                            "autoupdate": false,
+                            "badge": false,
+                            "directedit": false,
+                            "hint": "",
+                            "label": "Description du module",
+                            "order": "00",
+                            "type": "string",
+                            "value": "Planner module"
+                        },
+                        "moduleLabel": {
+                            "autoupdate": false,
+                            "badge": false,
+                            "directedit": false,
+                            "hint": "",
+                            "label": "Libellé du module",
+                            "order": "01",
+                            "type": "string",
+                            "value": "Planner"
+                        },
+                        "moduleName": {
+                            "autoupdate": false,
+                            "badge": false,
+                            "directedit": false,
+                            "hint": "",
+                            "label": "Nom du module",
+                            "order": "02",
+                            "type": "string",
+                            "value": "Planner"
+                        },
+                        "moduleVersion": {
+                            "autoupdate": false,
+                            "badge": false,
+                            "directedit": false,
+                            "hint": "",
+                            "label": "Version",
+                            "order": "02",
+                            "type": "string",
+                            "value": "1.0.0"
+                        }
+                    },
+                    "enabled": true,
+                    "freevalue": "",
+                    "gridheaders": [
+                        "baseVersion",
+                        "moduleDescription",
+                        "moduleLabel",
+                        "moduleName",
+                        "moduleVersion"
+                    ],
+                    "hasGraph": false,
+                    "hasGrid": false,
+                    "hasprofile": false,
+                    "label": "Informations du module",
+                    "level1": "Module",
+                    "level2": "Info",
+                    "order": "01",
+                    "permission": 0,
+                    "posticon1": "",
+                    "posticon2": "",
+                    "preicon1": "",
+                    "preicon2": "",
+                    "rule": 2,
+                    "showElts": true,
+                    "status": 0
+                },
+                "moduleactions": {
+                    "badge": false,
+                    "elements": {
+                        "kill": {
+                            "autoupdate": false,
+                            "badge": false,
+                            "directedit": false,
+                            "hint": "",
+                            "label": "Fermer le module",
+                            "order": "00",
+                            "type": "bool",
+                            "value": false
+                        }
+                    },
+                    "enabled": true,
+                    "freevalue": "",
+                    "gridheaders": [
+                        "kill"
+                    ],
+                    "hasGraph": false,
+                    "hasGrid": false,
+                    "hasprofile": false,
+                    "label": "Contrôles",
+                    "level1": "Module",
+                    "level2": "Actions",
+                    "order": "00",
+                    "permission": 1,
+                    "posticon1": "",
+                    "posticon2": "",
+                    "preicon1": "",
+                    "preicon2": "",
+                    "rule": 2,
+                    "showElts": true,
+                    "status": 0
+                },
+                "parms": {
+                    "badge": false,
+                    "elements": {
+                        "navigatormodule": {
+                            "autoupdate": true,
+                            "badge": false,
+                            "directedit": true,
+                            "globallov": "loadedModules",
+                            "hint": "[Name of the navigator module INSTANCE to use]",
+                            "label": "[Navigator instance]",
+                            "order": "4",
+                            "type": "string",
+                            "value": "Navigator"
+                        },
+                        "sequencemodule": {
+                            "autoupdate": true,
+                            "badge": false,
+                            "directedit": true,
+                            "globallov": "loadedModules",
+                            "hint": "[Name of the sequencer module INSTANCE to use]",
+                            "label": "[Sequence instance]",
+                            "order": "2",
+                            "type": "string",
+                            "value": "Sequencer"
+                        }
+                    },
+                    "enabled": true,
+                    "freevalue": "",
+                    "gridheaders": [
+                        "navigatormodule",
+                        "sequencemodule"
+                    ],
+                    "hasGraph": false,
+                    "hasGrid": false,
+                    "hasprofile": true,
+                    "label": "Paramètres",
+                    "level1": "Paramètres",
+                    "level2": "",
+                    "order": "100",
+                    "permission": 2,
+                    "posticon1": "",
+                    "posticon2": "",
+                    "preicon1": "",
+                    "preicon2": "",
+                    "rule": 2,
+                    "showElts": true,
+                    "status": 0
+                },
+                "planning": {
+                    "badge": false,
+                    "elements": {
+                        "dec": {
+                            "autoupdate": false,
+                            "badge": false,
+                            "directedit": false,
+                            "format": "",
+                            "hint": "[Object DEC]",
+                            "label": "DEC",
+                            "max": 0,
+                            "min": 0,
+                            "order": "20",
+                            "slider": 0,
+                            "step": 0,
+                            "type": "float",
+                            "value": 54.92527770996094
+                        },
+                        "object": {
+                            "autoupdate": false,
+                            "badge": false,
+                            "directedit": false,
+                            "hint": "[Object name]",
+                            "label": "Objet",
+                            "order": "0",
+                            "type": "string",
+                            "value": "zet01 UMa"
+                        },
+                        "profile": {
+                            "autoupdate": false,
+                            "badge": false,
+                            "directedit": false,
+                            "hint": "[Sequencer profile]",
+                            "label": "Profil",
+                            "order": "30",
+                            "type": "string",
+                            "value": "default"
+                        },
+                        "progress": {
+                            "autoupdate": false,
+                            "badge": false,
+                            "dynlabel": "Finished",
+                            "hint": "",
+                            "label": "Progression",
+                            "order": "7",
+                            "prgtype": "spinner",
+                            "type": "prg",
+                            "value": 100
+                        },
+                        "ra": {
+                            "autoupdate": false,
+                            "badge": false,
+                            "directedit": false,
+                            "format": "",
+                            "hint": "[Object RA]",
+                            "label": "AD",
+                            "max": 0,
+                            "min": 0,
+                            "order": "10",
+                            "slider": 0,
+                            "step": 0,
+                            "type": "float",
+                            "value": 13.398750305175781
+                        }
+                    },
+                    "enabled": true,
+                    "freevalue": "",
+                    "grid": [
+                        [
+                            27.959678649902344,
+                            "bet01 Cyg A",
+                            "default",
+                            {
+                                "dynlabel": "Finished",
+                                "value": 1
+                            },
+                            19.51202392578125
+                        ],
+                        [
+                            74.15547180175781,
+                            "bet UMi",
+                            "default",
+                            {
+                                "dynlabel": "Finished",
+                                "value": 1
+                            },
+                            14.845108985900879
+                        ],
+                        [
+                            61.750831604003906,
+                            "alf UMa",
+                            "default",
+                            {
+                                "dynlabel": "Finished",
+                                "value": 1
+                            },
+                            11.062138557434082
+                        ],
+                        [
+                            54.92527770996094,
+                            "zet01 UMa",
+                            "default",
+                            {
+                                "dynlabel": "Finished",
+                                "value": 1
+                            },
+                            13.398750305175781
+                        ]
+                    ],
+                    "gridLimit": 5000,
+                    "gridheaders": [
+                        "dec",
+                        "object",
+                        "profile",
+                        "progress",
+                        "ra"
+                    ],
+                    "hasGraph": false,
+                    "hasGrid": true,
+                    "hasprofile": true,
+                    "label": "[Planning]",
+                    "level1": "Contrôle",
+                    "level2": "",
+                    "order": "050",
+                    "permission": 2,
+                    "posticon1": "",
+                    "posticon2": "",
+                    "preicon1": "",
+                    "preicon2": "",
+                    "rule": 2,
+                    "showElts": false,
+                    "showGrid": true,
+                    "status": 0
+                },
+                "progress": {
+                    "badge": false,
+                    "elements": {
+                        "global": {
+                            "autoupdate": false,
+                            "badge": false,
+                            "dynlabel": "Idle",
+                            "hint": "",
+                            "label": "Progression",
+                            "order": "01",
+                            "prgtype": "spinner",
+                            "type": "prg",
+                            "value": 0
+                        }
+                    },
+                    "enabled": true,
+                    "freevalue": "",
+                    "gridheaders": [
+                        "global"
+                    ],
+                    "hasGraph": false,
+                    "hasGrid": false,
+                    "hasprofile": false,
+                    "label": "Progression",
+                    "level1": "Contrôle",
+                    "level2": "",
+                    "order": "001",
+                    "permission": 0,
+                    "posticon1": "",
+                    "posticon2": "",
+                    "preicon1": "",
+                    "preicon2": "",
+                    "rule": 2,
+                    "showElts": true,
+                    "status": 0
+                },
+                "saveprofile": {
+                    "badge": false,
+                    "elements": {
+                        "name": {
+                            "autoupdate": true,
+                            "badge": false,
+                            "directedit": true,
+                            "hint": "",
+                            "label": "",
+                            "order": "00",
+                            "posticon": "save",
+                            "type": "string",
+                            "value": "default"
+                        }
+                    },
+                    "enabled": true,
+                    "freevalue": "",
+                    "gridheaders": [
+                        "name"
+                    ],
+                    "hasGraph": false,
+                    "hasGrid": false,
+                    "hasprofile": false,
+                    "label": "Sauvegarder le profil",
+                    "level1": "Module",
+                    "level2": "Profils",
+                    "order": "01",
+                    "permission": 2,
+                    "posticon1": "",
+                    "posticon2": "",
+                    "preicon1": "",
+                    "preicon2": "",
+                    "rule": 0,
+                    "showElts": true,
+                    "status": 0
+                },
+                "server": {
+                    "badge": false,
+                    "elements": {
+                        "host": {
+                            "autoupdate": true,
+                            "badge": false,
+                            "directedit": false,
+                            "hint": "",
+                            "label": "Hôte",
+                            "order": "00",
+                            "type": "string",
+                            "value": "localhost"
+                        },
+                        "port": {
+                            "autoupdate": true,
+                            "badge": false,
+                            "directedit": false,
+                            "format": "",
+                            "hint": "",
+                            "label": "Port",
+                            "max": 0,
+                            "min": 0,
+                            "order": "01",
+                            "slider": 0,
+                            "step": 0,
+                            "type": "int",
+                            "value": 7624
+                        }
+                    },
+                    "enabled": true,
+                    "freevalue": "",
+                    "gridheaders": [
+                        "host",
+                        "port"
+                    ],
+                    "hasGraph": false,
+                    "hasGrid": false,
+                    "hasprofile": true,
+                    "label": "Serveur",
+                    "level1": "Module",
+                    "level2": "Indi",
+                    "order": "99",
+                    "permission": 2,
+                    "posticon1": "",
+                    "posticon2": "",
+                    "preicon1": "",
+                    "preicon2": "",
+                    "rule": 2,
+                    "showElts": true,
+                    "status": 0
+                },
+                "serveractions": {
+                    "badge": false,
+                    "elements": {
+                        "conserv": {
+                            "autoupdate": false,
+                            "badge": false,
+                            "directedit": false,
+                            "hint": "",
+                            "label": "Connecter",
+                            "order": "00",
+                            "type": "bool",
+                            "value": false
+                        },
+                        "disconserv": {
+                            "autoupdate": false,
+                            "badge": false,
+                            "directedit": false,
+                            "hint": "",
+                            "label": "Déconnecter",
+                            "order": "01",
+                            "type": "bool",
+                            "value": false
+                        }
+                    },
+                    "enabled": true,
+                    "freevalue": "",
+                    "gridheaders": [
+                        "conserv",
+                        "disconserv"
+                    ],
+                    "hasGraph": false,
+                    "hasGrid": false,
+                    "hasprofile": false,
+                    "label": "Serveur",
+                    "level1": "Module",
+                    "level2": "Indi",
+                    "order": "01",
+                    "permission": 2,
+                    "posticon1": "",
+                    "posticon2": "",
+                    "preicon1": "",
+                    "preicon2": "",
+                    "rule": 2,
+                    "showElts": true,
+                    "status": 0
+                },
+                "startup": {
+                    "badge": false,
+                    "elements": {
+                        "confsatstart": {
+                            "autoupdate": true,
+                            "badge": false,
+                            "directedit": false,
+                            "hint": "",
+                            "label": "Charger la configuration des appareils",
+                            "order": "02",
+                            "type": "bool",
+                            "value": true
+                        },
+                        "devatstart": {
+                            "autoupdate": true,
+                            "badge": false,
+                            "directedit": false,
+                            "hint": "",
+                            "label": "Connecter les appareils",
+                            "order": "01",
+                            "type": "bool",
+                            "value": true
+                        },
+                        "indiatstart": {
+                            "autoupdate": true,
+                            "badge": false,
+                            "directedit": false,
+                            "hint": "",
+                            "label": "Connecter indi",
+                            "order": "00",
+                            "type": "bool",
+                            "value": true
+                        }
+                    },
+                    "enabled": true,
+                    "freevalue": "",
+                    "gridheaders": [
+                        "confsatstart",
+                        "devatstart",
+                        "indiatstart"
+                    ],
+                    "hasGraph": false,
+                    "hasGrid": false,
+                    "hasprofile": true,
+                    "label": "Actions au démarrage du module",
+                    "level1": "Module",
+                    "level2": "Indi",
+                    "order": "08",
+                    "permission": 2,
+                    "posticon1": "",
+                    "posticon2": "",
+                    "preicon1": "",
+                    "preicon2": "",
+                    "rule": 2,
+                    "showElts": true,
+                    "status": 0
+                },
+                "thisGit": {
+                    "badge": false,
+                    "elements": {
+                        "date": {
+                            "autoupdate": false,
+                            "badge": false,
+                            "directedit": false,
+                            "hint": "",
+                            "label": "Date",
+                            "order": "01",
+                            "type": "string",
+                            "value": "Sat Nov 8 02:19:28 2025"
+                        },
+                        "hash": {
+                            "autoupdate": false,
+                            "badge": false,
+                            "directedit": false,
+                            "hint": "",
+                            "label": "Hash",
+                            "order": "00",
+                            "type": "string",
+                            "value": "f11285776f88bd51ff94abdc19e25e9c9601c3b9-dirty"
+                        },
+                        "message": {
+                            "autoupdate": false,
+                            "badge": false,
+                            "directedit": false,
+                            "hint": "",
+                            "label": "Message de commit",
+                            "order": "02",
+                            "type": "string",
+                            "value": "Report sequence progress"
+                        }
+                    },
+                    "enabled": true,
+                    "freevalue": "",
+                    "gridheaders": [
+                        "date",
+                        "hash",
+                        "message"
+                    ],
+                    "hasGraph": false,
+                    "hasGrid": false,
+                    "hasprofile": false,
+                    "label": "Git de ce module",
+                    "level1": "Module",
+                    "level2": "Info",
+                    "order": "00",
+                    "permission": 0,
+                    "posticon1": "",
+                    "posticon2": "",
+                    "preicon1": "",
+                    "preicon2": "",
+                    "rule": 2,
+                    "showElts": true,
+                    "status": 0
+                }
+            },
+            "state": {},
+            "warnings": {
+                "0": {
+                    "datetime": "2025-11-08T15:48:07.974",
+                    "warning": "planning-Can't update line7274530 >= 4"
+                },
+                "1": {
+                    "datetime": "2025-11-08T15:48:08.166",
+                    "warning": "planning-Can't update line7274530 >= 4"
+                },
+                "2": {
+                    "datetime": "2025-11-08T15:48:08.422",
+                    "warning": "planning-Can't update line7274530 >= 4"
+                },
+                "3": {
+                    "datetime": "2025-11-08T15:48:08.422",
+                    "warning": "planning-Can't update line7274530 >= 4"
+                },
+                "4": {
+                    "datetime": "2025-11-08T15:48:08.497",
+                    "warning": "planning-Can't update line7274530 >= 4"
+                },
+                "5": {
+                    "datetime": "2025-11-08T15:48:09.167",
+                    "warning": "planning-Can't update line7274530 >= 4"
+                },
+                "6": {
+                    "datetime": "2025-11-08T15:48:09.455",
+                    "warning": "planning-Can't update line7274530 >= 4"
+                },
+                "7": {
+                    "datetime": "2025-11-08T15:48:10.506",
+                    "warning": "planning-Can't update line7274530 >= 4"
+                },
+                "8": {
+                    "datetime": "2025-11-08T15:48:10.590",
+                    "warning": "planning-Can't update line7274530 >= 4"
+                },
+                "9": {
+                    "datetime": "2025-11-08T15:48:11.168",
+                    "warning": "planning-Can't update line7274530 >= 4"
+                },
+                "10": {
+                    "datetime": "2025-11-08T15:48:11.462",
+                    "warning": "planning-Can't update line7274530 >= 4"
+                },
+                "11": {
+                    "datetime": "2025-11-08T15:48:11.462",
+                    "warning": "planning-Can't update line7274530 >= 4"
+                },
+                "12": {
+                    "datetime": "2025-11-08T15:48:11.554",
+                    "warning": "planning-Can't update line7274530 >= 4"
+                },
+                "13": {
+                    "datetime": "2025-11-08T15:48:12.170",
+                    "warning": "planning-Can't update line7274530 >= 4"
+                },
+                "14": {
+                    "datetime": "2025-11-08T15:48:12.439",
+                    "warning": "planning-Can't update line7274530 >= 4"
+                },
+                "15": {
+                    "datetime": "2025-11-08T15:48:12.439",
+                    "warning": "planning-Can't update line7274530 >= 4"
+                },
+                "16": {
+                    "datetime": "2025-11-08T15:48:12.526",
+                    "warning": "planning-Can't update line7274530 >= 4"
+                },
+                "17": {
+                    "datetime": "2025-11-08T15:48:13.170",
+                    "warning": "planning-Can't update line7274530 >= 4"
+                },
+                "18": {
+                    "datetime": "2025-11-08T15:48:13.447",
+                    "warning": "planning-Can't fetch line7274530 >= 4"
+                },
+                "19": {
+                    "datetime": "2025-11-08T15:48:13.447",
+                    "warning": "planning-Can't update line7274530 >= 4"
+                }
+            }
+        }
+    }
+}

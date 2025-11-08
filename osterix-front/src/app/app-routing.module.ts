@@ -7,6 +7,7 @@ import { NavigatorComponent } from './pages/navigator/navigator.component';
 import { GuiderComponent } from './pages/guider/guider.component';
 import { AllskyComponent } from './pages/allsky/allsky.component';
 import { MessagesComponent } from './pages/messages/messages.component';
+import { PlannerComponent } from './pages/planner/planner.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -16,7 +17,8 @@ const routes: Routes = [
   { path: 'navigator', component: NavigatorComponent },
   { path: 'guider', component: GuiderComponent },
   { path: 'allsky', component: AllskyComponent },
-  { path: 'messages', component: MessagesComponent }
+  { path: 'messages', component: MessagesComponent },
+  { path: 'planner', component: PlannerComponent }
 ];
 
 @NgModule({

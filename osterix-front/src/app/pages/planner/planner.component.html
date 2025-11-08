@@ -1,0 +1,114 @@
+<div class="planner-container">
+  <!-- Header section -->
+  <div class="header">
+    <h1>Planificateur</h1>
+    <div class="status-badge" [ngClass]="isRunning ? 'running' : 'idle'">
+      {{ globalProgressLabel }}
+    </div>
+  </div>
+
+  <!-- Main cards grid -->
+  <div class="cards-grid">
+    <!-- Control card -->
+    <mat-card class="control-card">
+      <mat-card-header>
+        <mat-card-title>Contrôle</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <!-- Progress section -->
+        <div class="progress-section">
+          <div class="progress-item">
+            <span>Progression globale</span>
+            <mat-progress-bar mode="determinate" [value]="globalProgress"></mat-progress-bar>
+            <span class="progress-value">{{ formatProgress(globalProgress) }}</span>
+          </div>
+        </div>
+
+        <!-- Action buttons -->
+        <div class="action-buttons">
+          <button mat-raised-button color="primary" (click)="onStart()" [disabled]="!startEnabled">
+            <mat-icon>play_arrow</mat-icon>
+            Démarrer
+          </button>
+          <button mat-raised-button color="warn" (click)="onStop()" [disabled]="!stopEnabled">
+            <mat-icon>stop</mat-icon>
+            Arrêter
+          </button>
+          <button mat-raised-button color="accent" (click)="openParametersDialog()">
+            <mat-icon>settings</mat-icon>
+            Paramètres
+          </button>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <!-- Planning card (full width) -->
+    <mat-card class="planning-card">
+      <mat-card-header>
+        <mat-card-title>Plan d'observation</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <!-- Quick add row -->
+        <div class="quick-add-section">
+          <mat-form-field appearance="fill" class="quick-field">
+            <mat-label>Objet</mat-label>
+            <input matInput [(ngModel)]="objectName" placeholder="Nom de l'objet">
+          </mat-form-field>
+          <mat-form-field appearance="fill" class="quick-field">
+            <mat-label>AD</mat-label>
+            <input matInput type="number" [(ngModel)]="objectRA" placeholder="RA">
+          </mat-form-field>
+          <mat-form-field appearance="fill" class="quick-field">
+            <mat-label>DEC</mat-label>
+            <input matInput type="number" [(ngModel)]="objectDEC" placeholder="DEC">
+          </mat-form-field>
+          <button mat-raised-button color="primary" (click)="addRow()">
+            <mat-icon>add</mat-icon>
+            Ajouter
+          </button>
+        </div>
+
+        <!-- Planning table -->
+        <div class="table-container">
+          <table class="planning-table">
+            <thead>
+              <tr>
+                <th>Objet</th>
+                <th>AD</th>
+                <th>DEC</th>
+                <th>Profil</th>
+                <th>Progression</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngIf="planningRows.length === 0">
+                <td colspan="6" class="empty-message">Aucun objet planifié</td>
+              </tr>
+              <tr *ngFor="let row of planningRows; let i = index">
+                <td>{{ row.object }}</td>
+                <td>{{ row.ra | number: '1.2-2' }}</td>
+                <td>{{ row.dec | number: '1.2-2' }}</td>
+                <td>{{ row.profile }}</td>
+                <td>
+                  <div class="progress-cell">
+                    <mat-progress-bar mode="determinate" [value]="row.progress.value" class="cell-progress"></mat-progress-bar>
+                    <span class="progress-label">{{ row.progress.dynlabel }}</span>
+                  </div>
+                </td>
+                <td class="actions-cell">
+                  <button mat-icon-button matTooltip="Éditer" (click)="editRow(i)">
+                    <mat-icon>edit</mat-icon>
+                  </button>
+                  <button mat-icon-button matTooltip="Supprimer" (click)="deleteRow(i)">
+                    <mat-icon>delete</mat-icon>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>
