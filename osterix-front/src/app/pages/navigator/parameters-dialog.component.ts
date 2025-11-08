@@ -1,6 +1,10 @@
-import { Component, Inject } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Component, Inject, OnInit, OnDestroy } from '@angular/core';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Element, GlobalLov } from '../../models/ost.models';
+import { WebsocketService } from '../../services/websocket.service';
+import { SaveProfileDialogComponent } from '../sequence/save-profile-dialog.component';
+import { SelectProfileDialogComponent } from '../sequence/select-profile-dialog.component';
+import { Subscription } from 'rxjs';
 
 export interface ParametersDialogData {
   // Camera parameters from 'parms' property
@@ -40,9 +44,20 @@ interface ListOfValue {
   template: `
     <h2 mat-dialog-title>
       Paramètres
-      <button mat-icon-button mat-dialog-close class="close-button">
-        <mat-icon>close</mat-icon>
-      </button>
+      <div class="header-actions">
+        <button mat-icon-button title="Load" (click)="loadProfile()">
+          <mat-icon>folder_open</mat-icon>
+        </button>
+        <button mat-icon-button title="Save" (click)="saveProfile()">
+          <mat-icon>save</mat-icon>
+        </button>
+        <button mat-icon-button title="Save As" (click)="saveAsProfile()">
+          <mat-icon>save_as</mat-icon>
+        </button>
+        <button mat-icon-button mat-dialog-close class="close-button">
+          <mat-icon>close</mat-icon>
+        </button>
+      </div>
     </h2>
     <mat-dialog-content>
       <!-- Tabs -->
@@ -259,8 +274,15 @@ interface ListOfValue {
       align-items: center;
     }
 
-    .close-button {
+    .header-actions {
+      display: flex;
+      gap: 8px;
+      align-items: center;
       margin-left: auto;
+    }
+
+    .close-button {
+      margin-left: 8px;
     }
 
     mat-dialog-content {
@@ -308,19 +330,139 @@ interface ListOfValue {
     }
   `]
 })
-export class NavigatorParametersDialogComponent {
+export class NavigatorParametersDialogComponent implements OnInit, OnDestroy {
   // Cache all computed values to prevent change detection loops
   devicesKeysCache: string[] = [];
   opticKeysCache: string[] = [];
   devicesLovsCache: { [key: string]: ListOfValue[] } = {};
   opticLovsCache: { [key: string]: ListOfValue[] } = {};
 
+  private stateSubscription: Subscription | null = null;
+  private waitingForProfileList = false;
+  private profileListTimeout: any = null;
+
   constructor(
     public dialogRef: MatDialogRef<NavigatorParametersDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: ParametersDialogData
+    @Inject(MAT_DIALOG_DATA) public data: ParametersDialogData,
+    private websocketService: WebsocketService,
+    private dialog: MatDialog
   ) {
     // Initialize all cached values in constructor
     this.initializeCaches();
+  }
+
+  ngOnInit(): void {
+    // Listen for state changes to handle loadprofile responses
+    this.stateSubscription = this.websocketService.state$.subscribe(state => {
+      // Only process if we're waiting for a profile list
+      if (!this.waitingForProfileList) {
+        return;
+      }
+
+      const navigatorModule = state.modules['Navigator'];
+      if (navigatorModule && navigatorModule.properties && navigatorModule.properties['loadprofile']) {
+        const loadprofileProperty = navigatorModule.properties['loadprofile'];
+        const nameElement = loadprofileProperty.elements?.['name'];
+
+        // Check if we received a listOfValues (which means it's a response to Fpreicon)
+        if (nameElement && (nameElement as any).listOfValues && Object.keys((nameElement as any).listOfValues).length > 0) {
+          console.log('Received profile list:', (nameElement as any).listOfValues);
+
+          // Clear the timeout since we got a response
+          if (this.profileListTimeout) {
+            clearTimeout(this.profileListTimeout);
+            this.profileListTimeout = null;
+          }
+
+          // Mark that we're no longer waiting
+          this.waitingForProfileList = false;
+
+          // Show dialog with profile selection
+          this.showProfileSelectionDialog((nameElement as any).listOfValues);
+        }
+      }
+    });
+  }
+
+  ngOnDestroy(): void {
+    if (this.stateSubscription) {
+      this.stateSubscription.unsubscribe();
+    }
+    if (this.profileListTimeout) {
+      clearTimeout(this.profileListTimeout);
+    }
+  }
+
+  loadProfile(): void {
+    // Mark that we're waiting for a profile list response
+    this.waitingForProfileList = true;
+
+    // Set a timeout - if no response in 5 seconds, abandon
+    this.profileListTimeout = setTimeout(() => {
+      console.log('Timeout waiting for profile list');
+      this.waitingForProfileList = false;
+      this.profileListTimeout = null;
+    }, 5000);
+
+    // Send the request
+    this.websocketService.sendPreIcon('Navigator', 'loadprofile', { name: {} });
+    console.log('Load profile request sent - waiting for list of profiles');
+  }
+
+  saveProfile(): void {
+    this.websocketService.sendPostIcon('Navigator', 'saveprofile', { name: {} });
+    console.log('Save profile message sent');
+  }
+
+  saveAsProfile(): void {
+    this.dialog.open(SaveProfileDialogComponent, {
+      width: '500px',
+      data: { profileName: '' }
+    }).afterClosed().subscribe((result) => {
+      if (result && result.profileName) {
+        // First message: set the profile name
+        this.websocketService.setProperty('Navigator', 'saveprofile', {
+          name: result.profileName
+        });
+        console.log('Save As - Set name message sent:', result.profileName);
+
+        // Then send the save message
+        setTimeout(() => {
+          this.websocketService.sendPostIcon('Navigator', 'saveprofile', { name: {} });
+          console.log('Save As - Save message sent');
+
+          // Then refresh the profile list
+          setTimeout(() => {
+            this.websocketService.sendPreIcon('Navigator', 'loadprofile', { name: {} });
+            console.log('Save As - Profile list refresh requested');
+          }, 100);
+        }, 100);
+      }
+    });
+  }
+
+  private showProfileSelectionDialog(profiles: { [key: string]: string }): void {
+    const profileNames = Object.keys(profiles);
+    console.log('Showing profile selection with profiles:', profileNames);
+
+    this.dialog.open(SelectProfileDialogComponent, {
+      width: '500px',
+      data: { profiles: profiles }
+    }).afterClosed().subscribe((result) => {
+      if (result && result.profileName) {
+        // Set the profile name to load
+        this.websocketService.setProperty('Navigator', 'loadprofile', {
+          name: result.profileName
+        });
+        console.log('Load profile set to:', result.profileName);
+
+        // Then trigger the load
+        setTimeout(() => {
+          this.websocketService.sendPostIcon('Navigator', 'loadprofile', { name: {} });
+          console.log('Load profile trigger sent');
+        }, 100);
+      }
+    });
   }
 
   private initializeCaches(): void {

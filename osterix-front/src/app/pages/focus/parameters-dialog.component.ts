@@ -524,7 +524,13 @@ export class ParametersDialogComponent implements OnInit, OnDestroy {
         setTimeout(() => {
           this.websocketService.sendPostIcon('Focus', 'saveprofile', { name: {} });
           console.log('Save As - Save message sent');
-        }, 10);
+
+          // Then refresh the profile list
+          setTimeout(() => {
+            this.websocketService.sendPreIcon('Focus', 'loadprofile', { name: {} });
+            console.log('Save As - Profile list refresh requested');
+          }, 100);
+        }, 100);
       }
     });
   }
@@ -548,7 +554,7 @@ export class ParametersDialogComponent implements OnInit, OnDestroy {
         setTimeout(() => {
           this.websocketService.sendPostIcon('Focus', 'loadprofile', { name: {} });
           console.log('Load profile trigger sent');
-        }, 10);
+        }, 100);
       }
     });
   }

@@ -382,7 +382,7 @@ export class SequenceParametersDialogComponent implements OnInit, OnDestroy {
         setTimeout(() => {
           this.websocketService.sendPostIcon('Sequencer', 'loadprofile', { name: {} });
           console.log('Load profile trigger sent');
-        }, 10);
+        }, 100);
       }
     });
   }
@@ -444,7 +444,13 @@ export class SequenceParametersDialogComponent implements OnInit, OnDestroy {
         setTimeout(() => {
           this.websocketService.sendPostIcon('Sequencer', 'saveprofile', { name: {} });
           console.log('Save As - Save message sent');
-        }, 10);
+
+          // Then refresh the profile list
+          setTimeout(() => {
+            this.websocketService.sendPreIcon('Sequencer', 'loadprofile', { name: {} });
+            console.log('Save As - Profile list refresh requested');
+          }, 100);
+        }, 100);
       }
     });
   }
