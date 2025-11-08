@@ -1,6 +1,8 @@
 import { Component, Inject } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Element } from '../../models/ost.models';
+import { WebsocketService } from '../../services/websocket.service';
+import { SaveProfileDialogComponent } from './save-profile-dialog.component';
 
 export interface SequenceParametersDialogData {
   // Object target properties
@@ -45,9 +47,17 @@ export interface SequenceParametersDialogData {
   template: `
     <h2 mat-dialog-title>
       Paramètres
-      <button mat-icon-button mat-dialog-close class="close-button">
-        <mat-icon>close</mat-icon>
-      </button>
+      <div class="header-actions">
+        <button mat-icon-button title="Save" (click)="saveProfile()">
+          <mat-icon>save</mat-icon>
+        </button>
+        <button mat-icon-button title="Save As" (click)="saveAsProfile()">
+          <mat-icon>save_as</mat-icon>
+        </button>
+        <button mat-icon-button mat-dialog-close class="close-button">
+          <mat-icon>close</mat-icon>
+        </button>
+      </div>
     </h2>
     <mat-dialog-content>
       <!-- Tabs -->
@@ -240,8 +250,15 @@ export interface SequenceParametersDialogData {
       align-items: center;
     }
 
-    .close-button {
+    .header-actions {
+      display: flex;
+      gap: 8px;
+      align-items: center;
       margin-left: auto;
+    }
+
+    .close-button {
+      margin-left: 8px;
     }
 
     mat-dialog-content {
@@ -289,7 +306,9 @@ export class SequenceParametersDialogComponent {
 
   constructor(
     public dialogRef: MatDialogRef<SequenceParametersDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: SequenceParametersDialogData
+    @Inject(MAT_DIALOG_DATA) public data: SequenceParametersDialogData,
+    private websocketService: WebsocketService,
+    private dialog: MatDialog
   ) {
     this.initializeCache();
   }
@@ -312,6 +331,32 @@ export class SequenceParametersDialogComponent {
         return orderA.localeCompare(orderB);
       });
     }
+  }
+
+  saveProfile(): void {
+    this.websocketService.sendPostIcon('Sequencer', 'saveprofile', { name: {} });
+    console.log('Save profile message sent');
+  }
+
+  saveAsProfile(): void {
+    this.dialog.open(SaveProfileDialogComponent, {
+      width: '500px',
+      data: { profileName: '' }
+    }).afterClosed().subscribe((result) => {
+      if (result && result.profileName) {
+        // First message: set the profile name
+        this.websocketService.setProperty('Sequencer', 'saveprofile', {
+          name: result.profileName
+        });
+        console.log('Save As - Set name message sent:', result.profileName);
+
+        // Then send the save message
+        setTimeout(() => {
+          this.websocketService.sendPostIcon('Sequencer', 'saveprofile', { name: {} });
+          console.log('Save As - Save message sent');
+        }, 10);
+      }
+    });
   }
 
 }

@@ -22,6 +22,7 @@ import { GuidingGraphComponent } from './pages/guider/guiding-graph.component';
 import { DriftGraphComponent } from './pages/guider/drift-graph.component';
 import { SequenceRowDialogComponent } from './pages/sequence/sequence-row-dialog.component';
 import { SequenceParametersDialogComponent } from './pages/sequence/sequence-parameters-dialog.component';
+import { SaveProfileDialogComponent } from './pages/sequence/save-profile-dialog.component';
 import { NavigatorParametersDialogComponent } from './pages/navigator/parameters-dialog.component';
 import { SkyChartComponent } from './pages/navigator/sky-chart.component';
 import { SkyChartDialogComponent } from './pages/navigator/sky-chart-dialog.component';
@@ -69,6 +70,7 @@ import { MessagesComponent } from './pages/messages/messages.component';
     SequenceComponent,
     SequenceRowDialogComponent,
     SequenceParametersDialogComponent,
+    SaveProfileDialogComponent,
     NavigatorComponent,
     NavigatorParametersDialogComponent,
     GuiderComponent,
