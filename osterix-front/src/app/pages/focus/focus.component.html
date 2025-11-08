@@ -39,17 +39,13 @@
                   <mat-progress-bar mode="determinate" [value]="progressValue"></mat-progress-bar>
                 </div>
                 <div class="action-buttons">
-                  <button mat-raised-button color="primary" (click)="startFocus()" [disabled]="!isModuleLoaded">
+                  <button mat-raised-button color="primary" (click)="startFocus()">
                     <mat-icon>play_arrow</mat-icon>
-                    Démarrer Focus
+                    Démarrer
                   </button>
-                  <button mat-raised-button color="warn" (click)="stopFocus()" [disabled]="!isModuleLoaded">
+                  <button mat-raised-button color="warn" (click)="stopFocus()">
                     <mat-icon>stop</mat-icon>
                     Arrêter
-                  </button>
-                  <button mat-raised-button (click)="openParametersDialog()">
-                    <mat-icon>settings</mat-icon>
-                    Paramètres
                   </button>
                 </div>
               </div>
