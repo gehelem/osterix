@@ -371,12 +371,6 @@ export class NavigatorParametersDialogComponent implements OnInit, OnDestroy {
         });
       };
 
-      // Update parameters
-      const parametersProperty = navigatorModule.properties['parameters'];
-      if (parametersProperty && parametersProperty.elements) {
-        updateElementsFromBackend(this.data.parametersElements, parametersProperty.elements);
-      }
-
       // Update devices
       const devicesProperty = navigatorModule.properties['devices'];
       if (devicesProperty && devicesProperty.elements) {
