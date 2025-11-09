@@ -323,15 +323,61 @@ export class SequenceParametersDialogComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    // Listen for state changes to handle loadprofile responses
+    // Listen for state changes - ALWAYS update when backend sends updates
     this.stateSubscription = this.websocketService.state$.subscribe(state => {
-      // Only process if we're waiting for a profile list
-      if (!this.waitingForProfileList) {
-        return;
+      const sequencerModule = state.modules['Sequencer'];
+      if (!sequencerModule) return;
+
+      // ALWAYS update all properties from the backend state
+      // Helper function to update all elements from backend
+      const updateElementsFromBackend = (dataElements: { [key: string]: Element }, backendElements: { [key: string]: Element }) => {
+        Object.keys(backendElements).forEach(key => {
+          const backendElement = backendElements[key];
+          if (dataElements[key]) {
+            dataElements[key].value = backendElement.value;
+          } else {
+            dataElements[key] = backendElement;
+          }
+        });
+      };
+
+      // Update parameters - map from elements to simple properties
+      const parametersProperty = sequencerModule.properties['parameters'];
+      if (parametersProperty && parametersProperty.elements) {
+        const elem = parametersProperty.elements;
+        if (elem['autofocusatstart']) this.data.autoFocusAtStart = elem['autofocusatstart'].value;
+        if (elem['autofocusonfilterchange']) this.data.autoFocusOnFilterChange = elem['autofocusonfilterchange'].value;
+        if (elem['focusmodule']) this.data.focusModule = elem['focusmodule'].value;
+        if (elem['guidermodule']) this.data.guiderModule = elem['guidermodule'].value;
+        if (elem['guidingsettletime']) this.data.guidingSettleTime = elem['guidingsettletime'].value;
+        if (elem['suspendguidingduringfocus']) this.data.suspendGuidingDuringFocus = elem['suspendguidingduringfocus'].value;
+        console.log('Updated parameters from backend');
       }
 
-      const sequencerModule = state.modules['Sequencer'];
-      if (sequencerModule && sequencerModule.properties && sequencerModule.properties['loadprofile']) {
+      // Update parms (camera exposure, gain, offset)
+      const parmsProperty = sequencerModule.properties['parms'];
+      if (parmsProperty && parmsProperty.elements) {
+        const elem = parmsProperty.elements;
+        if (elem['exposure']) this.data.exposure = elem['exposure'].value;
+        if (elem['gain']) this.data.gain = elem['gain'].value;
+        if (elem['offset']) this.data.offset = elem['offset'].value;
+        console.log('Updated parms from backend');
+      }
+
+      // Update devices
+      const devicesProperty = sequencerModule.properties['devices'];
+      if (devicesProperty && devicesProperty.elements) {
+        updateElementsFromBackend(this.data.devicesElements, devicesProperty.elements);
+      }
+
+      // Update optic
+      const opticProperty = sequencerModule.properties['optic'];
+      if (opticProperty && opticProperty.elements) {
+        updateElementsFromBackend(this.data.opticElements, opticProperty.elements);
+      }
+
+      // Handle loadprofile responses (for profile loading dialog)
+      if (sequencerModule.properties['loadprofile'] && this.waitingForProfileList) {
         const loadprofileProperty = sequencerModule.properties['loadprofile'];
         const nameElement = loadprofileProperty.elements?.['name'];
 
