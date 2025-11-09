@@ -331,15 +331,38 @@ export class FocusParametersDialogComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    // Listen for state changes to handle loadprofile responses
+    // Listen for state changes - ALWAYS update when backend sends updates
     this.stateSubscription = this.websocketService.state$.subscribe(state => {
-      // Only process if we're waiting for a profile list
-      if (!this.waitingForProfileList) {
-        return;
+      const focusModule = state.modules['Focus'];
+      if (!focusModule) return;
+
+      // ALWAYS update all properties from the backend state
+      // Helper function to update all elements from backend
+      const updateElementsFromBackend = (dataElements: { [key: string]: Element }, backendElements: { [key: string]: Element }) => {
+        Object.keys(backendElements).forEach(key => {
+          const backendElement = backendElements[key];
+          if (dataElements[key]) {
+            dataElements[key].value = backendElement.value;
+          } else {
+            dataElements[key] = backendElement;
+          }
+        });
+      };
+
+      // Update devices
+      const devicesProperty = focusModule.properties['devices'];
+      if (devicesProperty && devicesProperty.elements) {
+        updateElementsFromBackend(this.data.devicesElements, devicesProperty.elements);
       }
 
-      const focusModule = state.modules['Focus'];
-      if (focusModule && focusModule.properties && focusModule.properties['loadprofile']) {
+      // Update optic
+      const opticProperty = focusModule.properties['optic'];
+      if (opticProperty && opticProperty.elements) {
+        updateElementsFromBackend(this.data.opticElements, opticProperty.elements);
+      }
+
+      // Handle loadprofile responses (for profile loading dialog)
+      if (focusModule.properties['loadprofile'] && this.waitingForProfileList) {
         const loadprofileProperty = focusModule.properties['loadprofile'];
         const nameElement = loadprofileProperty.elements?.['name'];
 
