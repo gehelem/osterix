@@ -349,6 +349,30 @@ export class FocusParametersDialogComponent implements OnInit, OnDestroy {
         });
       };
 
+      // Update parameters - map from elements to simple properties
+      const parametersProperty = focusModule.properties['parameters'];
+      if (parametersProperty && parametersProperty.elements) {
+        const elem = parametersProperty.elements;
+        if (elem['iterations']) this.data.iterations = elem['iterations'].value;
+        if (elem['startpos']) this.data.startpos = elem['startpos'].value;
+        if (elem['steps']) this.data.steps = elem['steps'].value;
+        if (elem['backlash']) this.data.backlash = elem['backlash'].value;
+        if (elem['aroundinitial']) this.data.aroundinitial = elem['aroundinitial'].value;
+        if (elem['zoning']) this.data.zoning = elem['zoning'].value;
+        if (elem['loopIterations']) this.data.loopIterations = elem['loopIterations'].value;
+        console.log('Updated parameters from backend');
+      }
+
+      // Update parms (camera exposure, gain, offset)
+      const parmsProperty = focusModule.properties['parms'];
+      if (parmsProperty && parmsProperty.elements) {
+        const elem = parmsProperty.elements;
+        if (elem['exposure']) this.data.exposure = elem['exposure'].value;
+        if (elem['gain']) this.data.gain = elem['gain'].value;
+        if (elem['offset']) this.data.offset = elem['offset'].value;
+        console.log('Updated parms from backend');
+      }
+
       // Update devices
       const devicesProperty = focusModule.properties['devices'];
       if (devicesProperty && devicesProperty.elements) {
