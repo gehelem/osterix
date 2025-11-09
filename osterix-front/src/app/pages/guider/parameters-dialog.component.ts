@@ -1128,7 +1128,8 @@ export class GuiderParametersDialogComponent implements OnInit, OnDestroy {
    * Handle boolean change for nested properties
    * Don't update the UI immediately, let the backend respond
    */
-  onBooleanChange(key: string, type: 'disCorrection' | 'revCorrection', newValue: boolean): void {
+  onBooleanChange(key: string, type: 'disCorrection' | 'revCorrection', event: any): void {
+    const newValue = event.checked;
     // Send the change to the backend
     if (type === 'disCorrection') {
       this.data.onDisCorrectionChange(key, newValue);
