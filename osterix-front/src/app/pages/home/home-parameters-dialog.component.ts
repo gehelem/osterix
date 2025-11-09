@@ -1,5 +1,7 @@
-import { Component } from '@angular/core';
-import { MatDialogRef } from '@angular/material/dialog';
+import { Component, OnDestroy } from '@angular/core';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { WebsocketService } from '../../services/websocket.service';
+import { SaveProfileDialogComponent } from '../sequence/save-profile-dialog.component';
 
 @Component({
   selector: 'app-home-parameters-dialog',
@@ -57,18 +59,49 @@ import { MatDialogRef } from '@angular/material/dialog';
     }
   `]
 })
-export class HomeParametersDialogComponent {
-  constructor(public dialogRef: MatDialogRef<HomeParametersDialogComponent>) { }
+export class HomeParametersDialogComponent implements OnDestroy {
+  private pendingTimeouts: any[] = [];
+
+  constructor(
+    public dialogRef: MatDialogRef<HomeParametersDialogComponent>,
+    private websocketService: WebsocketService,
+    private dialog: MatDialog
+  ) { }
 
   loadProfile(): void {
     // To be implemented
   }
 
   saveProfile(): void {
-    // To be implemented
+    this.websocketService.sendPostIcon('mainctl', 'saveconf', { name: {} });
+    console.log('Save configuration message sent');
   }
 
   saveAsProfile(): void {
-    // To be implemented
+    this.dialog.open(SaveProfileDialogComponent, {
+      width: '500px',
+      data: { profileName: '', title: 'Enregistrer la configuration', inputLabel: 'Nom de la configuration' }
+    }).afterClosed().subscribe((result) => {
+      if (result && result.profileName) {
+        // First message: set the configuration name
+        this.websocketService.setProperty('mainctl', 'saveconf', {
+          name: result.profileName
+        });
+        console.log('Save As - Set name message sent:', result.profileName);
+
+        // Then send the save message
+        const timeout = setTimeout(() => {
+          this.websocketService.sendPostIcon('mainctl', 'saveconf', { name: {} });
+          console.log('Save As - Save message sent');
+        }, 100);
+        this.pendingTimeouts.push(timeout);
+      }
+    });
+  }
+
+  ngOnDestroy(): void {
+    // Clear all pending timeouts
+    this.pendingTimeouts.forEach(timeout => clearTimeout(timeout));
+    this.pendingTimeouts = [];
   }
 }

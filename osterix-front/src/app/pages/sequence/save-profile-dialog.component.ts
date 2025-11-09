@@ -3,15 +3,17 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 export interface SaveProfileDialogData {
   profileName: string;
+  title?: string;
+  inputLabel?: string;
 }
 
 @Component({
   selector: 'app-save-profile-dialog',
   template: `
-    <h2 mat-dialog-title>Enregistrer le profil</h2>
+    <h2 mat-dialog-title>{{ dialogTitle }}</h2>
     <mat-dialog-content>
       <mat-form-field appearance="fill" class="full-width">
-        <mat-label>Nom du profil</mat-label>
+        <mat-label>{{ inputLabel }}</mat-label>
         <input
           matInput
           [(ngModel)]="profileName"
@@ -44,12 +46,16 @@ export interface SaveProfileDialogData {
 })
 export class SaveProfileDialogComponent {
   profileName: string = '';
+  dialogTitle: string = 'Enregistrer le profil';
+  inputLabel: string = 'Nom du profil';
 
   constructor(
     public dialogRef: MatDialogRef<SaveProfileDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: SaveProfileDialogData
   ) {
     this.profileName = data.profileName || '';
+    this.dialogTitle = data.title || 'Enregistrer le profil';
+    this.inputLabel = data.inputLabel || 'Nom du profil';
   }
 
   save(): void {
