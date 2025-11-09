@@ -359,7 +359,6 @@ export class FocusParametersDialogComponent implements OnInit, OnDestroy {
         if (elem['backlash']) this.data.backlash = elem['backlash'].value;
         if (elem['aroundinitial']) this.data.aroundinitial = elem['aroundinitial'].value;
         if (elem['zoning']) this.data.zoning = elem['zoning'].value;
-        if (elem['loopIterations']) this.data.loopIterations = elem['loopIterations'].value;
         console.log('Updated parameters from backend');
       }
 
