@@ -5,7 +5,7 @@
     </button>
     <span>OstErix - Observatoire Sans Tête</span>
     <span class="spacer"></span>
-    <span class="connection-status" [class.connected]="connected" [class.disconnected]="!connected">
+    <span class="connection-status" [class.connected]="connected" [class.disconnected]="!connected" (click)="openServerConfiguration()" style="cursor: pointer;">
       <mat-icon [inline]="true">{{ connected ? 'cloud_done' : 'cloud_off' }}</mat-icon>
       {{ connected ? 'Connecté' : 'Déconnecté' }}
       <span *ngIf="moduleCount > 0">({{ moduleCount }} modules)</span>

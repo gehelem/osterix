@@ -174,7 +174,18 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Open server configuration dialog
+   * Open server configuration dialog (for URL parameters)
+   */
+  openServerConfiguration(): void {
+    this.dialog.open(ServerConfigDialogComponent, {
+      width: '600px',
+      maxWidth: '90vw',
+      data: { isInitial: false }
+    });
+  }
+
+  /**
+   * Open home parameters dialog
    */
   openServerConfigDialog(): void {
     this.dialog.open(HomeParametersDialogComponent, {
