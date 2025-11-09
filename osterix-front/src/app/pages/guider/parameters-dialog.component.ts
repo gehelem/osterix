@@ -657,72 +657,76 @@ export class GuiderParametersDialogComponent implements OnInit, OnDestroy {
       // ALWAYS update all properties from the backend state
       // This ensures the UI reflects the backend's truth at all times
 
-      // Update revCorrections - merge values into existing elements
+      // Update revCorrections - update all elements from backend
       const revCorrectionProperty = guiderModule.properties['revCorrections'];
       if (revCorrectionProperty && revCorrectionProperty.elements) {
         Object.keys(revCorrectionProperty.elements).forEach(key => {
+          const backendElement = revCorrectionProperty.elements[key];
           if (this.data.revCorrectionElements[key]) {
-            this.data.revCorrectionElements[key].value = revCorrectionProperty.elements[key].value;
+            // Update existing element
+            this.data.revCorrectionElements[key].value = backendElement.value;
+          } else {
+            // Add new element if it doesn't exist
+            this.data.revCorrectionElements[key] = backendElement;
           }
         });
-        console.log('Updated revCorrectionElements values from backend');
+        console.log('Updated revCorrectionElements from backend:', this.data.revCorrectionElements);
       }
 
-      // Update disCorrections - merge values into existing elements
+      // Update disCorrections - update all elements from backend
       const disCorrectionProperty = guiderModule.properties['disCorrections'];
       if (disCorrectionProperty && disCorrectionProperty.elements) {
         Object.keys(disCorrectionProperty.elements).forEach(key => {
+          const backendElement = disCorrectionProperty.elements[key];
           if (this.data.disCorrectionElements[key]) {
-            this.data.disCorrectionElements[key].value = disCorrectionProperty.elements[key].value;
+            // Update existing element
+            this.data.disCorrectionElements[key].value = backendElement.value;
+          } else {
+            // Add new element if it doesn't exist
+            this.data.disCorrectionElements[key] = backendElement;
           }
         });
-        console.log('Updated disCorrectionElements values from backend');
+        console.log('Updated disCorrectionElements from backend:', this.data.disCorrectionElements);
       }
 
-      // Update all other properties - merge values into existing elements
-      const parametersProperty = guiderModule.properties['parameters'];
-      if (parametersProperty && parametersProperty.elements) {
-        Object.keys(parametersProperty.elements).forEach(key => {
-          if (this.data.parametersElements[key]) {
-            this.data.parametersElements[key].value = parametersProperty.elements[key].value;
+      // Helper function to update all elements from backend
+      const updateElementsFromBackend = (dataElements: { [key: string]: Element }, backendElements: { [key: string]: Element }) => {
+        Object.keys(backendElements).forEach(key => {
+          const backendElement = backendElements[key];
+          if (dataElements[key]) {
+            // Update existing element
+            dataElements[key].value = backendElement.value;
+          } else {
+            // Add new element if it doesn't exist
+            dataElements[key] = backendElement;
           }
         });
+      };
+
+      // Update all other properties using the helper function
+      const parametersProperty = guiderModule.properties['parameters'];
+      if (parametersProperty && parametersProperty.elements) {
+        updateElementsFromBackend(this.data.parametersElements, parametersProperty.elements);
       }
 
       const devicesProperty = guiderModule.properties['devices'];
       if (devicesProperty && devicesProperty.elements) {
-        Object.keys(devicesProperty.elements).forEach(key => {
-          if (this.data.devicesElements[key]) {
-            this.data.devicesElements[key].value = devicesProperty.elements[key].value;
-          }
-        });
+        updateElementsFromBackend(this.data.devicesElements, devicesProperty.elements);
       }
 
       const opticProperty = guiderModule.properties['optic'];
       if (opticProperty && opticProperty.elements) {
-        Object.keys(opticProperty.elements).forEach(key => {
-          if (this.data.opticElements[key]) {
-            this.data.opticElements[key].value = opticProperty.elements[key].value;
-          }
-        });
+        updateElementsFromBackend(this.data.opticElements, opticProperty.elements);
       }
 
       const guideParamsProperty = guiderModule.properties['guideParams'];
       if (guideParamsProperty && guideParamsProperty.elements) {
-        Object.keys(guideParamsProperty.elements).forEach(key => {
-          if (this.data.guideParamsElements[key]) {
-            this.data.guideParamsElements[key].value = guideParamsProperty.elements[key].value;
-          }
-        });
+        updateElementsFromBackend(this.data.guideParamsElements, guideParamsProperty.elements);
       }
 
       const calParamsProperty = guiderModule.properties['calParams'];
       if (calParamsProperty && calParamsProperty.elements) {
-        Object.keys(calParamsProperty.elements).forEach(key => {
-          if (this.data.calParamsElements[key]) {
-            this.data.calParamsElements[key].value = calParamsProperty.elements[key].value;
-          }
-        });
+        updateElementsFromBackend(this.data.calParamsElements, calParamsProperty.elements);
       }
 
       // Handle loadprofile responses (for profile loading dialog)
