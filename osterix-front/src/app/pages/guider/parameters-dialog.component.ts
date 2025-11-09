@@ -460,9 +460,9 @@ interface ListOfValue {
               <!-- Boolean -->
               <div class="toggle-field" *ngIf="isBool(key, 'disCorrection')">
                 <mat-slide-toggle
-                  [ngModel]="data.disCorrectionElements[key].value"
+                  [(ngModel)]="data.disCorrectionElements[key].value"
                   [name]="'disCorrection_' + key"
-                  (change)="onBooleanChange(key, 'disCorrection', $event)">
+                  (change)="data.onDisCorrectionChange(key, data.disCorrectionElements[key].value)">
                   {{ getElementLabel(key, 'disCorrection') }}
                 </mat-slide-toggle>
               </div>
@@ -526,9 +526,9 @@ interface ListOfValue {
               <!-- Boolean -->
               <div class="toggle-field" *ngIf="isBool(key, 'revCorrection')">
                 <mat-slide-toggle
-                  [ngModel]="data.revCorrectionElements[key].value"
+                  [(ngModel)]="data.revCorrectionElements[key].value"
                   [name]="'revCorrection_' + key"
-                  (change)="onBooleanChange(key, 'revCorrection', $event)">
+                  (change)="data.onRevCorrectionChange(key, data.revCorrectionElements[key].value)">
                   {{ getElementLabel(key, 'revCorrection') }}
                 </mat-slide-toggle>
               </div>
@@ -649,15 +649,56 @@ export class GuiderParametersDialogComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    // Listen for state changes to handle loadprofile responses
+    // Listen for state changes - ALWAYS update when backend sends updates
     this.stateSubscription = this.websocketService.state$.subscribe(state => {
-      // Only process if we're waiting for a profile list
-      if (!this.waitingForProfileList) {
-        return;
+      const guiderModule = state.modules['Guider'];
+      if (!guiderModule) return;
+
+      // ALWAYS update all properties from the backend state
+      // This ensures the UI reflects the backend's truth at all times
+
+      // Update revCorrections
+      const revCorrectionProperty = guiderModule.properties['revCorrections'];
+      if (revCorrectionProperty && revCorrectionProperty.elements) {
+        this.data.revCorrectionElements = revCorrectionProperty.elements;
+        console.log('Updated revCorrectionElements from backend:', this.data.revCorrectionElements);
       }
 
-      const guiderModule = state.modules['Guider'];
-      if (guiderModule && guiderModule.properties && guiderModule.properties['loadprofile']) {
+      // Update disCorrections
+      const disCorrectionProperty = guiderModule.properties['disCorrections'];
+      if (disCorrectionProperty && disCorrectionProperty.elements) {
+        this.data.disCorrectionElements = disCorrectionProperty.elements;
+        console.log('Updated disCorrectionElements from backend:', this.data.disCorrectionElements);
+      }
+
+      // Update all other properties
+      const parametersProperty = guiderModule.properties['parameters'];
+      if (parametersProperty) {
+        this.data.parametersElements = parametersProperty.elements;
+      }
+
+      const devicesProperty = guiderModule.properties['devices'];
+      if (devicesProperty) {
+        this.data.devicesElements = devicesProperty.elements;
+      }
+
+      const opticProperty = guiderModule.properties['optic'];
+      if (opticProperty) {
+        this.data.opticElements = opticProperty.elements;
+      }
+
+      const guideParamsProperty = guiderModule.properties['guideParams'];
+      if (guideParamsProperty) {
+        this.data.guideParamsElements = guideParamsProperty.elements;
+      }
+
+      const calParamsProperty = guiderModule.properties['calParams'];
+      if (calParamsProperty) {
+        this.data.calParamsElements = calParamsProperty.elements;
+      }
+
+      // Handle loadprofile responses (for profile loading dialog)
+      if (guiderModule.properties['loadprofile'] && this.waitingForProfileList) {
         const loadprofileProperty = guiderModule.properties['loadprofile'];
         const nameElement = loadprofileProperty.elements?.['name'];
 
@@ -1124,19 +1165,5 @@ export class GuiderParametersDialogComponent implements OnInit, OnDestroy {
     return constraints.length > 0 ? ` (${constraints.join(', ')})` : '';
   }
 
-  /**
-   * Handle boolean change for nested properties
-   * Don't update the UI immediately, let the backend respond
-   */
-  onBooleanChange(key: string, type: 'disCorrection' | 'revCorrection', event: any): void {
-    const newValue = event.checked;
-    // Send the change to the backend
-    if (type === 'disCorrection') {
-      this.data.onDisCorrectionChange(key, newValue);
-    } else if (type === 'revCorrection') {
-      this.data.onRevCorrectionChange(key, newValue);
-    }
-    // Don't update the local value - wait for backend response via state update
-  }
 
 }
