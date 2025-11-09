@@ -657,44 +657,72 @@ export class GuiderParametersDialogComponent implements OnInit, OnDestroy {
       // ALWAYS update all properties from the backend state
       // This ensures the UI reflects the backend's truth at all times
 
-      // Update revCorrections
+      // Update revCorrections - merge values into existing elements
       const revCorrectionProperty = guiderModule.properties['revCorrections'];
       if (revCorrectionProperty && revCorrectionProperty.elements) {
-        this.data.revCorrectionElements = revCorrectionProperty.elements;
-        console.log('Updated revCorrectionElements from backend:', this.data.revCorrectionElements);
+        Object.keys(revCorrectionProperty.elements).forEach(key => {
+          if (this.data.revCorrectionElements[key]) {
+            this.data.revCorrectionElements[key].value = revCorrectionProperty.elements[key].value;
+          }
+        });
+        console.log('Updated revCorrectionElements values from backend');
       }
 
-      // Update disCorrections
+      // Update disCorrections - merge values into existing elements
       const disCorrectionProperty = guiderModule.properties['disCorrections'];
       if (disCorrectionProperty && disCorrectionProperty.elements) {
-        this.data.disCorrectionElements = disCorrectionProperty.elements;
-        console.log('Updated disCorrectionElements from backend:', this.data.disCorrectionElements);
+        Object.keys(disCorrectionProperty.elements).forEach(key => {
+          if (this.data.disCorrectionElements[key]) {
+            this.data.disCorrectionElements[key].value = disCorrectionProperty.elements[key].value;
+          }
+        });
+        console.log('Updated disCorrectionElements values from backend');
       }
 
-      // Update all other properties
+      // Update all other properties - merge values into existing elements
       const parametersProperty = guiderModule.properties['parameters'];
-      if (parametersProperty) {
-        this.data.parametersElements = parametersProperty.elements;
+      if (parametersProperty && parametersProperty.elements) {
+        Object.keys(parametersProperty.elements).forEach(key => {
+          if (this.data.parametersElements[key]) {
+            this.data.parametersElements[key].value = parametersProperty.elements[key].value;
+          }
+        });
       }
 
       const devicesProperty = guiderModule.properties['devices'];
-      if (devicesProperty) {
-        this.data.devicesElements = devicesProperty.elements;
+      if (devicesProperty && devicesProperty.elements) {
+        Object.keys(devicesProperty.elements).forEach(key => {
+          if (this.data.devicesElements[key]) {
+            this.data.devicesElements[key].value = devicesProperty.elements[key].value;
+          }
+        });
       }
 
       const opticProperty = guiderModule.properties['optic'];
-      if (opticProperty) {
-        this.data.opticElements = opticProperty.elements;
+      if (opticProperty && opticProperty.elements) {
+        Object.keys(opticProperty.elements).forEach(key => {
+          if (this.data.opticElements[key]) {
+            this.data.opticElements[key].value = opticProperty.elements[key].value;
+          }
+        });
       }
 
       const guideParamsProperty = guiderModule.properties['guideParams'];
-      if (guideParamsProperty) {
-        this.data.guideParamsElements = guideParamsProperty.elements;
+      if (guideParamsProperty && guideParamsProperty.elements) {
+        Object.keys(guideParamsProperty.elements).forEach(key => {
+          if (this.data.guideParamsElements[key]) {
+            this.data.guideParamsElements[key].value = guideParamsProperty.elements[key].value;
+          }
+        });
       }
 
       const calParamsProperty = guiderModule.properties['calParams'];
-      if (calParamsProperty) {
-        this.data.calParamsElements = calParamsProperty.elements;
+      if (calParamsProperty && calParamsProperty.elements) {
+        Object.keys(calParamsProperty.elements).forEach(key => {
+          if (this.data.calParamsElements[key]) {
+            this.data.calParamsElements[key].value = calParamsProperty.elements[key].value;
+          }
+        });
       }
 
       // Handle loadprofile responses (for profile loading dialog)
