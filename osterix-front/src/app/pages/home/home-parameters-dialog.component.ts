@@ -7,6 +7,15 @@ import { MatDialogRef } from '@angular/material/dialog';
     <h2 mat-dialog-title>
       Paramètres
       <div class="header-actions">
+        <button mat-icon-button title="Load" (click)="loadProfile()">
+          <mat-icon>folder_open</mat-icon>
+        </button>
+        <button mat-icon-button title="Save" (click)="saveProfile()">
+          <mat-icon>save</mat-icon>
+        </button>
+        <button mat-icon-button title="Save As" (click)="saveAsProfile()">
+          <mat-icon>save_as</mat-icon>
+        </button>
         <button mat-icon-button mat-dialog-close class="close-button">
           <mat-icon>close</mat-icon>
         </button>
@@ -50,4 +59,16 @@ import { MatDialogRef } from '@angular/material/dialog';
 })
 export class HomeParametersDialogComponent {
   constructor(public dialogRef: MatDialogRef<HomeParametersDialogComponent>) { }
+
+  loadProfile(): void {
+    // To be implemented
+  }
+
+  saveProfile(): void {
+    // To be implemented
+  }
+
+  saveAsProfile(): void {
+    // To be implemented
+  }
 }
