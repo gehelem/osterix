@@ -460,9 +460,9 @@ interface ListOfValue {
               <!-- Boolean -->
               <div class="toggle-field" *ngIf="isBool(key, 'disCorrection')">
                 <mat-slide-toggle
-                  [(ngModel)]="data.disCorrectionElements[key].value"
+                  [ngModel]="data.disCorrectionElements[key].value"
                   [name]="'disCorrection_' + key"
-                  (change)="data.onDisCorrectionChange(key, data.disCorrectionElements[key].value)">
+                  (change)="onBooleanChange(key, 'disCorrection', $event)">
                   {{ getElementLabel(key, 'disCorrection') }}
                 </mat-slide-toggle>
               </div>
@@ -526,9 +526,9 @@ interface ListOfValue {
               <!-- Boolean -->
               <div class="toggle-field" *ngIf="isBool(key, 'revCorrection')">
                 <mat-slide-toggle
-                  [(ngModel)]="data.revCorrectionElements[key].value"
+                  [ngModel]="data.revCorrectionElements[key].value"
                   [name]="'revCorrection_' + key"
-                  (change)="data.onRevCorrectionChange(key, data.revCorrectionElements[key].value)">
+                  (change)="onBooleanChange(key, 'revCorrection', $event)">
                   {{ getElementLabel(key, 'revCorrection') }}
                 </mat-slide-toggle>
               </div>
@@ -1122,6 +1122,20 @@ export class GuiderParametersDialogComponent implements OnInit, OnDestroy {
     }
 
     return constraints.length > 0 ? ` (${constraints.join(', ')})` : '';
+  }
+
+  /**
+   * Handle boolean change for nested properties
+   * Don't update the UI immediately, let the backend respond
+   */
+  onBooleanChange(key: string, type: 'disCorrection' | 'revCorrection', newValue: boolean): void {
+    // Send the change to the backend
+    if (type === 'disCorrection') {
+      this.data.onDisCorrectionChange(key, newValue);
+    } else if (type === 'revCorrection') {
+      this.data.onRevCorrectionChange(key, newValue);
+    }
+    // Don't update the local value - wait for backend response via state update
   }
 
 }
